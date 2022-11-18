@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://cf0u1dbkpbbl"]
+
+[ext_resource type="Script" path="res://actors/players/iteration_a/PlayerIterationA.cs" id="1_06b5l"]
+[ext_resource type="PackedScene" uid="uid://cwwbu12b28b5h" path="res://actors/players/body_meshes.tscn" id="2_q0wvt"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_f1vef"]
+
+[node name="PlayerIteration1" type="CharacterBody3D"]
+collision_priority = 10.0
+motion_mode = 1
+wall_min_slide_angle = 0.785398
+floor_block_on_wall = false
+script = ExtResource("1_06b5l")
+
+[node name="player_common" type="Node3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_f1vef")
+
+[node name="body_meshes" parent="." instance=ExtResource("2_q0wvt")]
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 1)
+visible = false
+light_energy = 3.0
+shadow_enabled = true
+spot_range = 31.0
+spot_angle = 40.0
+
+[node name="Camera3D" type="Camera3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 7)
+current = true
+
+[node name="ground_ray" type="RayCast3D" parent="."]
+
+[node name="debug_print" type="Label" parent="."]
+offset_right = 384.0
+offset_bottom = 640.0
+text = "`1234567890"

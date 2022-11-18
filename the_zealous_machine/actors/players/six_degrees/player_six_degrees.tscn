@@ -1,0 +1,88 @@
+[gd_scene load_steps=7 format=3 uid="uid://bpm6lfvpbiken"]
+
+[ext_resource type="PackedScene" uid="uid://cwwbu12b28b5h" path="res://actors/players/body_meshes.tscn" id="1_ptacq"]
+[ext_resource type="Script" path="res://actors/players/six_degrees/PlayerSixDegrees.cs" id="1_vo387"]
+[ext_resource type="PackedScene" uid="uid://8gpog7nvjwpa" path="res://actors/players/raycast_pylon.tscn" id="3_n3yfh"]
+[ext_resource type="PackedScene" uid="uid://db4p6st64pmax" path="res://actors/players/player_turret.tscn" id="4_2b0gq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1cl8o"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_2wku5"]
+radius = 2.0
+
+[node name="player_six_degrees" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_vo387")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_1cl8o")
+
+[node name="body_meshes" parent="." instance=ExtResource("1_ptacq")]
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="raycast_pylon" parent="head" instance=ExtResource("3_n3yfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+
+[node name="far" type="Node3D" parent="head/raycast_pylon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 7)
+
+[node name="target" parent="head/raycast_pylon" instance=ExtResource("1_ptacq")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 3, 7)
+
+[node name="Camera3D" type="Camera3D" parent="head/raycast_pylon/target"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+
+[node name="options" type="Node3D" parent="head"]
+
+[node name="raycast_pylon" parent="head/options" instance=ExtResource("3_n3yfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0.4)
+
+[node name="far" type="Node3D" parent="head/options/raycast_pylon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1, 1.6)
+
+[node name="player_turret" parent="head/options/raycast_pylon" instance=ExtResource("4_2b0gq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1, 1.6)
+
+[node name="raycast_pylon2" parent="head/options" instance=ExtResource("3_n3yfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0.4)
+
+[node name="far" type="Node3D" parent="head/options/raycast_pylon2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1, 1.6)
+
+[node name="player_turret" parent="head/options/raycast_pylon2" instance=ExtResource("4_2b0gq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1, 1.6)
+
+[node name="raycast_pylon3" parent="head/options" instance=ExtResource("3_n3yfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0.4)
+
+[node name="far" type="Node3D" parent="head/options/raycast_pylon3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, -1, 1.6)
+
+[node name="player_turret" parent="head/options/raycast_pylon3" instance=ExtResource("4_2b0gq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, -1, 1.6)
+
+[node name="raycast_pylon4" parent="head/options" instance=ExtResource("3_n3yfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0.4)
+
+[node name="far" type="Node3D" parent="head/options/raycast_pylon4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, -1, 1.6)
+
+[node name="player_turret" parent="head/options/raycast_pylon4" instance=ExtResource("4_2b0gq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, -1, 1.6)
+
+[node name="debug_print" type="Label" parent="."]
+offset_right = 320.0
+offset_bottom = 648.0
+
+[node name="near_surface" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="near_surface"]
+shape = SubResource("SphereShape3D_2wku5")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+light_energy = 3.0
+spot_range = 37.0
+spot_angle = 31.6594

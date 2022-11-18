@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://ctafdttsjfww6"]
+
+[ext_resource type="Texture2D" uid="uid://nv8qffu8vjvn" path="res://shared/dev_materials/32x32_grey_block.png" id="1_ynxet"]
+
+[resource]
+albedo_texture = ExtResource("1_ynxet")

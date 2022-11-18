@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c82tgfqhampfi"
+path="res://.godot/imported/terrain_test_01.obj-60a6859db0cd50f0e421a2d62bd8ea5d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/terrain_test_01.obj-60a6859db0cd50f0e421a2d62bd8ea5d.mesh"]
+
+source_file="res://maps/terrain_test_01/geometry/terrain_test_01.obj"
+dest_files=["res://.godot/imported/terrain_test_01.obj-60a6859db0cd50f0e421a2d62bd8ea5d.mesh", "res://.godot/imported/terrain_test_01.obj-60a6859db0cd50f0e421a2d62bd8ea5d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

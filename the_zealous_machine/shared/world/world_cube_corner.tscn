@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://rc5576hhmjvg"]
+
+[ext_resource type="BoxMesh" uid="uid://dejrj8rmqqjsl" path="res://shared/primitives/box.tres" id="1_3gb1w"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3iocs"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_r0krh"]
+frequency = 0.25
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_i3khf"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_r0krh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dhwyd"]
+albedo_color = Color(0.254902, 0.254902, 0.254902, 1)
+metallic = 0.71
+roughness_texture = SubResource("NoiseTexture2D_i3khf")
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 2
+
+[node name="world_cube_corner" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_3iocs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = ExtResource("1_3gb1w")
+surface_material_override/0 = SubResource("StandardMaterial3D_dhwyd")

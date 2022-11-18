@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://8gpog7nvjwpa"]
+
+[ext_resource type="Script" path="res://actors/players/RaycastPylon.cs" id="1_n8mac"]
+
+[node name="raycast_pylon" type="Node3D"]
+script = ExtResource("1_n8mac")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 1)
+
+[node name="RayCast3D2" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+target_position = Vector3(0, 0, 1)
+
+[node name="RayCast3D3" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49012e-08, 0.4, 0)
+target_position = Vector3(0, 0, 1)
+
+[node name="RayCast3D4" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+target_position = Vector3(0, 0, 1)
+
+[node name="RayCast3D5" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+target_position = Vector3(0, 0, 1)

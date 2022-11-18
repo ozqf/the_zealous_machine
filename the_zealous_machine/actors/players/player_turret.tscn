@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://db4p6st64pmax"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0ypl3"]
+size = Vector3(0.25, 0.25, 1)
+
+[node name="player_turret" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_0ypl3")
+skeleton = NodePath("../..")

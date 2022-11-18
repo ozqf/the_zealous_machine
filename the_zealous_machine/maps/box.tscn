@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://dd2j0hm2ffjhn"]
+
+[ext_resource type="PackedScene" uid="uid://rc5576hhmjvg" path="res://shared/world/world_cube_corner.tscn" id="1_r2qlm"]
+[ext_resource type="PackedScene" uid="uid://di76hngcq80pu" path="res://actors/players/player_start.tscn" id="2_tgjnc"]
+
+[sub_resource type="Environment" id="Environment_gjku2"]
+background_energy_multiplier = 0.0
+ambient_light_energy = 0.0
+
+[node name="box" type="Node3D"]
+
+[node name="actors" type="Node3D" parent="."]
+
+[node name="player_start" parent="actors" instance=ExtResource("2_tgjnc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="lights" type="Node3D" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+light_energy = 2.0
+light_specular = 0.1
+shadow_enabled = true
+omni_range = 11.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="lights"]
+transform = Transform3D(-0.5, 0.75, -0.433013, 0, 0.5, 0.866025, 0.866025, 0.433013, -0.25, 0, 11, 0)
+shadow_enabled = true
+
+[node name="world" type="Node3D" parent="."]
+
+[node name="world_cube_corner" parent="world" instance=ExtResource("1_r2qlm")]
+transform = Transform3D(76.3776, 0, 0, 0, 1, 0, 0, 0, 72.45, -8, -1, -8)
+
+[node name="world_cube_corner3" parent="world" instance=ExtResource("1_r2qlm")]
+transform = Transform3D(1, 0, 0, 0, 6.24, 0, 0, 0, 73.6, -8, 0, -8)
+
+[node name="world_cube_corner4" parent="world" instance=ExtResource("1_r2qlm")]
+transform = Transform3D(1, 0, 0, 0, 6.24, 0, 0, 0, 73.6, 68, 0, -8)
+
+[node name="world_cube_corner5" parent="world" instance=ExtResource("1_r2qlm")]
+transform = Transform3D(77, 0, 0, 0, 6.24, 0, 0, 0, 1, -7, 0, -8)
+
+[node name="world_cube_corner6" parent="world" instance=ExtResource("1_r2qlm")]
+transform = Transform3D(77, 0, 0, 0, 6.24, 0, 0, 0, 1, -7, 0, 62)
+
+[node name="env" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gjku2")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.40558, 0.579228, 0, 0.819152, 0.573576, -0.707107, -0.40558, 0.579228, 6, 5, 5)
