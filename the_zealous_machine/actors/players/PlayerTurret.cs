@@ -36,7 +36,7 @@ namespace TheZealousMachine.actors.players
             if (Input.IsActionPressed("attack_1"))
             {
                 _tick = 0.1f;
-                var prj = Servicelocator.Locate<Main>().CreateProjectile();
+                var prj = Servicelocator.Locate<IGame>().CreateProjectile();
                 ProjectileLaunchInfo info = new ProjectileLaunchInfo();
                 info.forward = -GlobalTransform.basis.z;
                 info.position = GlobalPosition + (info.forward * 0.5f);

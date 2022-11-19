@@ -1,4 +1,5 @@
 ﻿using Godot;
+using TheZealousMachine.actors.projectiles;
 
 namespace TheZealousMachine
 {
@@ -7,9 +8,22 @@ namespace TheZealousMachine
 
     }
 
+    public interface IGame
+    {
+        void RegisterPlayer(IPlayer player);
+        void UnregisterPlayer(IPlayer player);
+        TargetInfo GetPlayerTarget();
+        ProjectileGeneric CreateProjectile();
+    }
+
     public interface IArena
     {
         public void TriggerTouched(string name, string message);
+    }
+
+    public interface IVolume
+    {
+        public void SetOn(bool flag);
     }
 
     public interface IPlayer
@@ -19,6 +33,7 @@ namespace TheZealousMachine
 
     public struct TargetInfo
     {
+        public bool valid;
         public Vector3 position;
     }
 

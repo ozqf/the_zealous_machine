@@ -160,7 +160,8 @@ namespace TheZealousMachine
 
 		public TargetInfo GetTargetInfo()
 		{
-			TargetInfo info;
+			TargetInfo info = new TargetInfo();
+			info.valid = true;
 			info.position = this.GlobalTransform.origin;
 			return info;
 		}

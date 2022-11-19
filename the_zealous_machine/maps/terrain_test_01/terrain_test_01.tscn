@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://ddopo66uds5gi"]
+[gd_scene load_steps=9 format=3 uid="uid://ddopo66uds5gi"]
 
+[ext_resource type="PackedScene" uid="uid://rc5576hhmjvg" path="res://shared/world/world_cube_corner.tscn" id="2_10q8a"]
 [ext_resource type="PackedScene" uid="uid://di76hngcq80pu" path="res://actors/players/player_start.tscn" id="2_niupb"]
 [ext_resource type="ArrayMesh" uid="uid://dc0ikyah2iuax" path="res://maps/terrain_test_01/geometry/six_axis_test_map.obj" id="3_hryui"]
 [ext_resource type="Material" uid="uid://ctafdttsjfww6" path="res://shared/dev_materials/grey_block.tres" id="4_850kv"]
@@ -21,6 +22,11 @@ light_color = Color(1, 1, 0.870588, 1)
 light_energy = 0.5
 light_indirect_energy = 0.5
 shadow_enabled = true
+
+[node name="blocks" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -8)
+
+[node name="world_cube_corner" parent="blocks" instance=ExtResource("2_10q8a")]
 
 [node name="maze" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 0, 156)
@@ -47,3 +53,6 @@ transform = Transform3D(8, 0, 0, 0, -3.49691e-07, -1, 0, 8, -4.37114e-08, 8, -7.
 [node name="trig_start" parent="maze/actors/arena" instance=ExtResource("4_vxfks")]
 transform = Transform3D(1, 0, 0, 0, 22.2, 0, 0, 0, 22.12, -13, -7, -10)
 _message = "start"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.707107, -0.40558, 0.579228, -27, 108, 198)

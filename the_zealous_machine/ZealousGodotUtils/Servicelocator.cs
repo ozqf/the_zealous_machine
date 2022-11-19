@@ -47,11 +47,14 @@ namespace ZealousGodotUtils
 			return (T)_services[t];
 		}
 
-		public void RegisterService(object obj)
+		public void RegisterService(object obj, Type overrideType = null)
 		{
-			Type t = obj.GetType();
-			GD.Print($"Registered service {t}");
-			_services[t] = obj;
+			if (overrideType== null)
+			{
+				overrideType = obj.GetType();
+            }
+			GD.Print($"Registered service {overrideType}");
+			_services[overrideType] = obj;
 		}
 	}
 }

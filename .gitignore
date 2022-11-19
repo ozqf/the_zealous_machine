@@ -3,6 +3,7 @@
 .import/
 .godot/
 /releases/
+
 export.cfg
 export_presets.cfg
 
@@ -12,6 +13,9 @@ data_*/
 .vs
 .vscode
 *.csproj.user
+
+# Imported translations (automatically generated from CSV files)
+*.translation
 
 # custom stuff
 
@@ -23,5 +27,4 @@ data_*/
 */ZealousGodotUtils/bin/*
 */ZealousGodotUtils/obj/*
 
-# Imported translations (automatically generated from CSV files)
-*.translation
+asset_source/map_source/autosave/*

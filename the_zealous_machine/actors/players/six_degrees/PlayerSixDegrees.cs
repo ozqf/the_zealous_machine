@@ -10,6 +10,8 @@ namespace TheZealousMachine
 {
 	public partial class PlayerSixDegrees : CharacterBody3D, IPlayer
 	{
+		private IGame _game;
+
 		Vector3 _origin;
 		Vector3 _angularVelocity = Vector3.Zero;
 		float _gravityStrength = 20f;
@@ -56,6 +58,15 @@ namespace TheZealousMachine
 			//Godot.Collections.Array<Node> turrets = FindChildren("player_turret", "", true, false);
 			//List<PlayerTurret> turrets = FindChildren("*player_turret*", "", true, false).Select(x => x as PlayerTurret).ToList();
 			GD.Print($"Player found {_turrets.Count} turrets");
+
+			this.TreeExiting += _OnTreeExiting;
+			_game = Servicelocator.Locate<IGame>();
+			_game.RegisterPlayer(this);
+		}
+
+		private void _OnTreeExiting()
+		{
+			_game.UnregisterPlayer(this);
 		}
 
 		private void SetToNarrowFormation()
@@ -81,7 +92,10 @@ namespace TheZealousMachine
 
 		public TargetInfo GetTargetInfo()
 		{
-			throw new NotImplementedException();
+			TargetInfo info = new TargetInfo();
+			info.valid = true;
+			info.position = this.GlobalTransform.origin;
+			return info;
 		}
 
 		private void _RefreshDebugText()

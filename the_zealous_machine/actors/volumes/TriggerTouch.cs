@@ -8,6 +8,7 @@ namespace TheZealousMachine.actors.volumes
 		[Export]
 		private string _message = "";
 		IArena _arena;
+		[Export]
 		private bool _active = true;
 
 		public override void _Ready()
@@ -26,7 +27,10 @@ namespace TheZealousMachine.actors.volumes
 		private void _OnBodyEntered(Node body)
 		{
 			if (!_active) { return; }
-			_arena.TriggerTouched(Name, _message);
+			if (_arena != null)
+			{
+				_arena.TriggerTouched(Name, _message);
+			}
 		}
 	}
 }
