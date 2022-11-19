@@ -203,7 +203,8 @@ namespace TheZealousMachine
 					Velocity = Velocity.Normalized() * cappedSpeed;
 				}
 
-				Velocity += _CalcGravity(Velocity.Normalized(), (float)delta);
+				// meh no gravity for now
+				// Velocity += _CalcGravity(Velocity.Normalized(), (float)delta);
 			}
 			else
 			{

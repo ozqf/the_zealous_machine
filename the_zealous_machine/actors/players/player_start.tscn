@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://di76hngcq80pu"]
+[gd_scene load_steps=3 format=3 uid="uid://di76hngcq80pu"]
 
 [ext_resource type="Script" path="res://actors/players/PlayerStart.cs" id="1_26bdw"]
+[ext_resource type="PackedScene" uid="uid://cwwbu12b28b5h" path="res://actors/players/body_meshes.tscn" id="2_j2gig"]
 
-[node name="player_start" type="MeshInstance3D"]
+[node name="player_start" type="Node3D"]
 script = ExtResource("1_26bdw")
+
+[node name="body_meshes" parent="." instance=ExtResource("2_j2gig")]

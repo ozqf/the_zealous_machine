@@ -1,15 +1,15 @@
 ﻿using Godot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheZealousMachine
 {
     public static class Interactions
     {
 
+    }
+
+    public interface IArena
+    {
+        public void TriggerTouched(string name, string message);
     }
 
     public interface IPlayer

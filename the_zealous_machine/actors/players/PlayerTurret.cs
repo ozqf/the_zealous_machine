@@ -8,6 +8,19 @@ namespace TheZealousMachine.actors.players
         private Node3D _subject;
         private float _tick = 0f;
 
+        public override void _Ready()
+        {
+            Node player = this.FindParentOfTypeRecursive<IPlayer>();
+            if (player != null)
+            {
+                GD.Print("Turret found player: " + player.Name);
+            }
+            else
+            {
+                GD.Print("Turret found no player!");
+            }
+        }
+
         public void SetTrackTarget(Node3D node)
         {
             _subject = node;

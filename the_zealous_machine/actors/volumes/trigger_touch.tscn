@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cll3tpaytrgu7"]
+
+[ext_resource type="Script" path="res://actors/volumes/TriggerTouch.cs" id="1_4tqel"]
+[ext_resource type="BoxMesh" uid="uid://dejrj8rmqqjsl" path="res://shared/primitives/box.tres" id="1_76jgb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_56oc7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g88xo"]
+transparency = 1
+albedo_color = Color(1, 1, 0, 0.188235)
+
+[node name="trigger_touch" type="Area3D"]
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("1_4tqel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_56oc7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = ExtResource("1_76jgb")
+surface_material_override/0 = SubResource("StandardMaterial3D_g88xo")

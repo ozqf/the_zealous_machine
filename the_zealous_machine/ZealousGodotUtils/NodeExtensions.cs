@@ -19,5 +19,20 @@ namespace ZealousGodotUtils
             float fraction = distToHit / distToFar;
             return fraction;
         }
+
+        public static Node? FindParentOfTypeRecursive<T>(this Node node)
+        {
+            Node parent = node.GetParent();
+            if (parent is T)
+            {
+                return parent as Node;
+            }
+            // oh dear we have no more nodes to search
+            if (parent == node.GetTree().Root)
+            {
+                return null;
+            }
+            return FindParentOfTypeRecursive<T>(parent);
+        }
     }
 }

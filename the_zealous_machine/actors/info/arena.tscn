@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd4udcadqobgl"]
+
+[ext_resource type="BoxMesh" uid="uid://dejrj8rmqqjsl" path="res://shared/primitives/box.tres" id="1_454iy"]
+[ext_resource type="Script" path="res://actors/info/Arena.cs" id="1_qtbb7"]
+
+[node name="arena" type="Node3D"]
+script = ExtResource("1_qtbb7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_454iy")
