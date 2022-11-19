@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://11nh5ohu0j28"]
+
+[ext_resource type="Material" uid="uid://beygr3tycvx7o" path="res://shared/dev_materials/fullbright_red.tres" id="1_bb3m3"]
+[ext_resource type="Script" path="res://actors/players/AimLaser.cs" id="1_tee2c"]
+[ext_resource type="SphereMesh" uid="uid://ct68g57i70lya" path="res://shared/primitives/sphere.tres" id="2_vctax"]
+
+[node name="aim_laser" type="RayCast3D"]
+target_position = Vector3(0, 0, -100)
+script = ExtResource("1_tee2c")
+
+[node name="dot" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+material_override = ExtResource("1_bb3m3")
+mesh = ExtResource("2_vctax")
+skeleton = NodePath("")

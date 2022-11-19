@@ -25,8 +25,8 @@ namespace TheZealousMachine.actors.players
                 _tick = 0.1f;
                 var prj = Servicelocator.Locate<Main>().CreateProjectile();
                 ProjectileLaunchInfo info = new ProjectileLaunchInfo();
-                info.position = GlobalPosition;
                 info.forward = -GlobalTransform.basis.z;
+                info.position = GlobalPosition + (info.forward * 0.5f);
                 info.speed = 80f;
                 prj.Launch(info);
             }

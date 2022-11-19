@@ -119,7 +119,7 @@ namespace TheZealousMachine
 		public override void _Process(double delta)
 		{
 			_bodyMeshes.Visible = (_cameraPylon.GetLastFraction() > 0.25f);
-			_gatlingNode.RotateZ((90f * ZGU.DEG2RAD) * (float)delta);
+			_gatlingNode.RotateZ((180f * ZGU.DEG2RAD) * (float)delta);
 
 		}
 

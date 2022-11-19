@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpm6lfvpbiken"]
+[gd_scene load_steps=10 format=3 uid="uid://bpm6lfvpbiken"]
 
 [ext_resource type="PackedScene" uid="uid://cwwbu12b28b5h" path="res://actors/players/body_meshes.tscn" id="1_ptacq"]
 [ext_resource type="Script" path="res://actors/players/six_degrees/PlayerSixDegrees.cs" id="1_vo387"]
+[ext_resource type="PackedScene" uid="uid://11nh5ohu0j28" path="res://actors/players/aim_laser.tscn" id="3_jgp8p"]
 [ext_resource type="PackedScene" uid="uid://8gpog7nvjwpa" path="res://actors/players/raycast_pylon.tscn" id="3_n3yfh"]
 [ext_resource type="PackedScene" uid="uid://db4p6st64pmax" path="res://actors/players/player_turret.tscn" id="4_2b0gq"]
 [ext_resource type="SphereMesh" uid="uid://ct68g57i70lya" path="res://shared/primitives/sphere.tres" id="5_8bwar"]
@@ -23,6 +24,9 @@ shape = SubResource("SphereShape3D_1cl8o")
 
 [node name="head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="aim_laser" parent="head" instance=ExtResource("3_jgp8p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6)
 
 [node name="raycast_pylon" parent="head" instance=ExtResource("3_n3yfh")]
 
@@ -105,21 +109,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -1)
 
 [node name="target" type="MeshInstance3D" parent="head/options/gatling_node"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.4, 0, 0)
+visible = false
 mesh = ExtResource("5_8bwar")
 skeleton = NodePath("../../raycast_pylon")
 
 [node name="target2" type="MeshInstance3D" parent="head/options/gatling_node"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -7.45058e-09, -0.4, 0)
+visible = false
 mesh = ExtResource("5_8bwar")
 skeleton = NodePath("../../raycast_pylon")
 
 [node name="target3" type="MeshInstance3D" parent="head/options/gatling_node"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.4, 0, 0)
+visible = false
 mesh = ExtResource("5_8bwar")
 skeleton = NodePath("../../raycast_pylon")
 
 [node name="target4" type="MeshInstance3D" parent="head/options/gatling_node"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.4, 0)
+visible = false
 mesh = ExtResource("5_8bwar")
 skeleton = NodePath("../../raycast_pylon")
 
