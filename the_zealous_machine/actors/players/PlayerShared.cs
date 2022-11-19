@@ -8,6 +8,12 @@ namespace TheZealousMachine
         public Vector3 roll;
         public bool boosting;
         public bool gliding;
+        public bool attack1;
+        public bool attack2;
+
+        public bool slot1;
+        public bool slot2;
+        public bool slot3;
     }
 
     public sealed class PlayerDebugInfo
@@ -67,6 +73,10 @@ namespace TheZealousMachine
             }
             input.boosting = Input.IsActionPressed("boost");
             input.gliding = Input.IsActionPressed("glide");
+            input.attack1 = Input.IsActionPressed("attack_1");
+            input.attack2 = Input.IsActionPressed("attack_2");
+            input.slot1 = Input.IsActionPressed("slot_1");
+            input.slot2 = Input.IsActionPressed("slot_2");
             return input;
         }
     }

@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwk1va5hvghtu"]
+
+[ext_resource type="Script" path="res://actors/projectiles/ProjectileGeneric.cs" id="1_l25si"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0v0c0"]
+top_radius = 0.0
+bottom_radius = 0.2
+height = 1.0
+radial_segments = 4
+rings = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vjvfg"]
+albedo_color = Color(1, 1, 0.360784, 1)
+emission_enabled = true
+emission = Color(1, 1, 0, 1)
+
+[node name="projectile_generic" type="Node3D"]
+script = ExtResource("1_l25si")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_0v0c0")
+surface_material_override/0 = SubResource("StandardMaterial3D_vjvfg")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -10)

@@ -17,7 +17,7 @@ namespace TheZealousMachine
                 this.SetProcess(false);
                 return;
             }
-            if (Input.IsActionJustPressed("slot_1"))
+            /*if (Input.IsActionJustPressed("slot_2"))
             {
                 _hasSpawned = true;
                 this.SetProcess(false);
@@ -25,7 +25,7 @@ namespace TheZealousMachine
                 this.AddChild(plyr);
                 plyr.GlobalTransform = this.GlobalTransform;
             }
-            else if (Input.IsActionJustPressed("slot_2"))
+            else */if (Input.IsActionJustPressed("slot_1"))
             {
                 _hasSpawned = true;
                 this.SetProcess(false);
@@ -36,4 +36,3 @@ namespace TheZealousMachine
         }
     }
 }
-

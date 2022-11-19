@@ -1,6 +1,9 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using TheZealousMachine.actors.players;
 using ZealousGodotUtils;
 
 namespace TheZealousMachine
@@ -16,7 +19,12 @@ namespace TheZealousMachine
 		private StringBuilder _debugStr = new StringBuilder();
 		private Area3D _nearSurface;
 		private Node3D _bodyMeshes;
+		private Node3D _gatlingNode;
 		private RaycastPylon _cameraPylon;
+
+		private List<PlayerTurret> _turrets = new List<PlayerTurret>();
+		private List<Node3D> _spreadTurretPositions = new List<Node3D>();
+		private List<Node3D> _narrowTurretPositions = new List<Node3D>();
 
 		public override void _Ready()
 		{
@@ -26,6 +34,49 @@ namespace TheZealousMachine
 			_debugText = GetNode<Label>("debug_print");
 			Servicelocator.Get().GetService<MouseLock>().RemoveLock("player");
 			_origin = GlobalTransform.origin;
+
+			_gatlingNode = GetNode<Node3D>("head/options/gatling_node");
+
+
+			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret"));
+			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret2"));
+			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret3"));
+			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret4"));
+			_narrowTurretPositions.Add(GetNode<Node3D>("head/options/gatling_node/target"));
+			_narrowTurretPositions.Add(GetNode<Node3D>("head/options/gatling_node/target2"));
+			_narrowTurretPositions.Add(GetNode<Node3D>("head/options/gatling_node/target3"));
+			_narrowTurretPositions.Add(GetNode<Node3D>("head/options/gatling_node/target4"));
+			_spreadTurretPositions.Add(GetNode<Node3D>("head/options/raycast_pylon/target"));
+			_spreadTurretPositions.Add(GetNode<Node3D>("head/options/raycast_pylon2/target"));
+			_spreadTurretPositions.Add(GetNode<Node3D>("head/options/raycast_pylon3/target"));
+			_spreadTurretPositions.Add(GetNode<Node3D>("head/options/raycast_pylon4/target"));
+			SetToWideFormation();
+
+			// recursive search doesn't seem to work... not sure what I'm doing wrong?
+			//Godot.Collections.Array<Node> turrets = FindChildren("player_turret", "", true, false);
+			//List<PlayerTurret> turrets = FindChildren("*player_turret*", "", true, false).Select(x => x as PlayerTurret).ToList();
+			GD.Print($"Player found {_turrets.Count} turrets");
+		}
+
+		private void SetToNarrowFormation()
+		{
+			_turrets[0].SetTrackTarget(_narrowTurretPositions[0]);
+			_turrets[1].SetTrackTarget(_narrowTurretPositions[1]);
+			_turrets[2].SetTrackTarget(_narrowTurretPositions[2]);
+			_turrets[3].SetTrackTarget(_narrowTurretPositions[3]);
+		}
+
+		private void SetToWideFormation()
+		{
+			_turrets[0].SetTrackTarget(_spreadTurretPositions[0]);
+			_turrets[1].SetTrackTarget(_spreadTurretPositions[1]);
+			_turrets[2].SetTrackTarget(_spreadTurretPositions[2]);
+			_turrets[3].SetTrackTarget(_spreadTurretPositions[3]);
+		}
+
+		private void AddTurret(string turretPath, string targetPath)
+		{
+
 		}
 
 		public TargetInfo GetTargetInfo()
@@ -68,6 +119,8 @@ namespace TheZealousMachine
 		public override void _Process(double delta)
 		{
 			_bodyMeshes.Visible = (_cameraPylon.GetLastFraction() > 0.25f);
+			_gatlingNode.RotateZ((90f * ZGU.DEG2RAD) * (float)delta);
+
 		}
 
 		public override void _PhysicsProcess(double delta)
@@ -81,6 +134,17 @@ namespace TheZealousMachine
 
 			PlayerInput input = PlayerUtils.GetInput();
 
+			// attack
+			if (input.slot1)
+			{
+				SetToWideFormation();
+			}
+			if (input.slot2)
+			{
+				SetToNarrowFormation();
+			}
+
+			// movement
 
 			if (input.boosting)
 			{

@@ -21,4 +21,13 @@ namespace TheZealousMachine
     {
         public Vector3 position;
     }
+
+    public struct ProjectileLaunchInfo
+    {
+        public Vector3 position;
+        public Vector3 forward;
+        public float speed;
+        public int teamId;
+        public int damage;
+    }
 }

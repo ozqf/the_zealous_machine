@@ -15,6 +15,15 @@ namespace ZealousGodotUtils
 			return _instance;
 		}
 
+		public static T Locate<T>()
+		{
+			if (_instance == null)
+			{
+				throw new NullReferenceException("Service Locator is null");
+			}
+			return _instance.GetService<T>();
+		}
+
 		public static void SetInstance(Servicelocator instance)
 		{
 			if (_instance == null)
