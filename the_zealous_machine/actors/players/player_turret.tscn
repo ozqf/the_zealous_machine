@@ -1,4 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://db4p6st64pmax"]
+[gd_scene load_steps=6 format=3 uid="uid://db4p6st64pmax"]
+
+[ext_resource type="PackedScene" uid="uid://cewx4urhl08eg" path="res://gfx/muzzle_flash/muzzle_spikes.tscn" id="1_0ujaf"]
+[ext_resource type="Script" path="res://actors/players/PlayerTurret.cs" id="1_7n2nj"]
+[ext_resource type="Script" path="res://gfx/TimedVisible.cs" id="1_gnp26"]
+[ext_resource type="PackedScene" uid="uid://8dtigvuktre7" path="res://gfx/booster_particles.tscn" id="2_7yn1t"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_0ypl3"]
 size = Vector3(0.25, 0.25, 1)
@@ -6,3 +11,21 @@ size = Vector3(0.25, 0.25, 1)
 [node name="player_turret" type="MeshInstance3D"]
 mesh = SubResource("BoxMesh_0ypl3")
 skeleton = NodePath("../..")
+script = ExtResource("1_7n2nj")
+
+[node name="booster_particles" parent="." instance=ExtResource("2_7yn1t")]
+emitting = false
+
+[node name="muzzle_spikes" parent="." instance=ExtResource("1_0ujaf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7)
+visible = false
+
+[node name="light" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_gnp26")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="light"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -1.1)
+light_color = Color(1, 1, 0.721569, 1)
+light_energy = 0.8
+omni_range = 8.0

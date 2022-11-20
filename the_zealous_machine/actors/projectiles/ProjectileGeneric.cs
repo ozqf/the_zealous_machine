@@ -20,6 +20,7 @@ namespace TheZealousMachine.actors.projectiles
 			t = t.LookingAt(launchInfo.position + launchInfo.forward, Vector3.Up);
 			GlobalTransform = t;
 			_speed = launchInfo.speed;
+			_ray.CollisionMask = Interactions.GetPlayerProjectileMask();
 		}
 
 		private void _Step(float delta)
@@ -50,7 +51,21 @@ namespace TheZealousMachine.actors.projectiles
 				_Step(dt);
 				return;
 			}
-			this.QueueFree();
+			// hit something
+			IHittable victim = _ray.GetCollider() as IHittable;
+			if (victim != null)
+			{
+				HitInfo hit = new HitInfo();
+				hit.position = GlobalTransform.origin;
+				hit.direction = -GlobalTransform.basis.z;
+				hit.damage = 10;
+				HitResponse res = victim.Hit(hit);
+				this.QueueFree();
+			}
+			else
+			{
+				this.QueueFree();
+			}
 		}
 	}
 }

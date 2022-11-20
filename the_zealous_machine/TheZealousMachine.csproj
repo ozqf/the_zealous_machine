@@ -10,4 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="ZealousGodotUtils\ZealousGodotUtils.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="gfx\muzzle_flash\" />
+  </ItemGroup>
 </Project>

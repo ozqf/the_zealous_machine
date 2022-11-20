@@ -4,6 +4,8 @@ namespace TheZealousMachine
 {
     public struct PlayerInput
     {
+        public static PlayerInput Empty { get { return new PlayerInput(); } }
+
         public Vector3 pushAxes;
         public Vector3 roll;
         public bool boosting;
@@ -14,6 +16,7 @@ namespace TheZealousMachine
         public bool slot1;
         public bool slot2;
         public bool slot3;
+        public bool slot4;
     }
 
     public sealed class PlayerDebugInfo
@@ -77,6 +80,8 @@ namespace TheZealousMachine
             input.attack2 = Input.IsActionPressed("attack_2");
             input.slot1 = Input.IsActionPressed("slot_1");
             input.slot2 = Input.IsActionPressed("slot_2");
+            input.slot3 = Input.IsActionPressed("slot_3");
+            input.slot4 = Input.IsActionPressed("slot_4");
             return input;
         }
     }

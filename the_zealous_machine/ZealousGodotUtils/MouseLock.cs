@@ -20,6 +20,8 @@ namespace ZealousGodotUtils
 			}
 		}
 
+		public bool IsLocked() { return _locks.Any(); }
+
 		public void AddLock(string key)
 		{
 			_locks[key] = true;
