@@ -29,6 +29,7 @@ namespace TheZealousMachine.actors.volumes
 			if (!_active) { return; }
 			if (_arena != null)
 			{
+				_active = false;
 				_arena.TriggerTouched(Name, _message);
 			}
 		}

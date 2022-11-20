@@ -14,6 +14,7 @@ namespace TheZealousMachine.actors.players
 	{
 		// current position tracking target
 		private Node3D _subject;
+		private AimLaser _target;
 		private TurretFormation _formation;
 		private float _tick = 0f;
 		private TimedVisible _light;
@@ -47,12 +48,15 @@ namespace TheZealousMachine.actors.players
 			switch (_formation)
 			{
 				case TurretFormation.Spread:
+					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = false;
 					SetTrackTarget(_spreadTarget); break;
 				case TurretFormation.Narrow:
+					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = false;
 					SetTrackTarget(_narrowTarget); break;
 				case TurretFormation.Boost:
+					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = true;
 					SetTrackTarget(_boostTarget); break;
 			}
@@ -68,6 +72,11 @@ namespace TheZealousMachine.actors.players
 		public void SetTrackTarget(Node3D node)
 		{
 			_subject = node;
+		}
+
+		public void SetAimTarget(AimLaser node)
+		{
+			_target = node;
 		}
 
 		public override void _PhysicsProcess(double delta)
@@ -94,7 +103,7 @@ namespace TheZealousMachine.actors.players
 				ProjectileLaunchInfo info = new ProjectileLaunchInfo();
 				info.forward = -GlobalTransform.basis.z;
 				info.position = GlobalPosition + (info.forward * 0.5f);
-				info.speed = 80f;
+				info.speed = 200f;
 				prj.Launch(info);
 			}
 		}
@@ -104,6 +113,10 @@ namespace TheZealousMachine.actors.players
 			if (_subject != null)
 			{
 				GlobalPosition = _subject.GlobalTransform.origin;
+			}
+			if (_formation == TurretFormation.Spread && _target != null)
+			{
+				this.LookAtSafe(_target.GetAimPosition(), Vector3.Up, Vector3.Left);
 			}
 		}
 	}

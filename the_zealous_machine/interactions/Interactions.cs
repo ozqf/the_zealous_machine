@@ -1,17 +1,31 @@
 ﻿using Godot;
 using TheZealousMachine.actors.projectiles;
+using TheZealousMachine.actors.volumes;
 
 namespace TheZealousMachine
 {
+    public static class GameEvents
+    {
+        public const string MOB_DIED = "mob_died";
+    }
+
     public interface IGame
     {
+        // generic stuff
         void RegisterPlayer(IPlayer player);
         void UnregisterPlayer(IPlayer player);
         TargetInfo GetPlayerTarget();
+        void AddMouseLock(string lockName);
+        void RemoveMouseLock(string lockName);
+        bool IsMouseLocked();
+
+        int AssignActorId();
+
+        // game specific
+        Node3D CreateBulletImpact(Vector3 pos, Vector3 directon);
         ProjectileGeneric CreateProjectile();
-        public void AddMouseLock(string lockName);
-        public void RemoveMouseLock(string lockName);
-        public bool IsMouseLocked();
+        SpawnVolume CreateSpawnVolume(Vector3 pos);
+        Node3D CreateMobDrone(Vector3 pos);
     }
 
     public struct HitInfo
@@ -21,7 +35,7 @@ namespace TheZealousMachine
         public Vector3 direction;
     }
 
-    public enum HitResposneType
+    public enum HitResponseType
     {
         Damaged, Immune, Ignored
     }
@@ -34,13 +48,13 @@ namespace TheZealousMachine
             {
                 return new HitResponse
                 {
-                    type = HitResposneType.Ignored,
+                    type = HitResponseType.Ignored,
                     damage = 0
                 };
             }
         }
 
-        public HitResposneType type;
+        public HitResponseType type;
         public int damage;
     }
 

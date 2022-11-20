@@ -8,14 +8,16 @@
 [ext_resource type="PackedScene" uid="uid://bhcmnq2ym627u" path="res://actors/volumes/player_barrier/player_barrier.tscn" id="5_5y7el"]
 [ext_resource type="Material" uid="uid://b3k78a04h2mae" path="res://shared/dev_materials/tech_block.tres" id="5_440r4"]
 [ext_resource type="ArrayMesh" uid="uid://b7h1vx7kqce0e" path="res://maps/terrain_test_01/geometry/surface.obj" id="6_ycx15"]
-[ext_resource type="PackedScene" uid="uid://mjcpeq423pk" path="res://actors/mobs/drone/mob_drone.tscn" id="9_3gieq"]
+[ext_resource type="PackedScene" uid="uid://d3yp5aln8avq" path="res://actors/info/spawner.tscn" id="9_2v8nx"]
 
 [sub_resource type="Environment" id="Environment_6w8od"]
 background_energy_multiplier = 0.0
 ambient_light_source = 2
 ambient_light_color = Color(0, 0.172549, 0, 1)
-ambient_light_energy = 1.49
+ambient_light_energy = 0.0
 ssr_enabled = true
+ssao_enabled = true
+glow_enabled = true
 fog_enabled = true
 fog_light_color = Color(0, 0, 0, 1)
 
@@ -77,8 +79,8 @@ transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 1, -13, -4.5, -7)
 transform = Transform3D(39.76, 0, 0, 0, 1, 0, 0, 0, 39.559, -13, 45, -30)
 _message = "start"
 
-[node name="mob_drone" parent="maze/actors" instance=ExtResource("9_3gieq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 65, 0)
+[node name="spawner" parent="maze/actors/arena" instance=ExtResource("9_2v8nx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -6, -11)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.707107, -0.40558, 0.579228, -133.32, 160.853, 130.578)

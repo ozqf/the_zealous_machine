@@ -18,6 +18,14 @@ namespace TheZealousMachine.actors.mobs
 			_head = GetNode<Node3D>("head");
 		}
 
+		private void _RemoveFromGame()
+		{
+			_dead = true;
+			GD.Print($"{Name} - killed");
+			GlobalEvents.Send(GameEvents.MOB_DIED, this);
+			QueueFree();
+		}
+
 		public HitResponse Hit(HitInfo hit)
 		{
 			HitResponse response = HitResponse.Empty;
@@ -26,15 +34,26 @@ namespace TheZealousMachine.actors.mobs
 				return response;
 			}
 			_health -= hit.damage;
-			response.type = HitResposneType.Damaged;
+			response.type = HitResponseType.Damaged;
 			response.damage = hit.damage;
 			if (_health < 0)
 			{
-				_dead = true;
-				GD.Print($"{Name} - killed");
-				QueueFree();
+				_RemoveFromGame();
+			}
+			else
+			{
+				Velocity += (hit.direction * 3f);
 			}
 			return response;
+		}
+
+		private void _LookInDirectionOfMovement()
+		{
+			Vector3 vel = Velocity;
+			if (vel.LengthSquared() == 0) { return; }
+			Vector3 pos = GlobalPosition;
+			this.LookAtSafe(pos + vel, Vector3.Up, Vector3.Left);
+
 		}
 
 		public override void _PhysicsProcess(double delta)
@@ -50,6 +69,8 @@ namespace TheZealousMachine.actors.mobs
 			velocity = velocity.ClampMagnitude(20f);
 			Velocity = velocity;
 			MoveAndSlide();
+			_LookInDirectionOfMovement();
+
 		}
 	}
 }

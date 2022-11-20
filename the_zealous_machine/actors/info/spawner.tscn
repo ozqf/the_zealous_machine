@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3yp5aln8avq"]
+
+[ext_resource type="Script" path="res://actors/info/Spawner.cs" id="1_b81e4"]
+
+[node name="spawner" type="Node3D"]
+script = ExtResource("1_b81e4")
+perSpawnCount = 10
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]

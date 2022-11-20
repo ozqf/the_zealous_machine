@@ -4,6 +4,17 @@ namespace ZealousGodotUtils
 {
     public static class NodeExtensions
     {
+        public static void LookAtSafe(this Node3D node, Vector3 target, Vector3 up, Vector3 alternateUp)
+        {
+            Vector3 toward = (target - node.GlobalPosition).Normalized();
+            float dot = toward.Dot(up);
+            if (dot >= 1f || dot <= -1f)
+            {
+                up = alternateUp;
+            }
+            node.LookAt(target, up);
+        }
+
         public static int GetTotalOverlaps(this Area3D area)
         {
             return area.GetOverlappingAreas().Count() + area.GetOverlappingBodies().Count();
@@ -46,6 +57,22 @@ namespace ZealousGodotUtils
                 return null;
             }
             return FindParentOfTypeRecursive<T>(parent);
+        }
+
+        public static List<T> FindChildrenOfType<T>(this Node node)
+        {
+            List<T> values = new List<T>();
+            int numChildren = node.GetChildCount();
+            for (int i = 0; i < numChildren; i++)
+            {
+                Node child = node.GetChild(i);
+                if (child is T)
+                {
+                    T obj = (T)Convert.ChangeType(child, typeof(T));
+                    values.Add(obj);
+                }
+            }
+            return values;
         }
     }
 }

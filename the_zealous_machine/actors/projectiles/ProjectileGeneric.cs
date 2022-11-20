@@ -5,14 +5,17 @@ namespace TheZealousMachine.actors.projectiles
 {
 	public partial class ProjectileGeneric : Node3D
 	{
+		private IGame _game;
 		private float _speed = 50f;
 		private RayCast3D _ray;
 		private float _timeToLive = 30f;
 
 		public override void _Ready()
 		{
+			_game = Servicelocator.Locate<IGame>();
 			_ray = GetNode<RayCast3D>("RayCast3D");
 		}
+
 		public void Launch(ProjectileLaunchInfo launchInfo)
 		{
 			Transform3D t = this.GlobalTransform;
@@ -60,10 +63,12 @@ namespace TheZealousMachine.actors.projectiles
 				hit.direction = -GlobalTransform.basis.z;
 				hit.damage = 10;
 				HitResponse res = victim.Hit(hit);
+				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal());
 				this.QueueFree();
 			}
 			else
 			{
+				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal());
 				this.QueueFree();
 			}
 		}

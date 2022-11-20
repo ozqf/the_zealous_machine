@@ -24,6 +24,7 @@ namespace TheZealousMachine
 		private Node3D _gatlingNode;
 		private Node3D _boostNode;
 		private RaycastPylon _cameraPylon;
+		private AimLaser _aimLaser;
 
 		private TurretFormation _formation = TurretFormation.Boost;
 		private List<PlayerTurret> _turrets = new List<PlayerTurret>();
@@ -41,7 +42,7 @@ namespace TheZealousMachine
 
 			_gatlingNode = GetNode<Node3D>("head/options/gatling_node");
 			_boostNode = GetNode<Node3D>("head/options/boost_node");
-
+			_aimLaser = GetNode<AimLaser>("head/aim_laser");
 
 			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret"));
 			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret2"));
@@ -67,6 +68,7 @@ namespace TheZealousMachine
 			for (int i = 0; i < turretCount; i++)
 			{
 				_turrets[i].SetTrackTargets(_spreadTurretPositions[i], _narrowTurretPositions[i], _boostTurretPositions[i]);
+				_turrets[i].SetAimTarget(_aimLaser);
 			}
 
 			SetFormation(TurretFormation.Spread);
@@ -79,6 +81,17 @@ namespace TheZealousMachine
 			this.TreeExiting += _OnTreeExiting;
 			_game = Servicelocator.Locate<IGame>();
 			_game.RegisterPlayer(this);
+			GlobalEvents.Register(_OnGlobalEvent);
+		}
+
+		public override void _ExitTree()
+		{
+			GlobalEvents.Unregister(_OnGlobalEvent);
+		}
+
+		private void _OnGlobalEvent(string message, object data)
+		{
+			GD.Print($"Player saw global event '{message}'");
 		}
 
 		private void _OnTreeExiting()
@@ -88,6 +101,7 @@ namespace TheZealousMachine
 
 		private void SetFormation(TurretFormation formation)
 		{
+			_formation = formation;
 			int turretCount = _turrets.Count;
 			for (int i = 0; i < turretCount; i++)
 			{
@@ -111,8 +125,11 @@ namespace TheZealousMachine
 		private void _RefreshDebugText()
 		{
 			_debugStr.Clear();
+			_debugStr.Append($"Formation: {_formation}");
+			_debugStr.Append($"Push max {GetMaxPushSpeed()} push force {GetPushForce()}\n");
 			_debugStr.Append($"Boost: {boostGauge}\n");
-			_debugStr.Append($"Speed: {Velocity.Length()}\nVelocity: {Velocity}");
+			_debugStr.Append($"Speed: {Velocity.Length()}\nVelocity: {Velocity}\n");
+			_debugStr.Append($"Angular Velocity: {_angularVelocity}\n");
 			_debugText.Text = _debugStr.ToString();
 		}
 
@@ -148,14 +165,48 @@ namespace TheZealousMachine
 			_boostNode.RotateZ(spinRadians * (float)delta);
 		}
 
+		private void _CheckDebugSpawns()
+		{
+			if (Input.IsActionJustPressed("slot_5"))
+			{
+				Vector3 pos = _aimLaser.GetSpawnPosition();
+				_game.CreateSpawnVolume(pos);
+
+			}
+		}
+
+		private float GetMaxPushSpeed()
+		{
+			if (_formation == TurretFormation.Boost)
+			{
+				return 40f;
+			}
+			return 20f;
+		}
+
+		public float GetPushForce()
+		{
+			if (_formation == TurretFormation.Boost)
+			{
+				return 100f;
+			}
+			return 160f;
+		}
+
 		public override void _PhysicsProcess(double delta)
 		{
+			if (_game.IsMouseLocked())
+			{
+				return;
+			}
 			if (Input.IsActionJustPressed("reset"))
 			{
 				GlobalPosition = _origin;
 				Velocity = Vector3.Zero;
 				_angularVelocity = Vector3.Zero;
 			}
+
+			_CheckDebugSpawns();
 
 			PlayerInput input = _game.IsMouseLocked()
 				? PlayerInput.Empty
@@ -209,13 +260,13 @@ namespace TheZealousMachine
 			{
 				_angularVelocity.z *= 0.95f;
 			}
-			_angularVelocity.z = Mathf.Clamp(_angularVelocity.z, -180, 180);
+			_angularVelocity.z = Mathf.Clamp(_angularVelocity.z, -10, 10);
 			this.Rotate(GlobalTransform.basis.z.Normalized(), _angularVelocity.z * PlayerUtils.DEG2RAD);
 
 			// push
 			Vector3 push = PlayerUtils.InputAxesToCharacterPush(input.pushAxes, this.GlobalTransform.basis);
 
-			float cappedSpeed = 20f;
+			float cappedSpeed = GetMaxPushSpeed();
 			float currentSpeed = Velocity.Length();
 			if (currentSpeed > cappedSpeed)
 			{
@@ -225,7 +276,7 @@ namespace TheZealousMachine
 			if (push.LengthSquared() > 0)
 			{
 				// apply thrust
-				Vector3 thrust = push * (160f * (float)delta);
+				Vector3 thrust = push * (GetPushForce() * (float)delta);
 				Velocity += thrust;
 				// don't allow the push to exceed the cap
 				if (Velocity.LengthSquared() > (cappedSpeed * cappedSpeed))
@@ -240,6 +291,11 @@ namespace TheZealousMachine
 			{
 				// apply drag
 				Velocity *= 0.97f;
+			}
+
+			if (Velocity.LengthSquared() < (0.05f * 0.05f))
+			{
+				Velocity = Vector3.Zero;
 			}
 
 			MoveAndSlide();

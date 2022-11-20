@@ -5,9 +5,7 @@ namespace TheZealousMachine
 	public partial class TimedVisible : Node3D
 	{
 		private float _tick = 0f;
-
-
-
+		
 		public void Run(float time)
 		{
 			_tick = time;
