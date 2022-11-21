@@ -9,7 +9,9 @@ namespace TheZealousMachine.actors.projectiles
 		private float _speed = 50f;
 		private RayCast3D _ray;
 		private float _timeToLive = 30f;
-
+		private int _teamId = Interactions.TEAM_ID_MOBS;
+		private ImpactType _damagingImpactType = ImpactType.Yellow;
+		private ImpactType _dudImpactType = ImpactType.Grey;
 		public override void _Ready()
 		{
 			_game = Servicelocator.Locate<IGame>();
@@ -23,7 +25,19 @@ namespace TheZealousMachine.actors.projectiles
 			t = t.LookingAt(launchInfo.position + launchInfo.forward, Vector3.Up);
 			GlobalTransform = t;
 			_speed = launchInfo.speed;
-			_ray.CollisionMask = Interactions.GetPlayerProjectileMask();
+			_teamId = launchInfo.teamId;
+			if (_teamId == Interactions.TEAM_ID_PLAYER)
+			{
+				_ray.CollisionMask = Interactions.GetPlayerProjectileMask();
+				_damagingImpactType = ImpactType.Yellow;
+				_dudImpactType = ImpactType.Grey;
+			}
+			else
+			{
+				_ray.CollisionMask = Interactions.GetEnemyProjectileMask();
+				_damagingImpactType = ImpactType.Purple;
+				_dudImpactType = ImpactType.Purple;
+			}
 		}
 
 		private void _Step(float delta)
@@ -63,12 +77,12 @@ namespace TheZealousMachine.actors.projectiles
 				hit.direction = -GlobalTransform.basis.z;
 				hit.damage = 10;
 				HitResponse res = victim.Hit(hit);
-				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal());
+				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal(), _damagingImpactType);
 				this.QueueFree();
 			}
 			else
 			{
-				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal());
+				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal(), _dudImpactType);
 				this.QueueFree();
 			}
 		}

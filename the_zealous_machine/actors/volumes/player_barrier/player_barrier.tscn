@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bhcmnq2ym627u"]
+[gd_scene load_steps=7 format=3 uid="uid://bhcmnq2ym627u"]
 
 [ext_resource type="Texture2D" uid="uid://c4cfwbja3d802" path="res://actors/volumes/player_barrier/blue_forcefield.png" id="1_7tpe2"]
+[ext_resource type="Script" path="res://actors/volumes/player_barrier/PlayerBarrier.cs" id="1_jkkia"]
 [ext_resource type="Texture2D" uid="uid://c6ra74bn3dlb7" path="res://actors/volumes/player_barrier/blue_forcefield_emission.png" id="2_lt0s3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8yaj0"]
@@ -22,6 +23,7 @@ texture_filter = 2
 [node name="player_barrier" type="StaticBody3D"]
 collision_layer = 128
 collision_mask = 128
+script = ExtResource("1_jkkia")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)

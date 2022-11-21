@@ -39,6 +39,7 @@ namespace TheZealousMachine
 			{
 				SetProcess(false);
 				QueueFree();
+				return;
 			}
 		}
 	}

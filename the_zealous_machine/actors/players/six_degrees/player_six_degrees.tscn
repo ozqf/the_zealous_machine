@@ -26,9 +26,6 @@ shape = SubResource("SphereShape3D_1cl8o")
 [node name="head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
-[node name="aim_laser" parent="head" instance=ExtResource("3_jgp8p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6)
-
 [node name="raycast_pylon" parent="head" instance=ExtResource("3_n3yfh")]
 
 [node name="far" type="Node3D" parent="head/raycast_pylon"]
@@ -36,6 +33,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 7)
 
 [node name="target" parent="head/raycast_pylon" instance=ExtResource("1_ptacq")]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 3, 7)
+
+[node name="aim_laser" parent="head/raycast_pylon/target" instance=ExtResource("3_jgp8p")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="head/raycast_pylon/target"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
@@ -175,3 +175,23 @@ shadow_enabled = true
 omni_range = 10.0
 
 [node name="booster_particles" parent="." instance=ExtResource("7_d4sd8")]
+
+[node name="hud" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="aim_point" type="ColorRect" parent="hud"]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+color = Color(0, 1, 0, 1)

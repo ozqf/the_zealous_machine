@@ -104,6 +104,7 @@ namespace TheZealousMachine.actors.players
 				info.forward = -GlobalTransform.basis.z;
 				info.position = GlobalPosition + (info.forward * 0.5f);
 				info.speed = 200f;
+				info.teamId = Interactions.TEAM_ID_PLAYER;
 				prj.Launch(info);
 			}
 		}

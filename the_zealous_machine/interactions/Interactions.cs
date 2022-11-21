@@ -1,9 +1,17 @@
 ﻿using Godot;
+using System;
 using TheZealousMachine.actors.projectiles;
 using TheZealousMachine.actors.volumes;
 
 namespace TheZealousMachine
 {
+    public enum ImpactType
+    {
+        Yellow,
+        Purple,
+        Grey
+    }
+
     public static class GameEvents
     {
         public const string MOB_DIED = "mob_died";
@@ -22,11 +30,17 @@ namespace TheZealousMachine
         int AssignActorId();
 
         // game specific
-        Node3D CreateBulletImpact(Vector3 pos, Vector3 directon);
-        ProjectileGeneric CreateProjectile();
+        Node3D CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
+        ProjectileGeneric CreateProjectile(int type = 0);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
-        Node3D CreateMobDrone(Vector3 pos);
+        IMob CreateMobDrone(Vector3 pos);
         Node3D CreateMobDebris(Vector3 pos, Vector3 direction);
+    }
+
+    public interface IMob
+    {
+        public void SetMobId(Guid id);
+        public Guid mobId { get; }
     }
 
     public struct HitInfo
@@ -95,6 +109,9 @@ namespace TheZealousMachine
     }
     public static class Interactions
     {
+        public const int TEAM_ID_MOBS = 0;
+        public const int TEAM_ID_PLAYER = 1;
+
         public const uint BIT_WORLD = (1 << 0);
         public const uint BIT_PLAYER = (1 << 1);
         public const uint BIT_MOBS = (1 << 2);
@@ -107,6 +124,11 @@ namespace TheZealousMachine
         public static uint GetPlayerProjectileMask()
         {
             return (BIT_WORLD | BIT_MOBS);
+        }
+
+        public static uint GetEnemyProjectileMask()
+        {
+            return (BIT_WORLD | BIT_PLAYER);
         }
     }
 }

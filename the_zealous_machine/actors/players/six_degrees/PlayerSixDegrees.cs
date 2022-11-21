@@ -42,7 +42,8 @@ namespace TheZealousMachine
 
 			_gatlingNode = GetNode<Node3D>("head/options/gatling_node");
 			_boostNode = GetNode<Node3D>("head/options/boost_node");
-			_aimLaser = GetNode<AimLaser>("head/aim_laser");
+			//_aimLaser = GetNode<AimLaser>("head/aim_laser");
+			_aimLaser = GetNode<AimLaser>("head/raycast_pylon/target/aim_laser");
 
 			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret"));
 			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret2"));
@@ -63,6 +64,7 @@ namespace TheZealousMachine
 			_boostTurretPositions.Add(GetNode<Node3D>("head/options/boost_node/2"));
 			_boostTurretPositions.Add(GetNode<Node3D>("head/options/boost_node/3"));
 			_boostTurretPositions.Add(GetNode<Node3D>("head/options/boost_node/4"));
+			Color c = Colors.Yellow;
 
 			int turretCount = _turrets.Count;
 			for (int i = 0; i < turretCount; i++)
@@ -70,6 +72,8 @@ namespace TheZealousMachine
 				_turrets[i].SetTrackTargets(_spreadTurretPositions[i], _narrowTurretPositions[i], _boostTurretPositions[i]);
 				_turrets[i].SetAimTarget(_aimLaser);
 			}
+
+			GetNode<PlayerTurret>("head/options/turret_centre").SetAimTarget(_aimLaser);
 
 			SetFormation(TurretFormation.Spread);
 
@@ -91,7 +95,7 @@ namespace TheZealousMachine
 
 		private void _OnGlobalEvent(string message, object data)
 		{
-			GD.Print($"Player saw global event '{message}'");
+			//GD.Print($"Player saw global event '{message}'");
 		}
 
 		private void _OnTreeExiting()
