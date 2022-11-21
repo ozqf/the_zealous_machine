@@ -11,6 +11,7 @@ public partial class Main : Node3D, IGame
 	private PackedScene _mapTerainTest1 = GD.Load<PackedScene>("res://maps/terrain_test_01/terrain_test_01.tscn");
 	private PackedScene _prjGeneric = GD.Load<PackedScene>("res://actors/projectiles/projectile_generic.tscn");
 	private PackedScene _bulletImpact = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact.tscn");
+	private PackedScene _mobDebrisType = GD.Load<PackedScene>("res://gfx/mob_debris/mob_debris.tscn");
 	private PackedScene _mainMenuType = GD.Load<PackedScene>("res://services/menus/main_menu.tscn");
 
 	private PackedScene _spawnVolume = GD.Load<PackedScene>("res://actors/volumes/spawn_volume.tscn");
@@ -88,6 +89,16 @@ public partial class Main : Node3D, IGame
 		mob.GlobalPosition = pos;
 		return mob;
 	}
+
+	public Node3D CreateMobDebris(Vector3 pos, Vector3 direction)
+	{
+        MobDebris debris = _mobDebrisType.Instantiate<MobDebris>();
+        AddChild(debris);
+        debris.GlobalPosition = pos;
+		debris.LookAtSafe(pos + direction, Vector3.Up, Vector3.Left);
+		debris.Launch();
+        return debris;
+    }
 
     public void RegisterPlayer(IPlayer player)
 	{

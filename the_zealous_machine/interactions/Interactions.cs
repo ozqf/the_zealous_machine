@@ -26,6 +26,7 @@ namespace TheZealousMachine
         ProjectileGeneric CreateProjectile();
         SpawnVolume CreateSpawnVolume(Vector3 pos);
         Node3D CreateMobDrone(Vector3 pos);
+        Node3D CreateMobDebris(Vector3 pos, Vector3 direction);
     }
 
     public struct HitInfo

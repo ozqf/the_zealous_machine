@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://bimhrtigs0yv8"]
+
+[ext_resource type="Script" path="res://gfx/mob_debris/MobDebris.cs" id="1_8ep03"]
+[ext_resource type="PackedScene" uid="uid://b0b5ar6ksy6mk" path="res://gfx/mob_debris/mob_debris_chunk.tscn" id="1_46n0l"]
+
+[node name="mob_debris" type="Node3D"]
+script = ExtResource("1_8ep03")
+
+[node name="mob_debris_chunk" parent="." instance=ExtResource("1_46n0l")]
+
+[node name="mob_debris_chunk2" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.5, -0.3)
+
+[node name="mob_debris_chunk3" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.5, -0.2)
+
+[node name="mob_debris_chunk4" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.5, 0.4)
+
+[node name="mob_debris_chunk5" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.1, 0.6)
+
+[node name="mob_debris_chunk6" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.8, 0.5)
+
+[node name="mob_debris_chunk8" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.3, 0.4)
+
+[node name="mob_debris_chunk9" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.7, 1.3)
+
+[node name="mob_debris_chunk10" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.1, 0.9)
+
+[node name="mob_debris_chunk7" parent="." instance=ExtResource("1_46n0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.2, 0.5)

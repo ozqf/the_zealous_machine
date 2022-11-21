@@ -36,7 +36,7 @@ namespace TheZealousMachine.actors.info
             _tick -= (float)delta;
             if (_tick <= 0)
             {
-                _tick = 10f;
+                _tick = 15f;
                 GD.Print($"Spawning {perSpawnCount} mobs");
                 for (int i = 0; i < perSpawnCount; ++i)
                 {

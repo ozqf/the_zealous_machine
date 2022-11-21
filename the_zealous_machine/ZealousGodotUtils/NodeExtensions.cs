@@ -6,6 +6,8 @@ namespace ZealousGodotUtils
     {
         public static void LookAtSafe(this Node3D node, Vector3 target, Vector3 up, Vector3 alternateUp)
         {
+            if (node == null) { return; }
+            if (node.GlobalPosition == target) { return; }
             Vector3 toward = (target - node.GlobalPosition).Normalized();
             float dot = toward.Dot(up);
             if (dot >= 1f || dot <= -1f)
@@ -14,6 +16,8 @@ namespace ZealousGodotUtils
             }
             node.LookAt(target, up);
         }
+
+        public static Vector3 Forward(this Transform3D t) { return -t.basis.z; }
 
         public static int GetTotalOverlaps(this Area3D area)
         {

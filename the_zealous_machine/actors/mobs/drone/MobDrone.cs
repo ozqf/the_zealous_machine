@@ -10,7 +10,7 @@ namespace TheZealousMachine.actors.mobs
 		private Node3D _head;
 
 		private bool _dead = false;
-		private int _health = 100;
+		private int _health = 80;
 
 		public override void _Ready()
 		{
@@ -21,6 +21,7 @@ namespace TheZealousMachine.actors.mobs
 		private void _RemoveFromGame()
 		{
 			_dead = true;
+			_game.CreateMobDebris(GlobalPosition, Velocity.Normalized());
 			GD.Print($"{Name} - killed");
 			GlobalEvents.Send(GameEvents.MOB_DIED, this);
 			QueueFree();
@@ -42,7 +43,7 @@ namespace TheZealousMachine.actors.mobs
 			}
 			else
 			{
-				Velocity += (hit.direction * 3f);
+				Velocity += (hit.direction * 5f);
 			}
 			return response;
 		}
