@@ -83,6 +83,11 @@ namespace TheZealousMachine
         public void TriggerTouched(string name, string message);
     }
 
+    public interface IDoor
+    {
+        public void SetOpen(bool flag);
+    }
+
     public interface IVolume
     {
         public void SetOn(bool flag);

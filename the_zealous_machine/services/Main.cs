@@ -10,6 +10,7 @@ public partial class Main : Node3D, IGame
 	// maps
     private PackedScene _mapBox = GD.Load<PackedScene>("res://maps/box.tscn");
 	private PackedScene _mapTerainTest1 = GD.Load<PackedScene>("res://maps/terrain_test_01/terrain_test_01.tscn");
+	private PackedScene _mapEndless = GD.Load<PackedScene>("res://maps/endless/endless.tscn");
 	
 	// projectiles
 	private PackedScene _prjGeneric = GD.Load<PackedScene>("res://actors/projectiles/projectile_generic.tscn");
@@ -45,7 +46,7 @@ public partial class Main : Node3D, IGame
 		_menu = _mainMenuType.Instantiate<MainMenu>();
 		AddChild(_menu);
 		_menu.Init(this);
-		LoadEmbeddedMap(_mapTerainTest1);
+		LoadEmbeddedMap(_mapEndless);
 	}
 
 	public void AddMouseLock(string lockName)

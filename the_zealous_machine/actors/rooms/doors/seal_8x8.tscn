@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://fdxqbqxti61n"]
+
+[ext_resource type="Script" path="res://actors/volumes/RoomSeal.cs" id="1_nu2te"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_1ex6g"]
+orientation = 1
+
+[node name="seal_8x8" type="MeshInstance3D"]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 41, 0)
+mesh = SubResource("QuadMesh_1ex6g")
+script = ExtResource("1_nu2te")

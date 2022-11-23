@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://4q20t2h4r31a"]
+
+[ext_resource type="Script" path="res://actors/info/Door.cs" id="1_gpecd"]
+[ext_resource type="PackedScene" uid="uid://rc5576hhmjvg" path="res://shared/world/world_cube_corner.tscn" id="1_x355t"]
+
+[node name="room_8x1x8" type="Node3D"]
+script = ExtResource("1_gpecd")
+
+[node name="world_cube_corner" parent="." instance=ExtResource("1_x355t")]
+transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 4, -4, 0, -4)
+
+[node name="world_cube_corner2" parent="." instance=ExtResource("1_x355t")]
+transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 4, -4, 0, 0)
+
+[editable path="world_cube_corner"]
