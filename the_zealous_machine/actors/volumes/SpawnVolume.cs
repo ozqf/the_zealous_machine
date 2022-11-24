@@ -7,6 +7,7 @@ namespace TheZealousMachine.actors.volumes
 	public partial class SpawnVolume : RigidBody3D
 	{
 		public Guid mobId = Guid.Empty;
+		public int mobType = 0;
 		private float _tick = 0.5f;
 		public override void _PhysicsProcess(double delta)
 		{
@@ -14,7 +15,7 @@ namespace TheZealousMachine.actors.volumes
 			if (_tick <= 0)
 			{
 				_tick = 9999;
-				IMob mob = Servicelocator.Locate<IGame>().CreateMobDrone(GlobalPosition);
+				IMob mob = Servicelocator.Locate<IGame>().CreateMob(GlobalPosition, mobType);
 				if (mob != null)
 				{
 					mob.SetMobId(mobId);

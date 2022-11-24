@@ -1,9 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://d3yp5aln8avq"]
+[gd_scene load_steps=3 format=3 uid="uid://d3yp5aln8avq"]
 
 [ext_resource type="Script" path="res://actors/info/Spawner.cs" id="1_b81e4"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_r3w2a"]
+top_radius = 0.1
+bottom_radius = 1.0
+height = 1.0
 
 [node name="spawner" type="Node3D"]
 script = ExtResource("1_b81e4")
 perSpawnCount = 10
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_r3w2a")

@@ -5,7 +5,11 @@ using ZealousGodotUtils;
 
 namespace TheZealousMachine.actors.mobs
 {
-	public partial class MobDrone : CharacterBody3D, IHittable, IMob
+	public partial class MobDrone : AMob
+	{
+
+	}
+	/*public partial class MobDrone : CharacterBody3D, IHittable, IMob
 	{
 		private Guid _id = Guid.Empty;
 		private IGame _game;
@@ -105,5 +109,5 @@ namespace TheZealousMachine.actors.mobs
 				_Shoot();
 			}
 		}
-	}
+	}*/
 }

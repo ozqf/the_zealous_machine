@@ -15,9 +15,31 @@ data = PackedVector3Array(-12, -32, 20, -12, -32, 19, -12, 32, 20, -12, 32, 20, 
 script = ExtResource("1_8bi83")
 
 [node name="spawner" parent="." instance=ExtResource("2_o3ktp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -26, 12)
 maxMobs = 1
 perSpawnCount = 1
+mobType = 1
+
+[node name="spawner3" parent="." instance=ExtResource("2_o3ktp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -26, 12)
+maxMobs = 1
+perSpawnCount = 1
+mobType = 1
+
+[node name="spawner4" parent="." instance=ExtResource("2_o3ktp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -26, -13)
+maxMobs = 1
+perSpawnCount = 1
+mobType = 1
+
+[node name="spawner5" parent="." instance=ExtResource("2_o3ktp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -26, -13)
+maxMobs = 1
+perSpawnCount = 1
+mobType = 1
+
+[node name="spawner2" parent="." instance=ExtResource("2_o3ktp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21, 0)
 
 [node name="room_8x1x8" parent="." instance=ExtResource("1_wvw1v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 32.2, 0)
@@ -28,7 +50,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -33.2, 0)
 roomSeal = true
 
 [node name="trigger_touch" parent="." instance=ExtResource("3_deqgq")]
-transform = Transform3D(40.12, 0, 0, 0, 1, 0, 0, 0, 41.04, -20, 17, -21)
+transform = Transform3D(40.12, 0, 0, 0, 1, 0, 0, 0, 41.04, -20, 8, -21)
 _message = "start"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -41,6 +63,12 @@ surface_material_override/0 = ExtResource("3_crar6")
 shape = SubResource("ConcavePolygonShape3D_ybkp2")
 
 [node name="seal_top" parent="." instance=ExtResource("7_eksjy")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, -36, 2.67029e-05)
+light_color = Color(0, 1, 0, 1)
+shadow_enabled = true
+omni_range = 8.0
 
 [node name="seal_bottom" parent="." instance=ExtResource("7_eksjy")]
 transform = Transform3D(8, 0, 0, 0, -8, 6.99382e-07, 0, -6.99382e-07, -8, 0, -41, 0)

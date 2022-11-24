@@ -115,9 +115,18 @@ public partial class Main : Node3D, IGame
 		return vol;
 	}
 
-	public IMob CreateMobDrone(Vector3 pos)
+	public IMob CreateMob(Vector3 pos, int type = 0)
 	{
-		PackedScene scene = GD.Load<PackedScene>("res://actors/mobs/drone/mob_drone.tscn");
+		PackedScene scene;
+		switch (type)
+		{
+			case 1:
+                scene = GD.Load<PackedScene>("res://actors/mobs/gunship/mob_gunship.tscn");
+                break;
+			default:
+                scene = GD.Load<PackedScene>("res://actors/mobs/drone/mob_drone.tscn");
+				break;
+        }
 		Node3D mob = scene.Instantiate<Node3D>();
 		AddChild(mob);
 		mob.GlobalPosition = pos;

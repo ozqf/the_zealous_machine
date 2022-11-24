@@ -33,7 +33,7 @@ namespace TheZealousMachine
         Node3D CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
         ProjectileGeneric CreateProjectile(int type = 0);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
-        IMob CreateMobDrone(Vector3 pos);
+        IMob CreateMob(Vector3 pos, int type = 0);
         Node3D CreateMobDebris(Vector3 pos, Vector3 direction);
     }
 

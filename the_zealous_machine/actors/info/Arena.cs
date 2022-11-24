@@ -82,7 +82,18 @@ namespace TheZealousMachine.actors.info
 
 		private void _NextRoom()
 		{
-			PackedScene arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+			PackedScene arenaType;
+			/*if (GD.Randf() > 0.5f)
+			{
+				arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+			}
+			else
+			{
+				arenaType = GD.Load<PackedScene>("res://actors/rooms/room_02.tscn");
+			}*/
+			arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+
+			//PackedScene arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
 			Arena next = arenaType.Instantiate<Arena>();
 			next.ScanForComponents();
 			RoomSeal exit = FindLowestSeal();

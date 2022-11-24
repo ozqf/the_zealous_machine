@@ -164,9 +164,9 @@ shape = SubResource("SphereShape3D_2wku5")
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 light_energy = 5.0
-spot_range = 80.0
-spot_attenuation = 1.51572
-spot_angle_attenuation = 1.46409
+spot_range = 100.0
+spot_attenuation = 1.41422
+spot_angle_attenuation = 0.870553
 
 [node name="engine_glow" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.7)
