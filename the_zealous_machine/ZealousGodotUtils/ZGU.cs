@@ -8,5 +8,9 @@ namespace ZealousGodotUtils
         public const float RAD2DEG = 57.29577951308f;
         public const string ROOT_DIR = "res://";
 
+        public static int RandomIndex(int length, float seed)
+        {
+            return (int)Mathf.Floor(seed * length);
+        }
     }
 }

@@ -68,38 +68,72 @@ namespace TheZealousMachine.actors.info
 			return seal;
 		}
 
-		public Vector3 MatchToOthersSeal(RoomSeal other)
+		public RoomSeal PickExit()
+		{
+			int escape = 999;
+			int numSeals = _seals.Count;
+			while (escape > 0)
+			{
+				escape--;
+				int i = ZGU.RandomIndex(numSeals, GD.Randf());
+				RoomSeal candidate = _seals[i];
+				if (candidate.isEntrance || candidate.IsNextToRoom()) { continue; }
+				candidate.isExit = true;
+				return candidate;
+			}
+			return null;
+		}
+
+		public RoomSeal FindEntranceCandidate(Transform3D other)
+		{
+			int numSeals = _seals.Count;
+			for (int i = 0; i < numSeals; ++i)
+			{
+				RoomSeal seal = _seals[i];
+				if (seal.MatchSeal(other))
+				{
+					return seal;
+				}
+			}
+			return null;
+		}
+
+		public RoomSeal PickEntrance(Transform3D other)
+		{
+			int numSeals = _seals.Count;
+			for (int i = 0; i < numSeals; ++i)
+			{
+				RoomSeal seal = _seals[i];
+				if (seal.MatchSeal(other))
+				{
+					seal.isEntrance = true;
+					return seal;
+				}
+			}
+			return null;
+		}
+
+		public bool MatchToOthersSeal(Transform3D other)
 		{
 			// Remember we are not in the tree yet and cannot
 			// change our global position yet
-			RoomSeal entrance = FindHighestSeal();
-			Vector3 joinPoint = other.GlobalPosition;
+			//RoomSeal entrance = FindHighestSeal();
+			RoomSeal entrance = PickEntrance(other);
+			if (entrance == null)
+			{
+				return false;
+			}
+			Vector3 joinPoint = other.origin;
 			Vector3 newPos = joinPoint - entrance.Position;
 			GlobalPosition = newPos;
-			GD.Print($"Arena spawning at {newPos} with entrance at {entrance.Position}. Join point {joinPoint} on seal {other.Name}");
-			return newPos;
+			GD.Print($"Arena spawning at {newPos} with entrance at {entrance.Position}. Join point {joinPoint}");
+			return true;
 		}
 
 		private void _NextRoom()
 		{
-			PackedScene arenaType;
-			/*if (GD.Randf() > 0.5f)
-			{
-				arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
-			}
-			else
-			{
-				arenaType = GD.Load<PackedScene>("res://actors/rooms/room_02.tscn");
-			}*/
-			arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
-
-			//PackedScene arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
-			Arena next = arenaType.Instantiate<Arena>();
-			next.ScanForComponents();
-			RoomSeal exit = FindLowestSeal();
-			GetParent().AddChild(next);
-			Vector3 nextPos = next.MatchToOthersSeal(exit);
-			//next.GlobalPosition = nextPos;
+			RoomSeal exit = PickExit();
+			Servicelocator.Locate<IGame>().SpawnNextRoom(exit.GlobalTransform);
 		}
 
 		public void TriggerTouched(string name, string message)

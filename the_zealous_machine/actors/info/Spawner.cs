@@ -91,7 +91,7 @@ namespace TheZealousMachine.actors.info
 					//GD.Print($"\tSpawned {id}");
 					_mobs.Add(id, true);
 					vol.mobId = id;
-					vol.mobType = mobType;
+					vol.mobType = (MobType)mobType;
 				}
 			}
 			if (iterations <= 0)

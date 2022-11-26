@@ -99,11 +99,12 @@ namespace TheZealousMachine.actors.players
 				_flash.Run(0.05f);
 				_flash.RotateZ(GD.RandRange(0, 360) * ZGU.DEG2RAD);
 				_tick = 0.1f;
-				var prj = Servicelocator.Locate<IGame>().CreateProjectile();
+				IProjectile prj = Servicelocator.Locate<IGame>().CreateProjectile();
 				ProjectileLaunchInfo info = new ProjectileLaunchInfo();
 				info.forward = -GlobalTransform.basis.z;
 				info.position = GlobalPosition + (info.forward * 0.5f);
 				info.speed = 200f;
+				info.damage = 8;
 				info.teamId = Interactions.TEAM_ID_PLAYER;
 				prj.Launch(info);
 			}

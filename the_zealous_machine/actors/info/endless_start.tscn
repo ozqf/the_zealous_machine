@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdhcrwyw021re"]
+
+[ext_resource type="Script" path="res://actors/info/EndlessStart.cs" id="1_x841j"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xt2ak"]
+orientation = 2
+
+[node name="endless_start" type="Node3D"]
+script = ExtResource("1_x841j")
+
+[node name="endless_start" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_xt2ak")

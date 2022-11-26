@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bx6egw2b6pllf"
+path="res://.godot/imported/bot_shark.obj-a23e4e384d91cb113c04831834565792.mesh"
+
+[deps]
+
+files=["res://.godot/imported/bot_shark.obj-a23e4e384d91cb113c04831834565792.mesh"]
+
+source_file="res://actors/mobs/shark/bot_shark.obj"
+dest_files=["res://.godot/imported/bot_shark.obj-a23e4e384d91cb113c04831834565792.mesh", "res://.godot/imported/bot_shark.obj-a23e4e384d91cb113c04831834565792.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

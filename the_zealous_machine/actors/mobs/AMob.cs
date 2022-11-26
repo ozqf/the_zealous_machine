@@ -88,7 +88,7 @@ namespace TheZealousMachine.actors.mobs
             info.speed = 40f;
             info.teamId = Interactions.TEAM_ID_MOBS;
 
-            ProjectileGeneric prj = _game.CreateProjectile(1);
+            IProjectile prj = _game.CreateProjectile(1);
             prj.Launch(info);
         }
 

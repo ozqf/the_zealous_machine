@@ -4,6 +4,9 @@ using System;
 using TheZealousMachine.actors.projectiles;
 using TheZealousMachine;
 using TheZealousMachine.actors.volumes;
+using TheZealousMachine.actors.info;
+using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 public partial class Main : Node3D, IGame
 {
@@ -15,6 +18,7 @@ public partial class Main : Node3D, IGame
 	// projectiles
 	private PackedScene _prjGeneric = GD.Load<PackedScene>("res://actors/projectiles/projectile_generic.tscn");
 	private PackedScene _prjMobBasic = GD.Load<PackedScene>("res://actors/projectiles/projectile_mob_basic.tscn");
+	private PackedScene _prjColumn = GD.Load<PackedScene>("res://actors/projectiles/projectile_column.tscn");
 	
 	// gfx
     private PackedScene _bulletImpact = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact.tscn");
@@ -33,6 +37,8 @@ public partial class Main : Node3D, IGame
 	private MouseLock _mouseLock = new MouseLock();
 	private MainMenu _menu;
 	private int _nextActorId = 1;
+
+	private List<Arena> _arenas = new List<Arena>();
 
 	// application entry point
 	public override void _Ready()
@@ -70,19 +76,24 @@ public partial class Main : Node3D, IGame
 		AddChild(map);
 	}
 
-	public ProjectileGeneric CreateProjectile(int type = 0)
+	public IProjectile CreateProjectile(int type = 0)
 	{
-		ProjectileGeneric prj;
+		IProjectile prj;
 
-        if (type == 0)
+		switch (type)
 		{
-            prj = _prjGeneric.Instantiate<ProjectileGeneric>();
+			case 0:
+                prj = _prjGeneric.Instantiate<IProjectile>();
+				break;
+			case 2:
+				prj = _prjColumn.Instantiate<IProjectile>();
+				break;
+			default:
+                prj = _prjMobBasic.Instantiate<IProjectile>();
+                break;
         }
-		else
-		{
-            prj = _prjMobBasic.Instantiate<ProjectileGeneric>();
-        }
-		AddChild(prj);
+        
+		AddChild(prj.GetPrjBaseNode());
 		return prj;
 	}
 
@@ -115,15 +126,92 @@ public partial class Main : Node3D, IGame
 		return vol;
 	}
 
-	public IMob CreateMob(Vector3 pos, int type = 0)
+	const bool debuggingRooms = false;
+
+	private List<Arena> _pendingArenas = new List<Arena>();
+
+	private Arena AddInterimArena(Transform3D exitSeal)
+	{
+
+        PackedScene arenaType = GD.Load<PackedScene>("res://actors/rooms/room_03.tscn");
+        Arena arena = arenaType.Instantiate<Arena>();
+		AddChild(arena);
+        arena.MatchToOthersSeal(exitSeal);
+		return arena;
+    }
+
+	public void SpawnNextRoom(Transform3D exitSeal, int roomIndex = -1, int arenaIndex = -1)
+	{
+        PackedScene arenaType;
+		int numRooms = 3;
+
+		// spawn runs until we get one that fits.
+		int escape = 999;
+		while (escape >0)
+		{
+			escape--;
+            if (roomIndex < 0 || roomIndex >= numRooms)
+            {
+                roomIndex = ZGU.RandomIndex(numRooms, GD.Randf());
+            }
+            if (debuggingRooms)
+            {
+                roomIndex = 2;
+            }
+
+            switch (roomIndex)
+            {
+                case 0:
+                    arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+                    break;
+                case 1:
+                    arenaType = GD.Load<PackedScene>("res://actors/rooms/room_02.tscn");
+                    break;
+                case 2:
+                    arenaType = GD.Load<PackedScene>("res://actors/rooms/room_03.tscn");
+                    break;
+                default:
+                    arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+                    break;
+            }
+            Arena next = arenaType.Instantiate<Arena>();
+            next.ScanForComponents();
+            RoomSeal candiate = next.FindEntranceCandidate(exitSeal);
+			// oh dear, try again
+			if (candiate == null)
+			{
+				GD.Print($"Failed to add roomIndex type {roomIndex} trying again...");
+				next.Free();
+				continue;
+			}
+            AddChild(next);
+            if (!next.MatchToOthersSeal(exitSeal))
+            {
+				// k it said it had a suitable candidate but is lying
+                GD.PushError($"Room index {roomIndex} failed to match seal {exitSeal.Forward()}");
+                _arenas.ForEach(x => RemoveChild(x));
+                _arenas.Clear();
+				_player.Reset();
+				// reset the index or it will just try this room again!
+				roomIndex = -1;
+            }
+            _arenas.Add(next);
+			break;
+        }
+    }
+
+	public IMob CreateMob(Vector3 pos, MobType type = 0)
 	{
 		PackedScene scene;
 		switch (type)
 		{
-			case 1:
+			case MobType.Gunship:
                 scene = GD.Load<PackedScene>("res://actors/mobs/gunship/mob_gunship.tscn");
                 break;
-			default:
+            case MobType.Shark:
+                scene = GD.Load<PackedScene>("res://actors/mobs/shark/mob_shark.tscn");
+                break;
+            default:
                 scene = GD.Load<PackedScene>("res://actors/mobs/drone/mob_drone.tscn");
 				break;
         }

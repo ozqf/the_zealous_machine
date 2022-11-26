@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://cf13i6dc0twbs"]
+
+[ext_resource type="Script" path="res://actors/projectiles/DamageColumn.cs" id="1_nbrk4"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rexf5"]
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_itlnb"]
+top_radius = 0.1
+height = 1.0
+radial_segments = 12
+rings = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jnuee"]
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+
+[node name="damage_column" type="RayCast3D"]
+target_position = Vector3(0, 0, -50)
+script = ExtResource("1_nbrk4")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.5)
+shape = SubResource("CylinderShape3D_rexf5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.5)
+mesh = SubResource("CylinderMesh_itlnb")
+surface_material_override/0 = SubResource("StandardMaterial3D_jnuee")

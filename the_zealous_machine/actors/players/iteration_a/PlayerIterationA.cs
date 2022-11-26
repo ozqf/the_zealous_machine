@@ -35,7 +35,13 @@ namespace TheZealousMachine
 			_debugText.Text = _debugStr.ToString();
 		}
 
-		private void _TickMovement(double delta, PlayerInput input)
+        public void Reset()
+        {
+            GlobalPosition = _origin;
+            Velocity = Vector3.Zero;
+        }
+
+        private void _TickMovement(double delta, PlayerInput input)
 		{
 			if (_groundRay.IsColliding() && this.IsOnFloor())
 			{

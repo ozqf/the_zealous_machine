@@ -12,6 +12,11 @@ namespace TheZealousMachine
         Grey
     }
 
+    public enum MobType
+    {
+        Drone, Gunship, Shark
+    }
+
     public static class GameEvents
     {
         public const string MOB_DIED = "mob_died";
@@ -30,10 +35,11 @@ namespace TheZealousMachine
         int AssignActorId();
 
         // game specific
+        void SpawnNextRoom(Transform3D t, int roomIndex = -1, int arenaIndex = -1);
         Node3D CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
-        ProjectileGeneric CreateProjectile(int type = 0);
+        IProjectile CreateProjectile(int type = 0);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
-        IMob CreateMob(Vector3 pos, int type = 0);
+        IMob CreateMob(Vector3 pos, MobType type = MobType.Drone);
         Node3D CreateMobDebris(Vector3 pos, Vector3 direction);
     }
 
@@ -96,6 +102,7 @@ namespace TheZealousMachine
     public interface IPlayer
     {
         TargetInfo GetTargetInfo();
+        void Reset();
     }
 
     public struct TargetInfo
@@ -106,12 +113,33 @@ namespace TheZealousMachine
 
     public struct ProjectileLaunchInfo
     {
+        public static ProjectileLaunchInfo FromNode3D(Node3D node, float speed, int team, int damage)
+        {
+            ProjectileLaunchInfo info = new ProjectileLaunchInfo();
+            Transform3D t = node.GlobalTransform;
+            info.position = t.origin;
+            info.forward = -t.basis.z;
+            info.up = t.basis.y;
+            info.speed = speed;
+            info.teamId = team;
+            info.damage = damage;
+            return info;
+        }
+
         public Vector3 position;
         public Vector3 forward;
+        public Vector3 up;
         public float speed;
         public int teamId;
         public int damage;
     }
+
+    public interface IProjectile
+    {
+        void Launch(ProjectileLaunchInfo launchInfo);
+        Node3D GetPrjBaseNode();
+    }
+
     public static class Interactions
     {
         public const int TEAM_ID_MOBS = 0;

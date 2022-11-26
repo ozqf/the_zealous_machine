@@ -197,6 +197,28 @@ namespace TheZealousMachine
 			return 160f;
 		}
 
+		private void _TickDebugInputs(PlayerInput input, float delta)
+		{
+			if (Input.IsActionJustPressed("attack_2"))
+			{
+				Transform3D t = GlobalTransform;
+				var info = ProjectileLaunchInfo.FromNode3D(this, 10, Interactions.TEAM_ID_PLAYER, 1);
+				IProjectile prj = _game.CreateProjectile(2);
+				prj.Launch(info);
+
+				info.up = GlobalTransform.basis.x;
+				prj = _game.CreateProjectile(2);
+				prj.Launch(info);
+			}
+		}
+
+		public void Reset()
+		{
+			GlobalPosition = _origin;
+			Velocity = Vector3.Zero;
+			_angularVelocity = Vector3.Zero;
+		}
+
 		public override void _PhysicsProcess(double delta)
 		{
 			if (_game.IsMouseLocked())
@@ -205,9 +227,7 @@ namespace TheZealousMachine
 			}
 			if (Input.IsActionJustPressed("reset"))
 			{
-				GlobalPosition = _origin;
-				Velocity = Vector3.Zero;
-				_angularVelocity = Vector3.Zero;
+				Reset();
 			}
 
 			_CheckDebugSpawns();
@@ -215,6 +235,8 @@ namespace TheZealousMachine
 			PlayerInput input = _game.IsMouseLocked()
 				? PlayerInput.Empty
 				: PlayerUtils.GetInput();
+
+			_TickDebugInputs(input, (float)delta);
 
 			// attack
 			if (input.slot1)

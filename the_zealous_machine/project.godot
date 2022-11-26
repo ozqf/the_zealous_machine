@@ -169,3 +169,4 @@ main_menu={
 3d_physics/layer_8="player_barrier"
 3d_physics/layer_9="debris"
 3d_physics/layer_10="spawn_volumes"
+3d_physics/layer_11="room_volume"
