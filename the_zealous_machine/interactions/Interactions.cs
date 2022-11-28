@@ -14,7 +14,7 @@ namespace TheZealousMachine
 
     public enum MobType
     {
-        Drone, Gunship, Shark
+        Drone, Gunship, Shark, Cross, End
     }
 
     public static class GameEvents
@@ -33,6 +33,8 @@ namespace TheZealousMachine
         bool IsMouseLocked();
 
         int AssignActorId();
+
+        bool CheckLoS(Vector3 origin, Vector3 target);
 
         // game specific
         void SpawnNextRoom(Transform3D t, int roomIndex = -1, int arenaIndex = -1);
@@ -117,18 +119,20 @@ namespace TheZealousMachine
         {
             ProjectileLaunchInfo info = new ProjectileLaunchInfo();
             Transform3D t = node.GlobalTransform;
-            info.position = t.origin;
-            info.forward = -t.basis.z;
-            info.up = t.basis.y;
+            info.t = t; 
+            //info.position = t.origin;
+            //info.forward = -t.basis.z;
+            //info.up = t.basis.y;
             info.speed = speed;
             info.teamId = team;
             info.damage = damage;
             return info;
         }
 
-        public Vector3 position;
-        public Vector3 forward;
-        public Vector3 up;
+        public Transform3D t;
+        //public Vector3 position;
+        //public Vector3 forward;
+        //public Vector3 up;
         public float speed;
         public int teamId;
         public int damage;

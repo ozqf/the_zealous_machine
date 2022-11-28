@@ -17,8 +17,8 @@ namespace TheZealousMachine.actors.mobs.shark
 
         protected override void _HuntingTick(float delta)
         {
-            Vector3 movePoint = _think.toward + (_strafeDir * 10f);
-            _PushMoveToward(movePoint, 20f, 20f, delta);
+            Vector3 movePoint = _think.toward + (_strafeDir * 30f);
+            _PushMoveToward(movePoint, 30f, 30f, delta);
             _LookInDirectionOfMovement();
 
             _shootTick -= (float)delta;

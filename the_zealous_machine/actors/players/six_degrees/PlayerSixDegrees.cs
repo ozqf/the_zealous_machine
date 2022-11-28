@@ -27,7 +27,8 @@ namespace TheZealousMachine
 		private AimLaser _aimLaser;
 
 		private TurretFormation _formation = TurretFormation.Boost;
-		private List<PlayerTurret> _turrets = new List<PlayerTurret>();
+		private PlayerTurret _centreTurret;
+		private List<PlayerTurret> _remoteTurrets = new List<PlayerTurret>();
 		private List<Node3D> _spreadTurretPositions = new List<Node3D>();
 		private List<Node3D> _narrowTurretPositions = new List<Node3D>();
 		private List<Node3D> _boostTurretPositions = new List<Node3D>();
@@ -42,13 +43,14 @@ namespace TheZealousMachine
 
 			_gatlingNode = GetNode<Node3D>("head/options/gatling_node");
 			_boostNode = GetNode<Node3D>("head/options/boost_node");
-			//_aimLaser = GetNode<AimLaser>("head/aim_laser");
 			_aimLaser = GetNode<AimLaser>("head/raycast_pylon/target/aim_laser");
 
-			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret"));
-			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret2"));
-			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret3"));
-			_turrets.Add(GetNode<PlayerTurret>("head/options/player_turret4"));
+			_centreTurret = GetNode<PlayerTurret>("head/options/turret_centre");
+
+			_remoteTurrets.Add(GetNode<PlayerTurret>("head/options/player_turret"));
+			_remoteTurrets.Add(GetNode<PlayerTurret>("head/options/player_turret2"));
+			_remoteTurrets.Add(GetNode<PlayerTurret>("head/options/player_turret3"));
+			_remoteTurrets.Add(GetNode<PlayerTurret>("head/options/player_turret4"));
 			
 			_narrowTurretPositions.Add(GetNode<Node3D>("head/options/gatling_node/target"));
 			_narrowTurretPositions.Add(GetNode<Node3D>("head/options/gatling_node/target2"));
@@ -66,21 +68,21 @@ namespace TheZealousMachine
 			_boostTurretPositions.Add(GetNode<Node3D>("head/options/boost_node/4"));
 			Color c = Colors.Yellow;
 
-			int turretCount = _turrets.Count;
+			int turretCount = _remoteTurrets.Count;
 			for (int i = 0; i < turretCount; i++)
 			{
-				_turrets[i].SetTrackTargets(_spreadTurretPositions[i], _narrowTurretPositions[i], _boostTurretPositions[i]);
-				_turrets[i].SetAimTarget(_aimLaser);
+				_remoteTurrets[i].SetTrackTargets(_spreadTurretPositions[i], _narrowTurretPositions[i], _boostTurretPositions[i]);
+				_remoteTurrets[i].SetAimTarget(_aimLaser);
 			}
 
-			GetNode<PlayerTurret>("head/options/turret_centre").SetAimTarget(_aimLaser);
+			_centreTurret.SetAimTarget(_aimLaser);
 
 			SetFormation(TurretFormation.Spread);
 
 			// recursive search doesn't seem to work... not sure what I'm doing wrong?
 			//Godot.Collections.Array<Node> turrets = FindChildren("player_turret", "", true, false);
 			//List<PlayerTurret> turrets = FindChildren("*player_turret*", "", true, false).Select(x => x as PlayerTurret).ToList();
-			GD.Print($"Player found {_turrets.Count} turrets");
+			GD.Print($"Player found {_remoteTurrets.Count} turrets");
 
 			this.TreeExiting += _OnTreeExiting;
 			_game = Servicelocator.Locate<IGame>();
@@ -106,10 +108,18 @@ namespace TheZealousMachine
 		private void SetFormation(TurretFormation formation)
 		{
 			_formation = formation;
-			int turretCount = _turrets.Count;
+			int turretCount = _remoteTurrets.Count;
 			for (int i = 0; i < turretCount; i++)
 			{
-				_turrets[i].SetFormation(formation);
+				_remoteTurrets[i].SetFormation(formation);
+			}
+			if (_formation == TurretFormation.Narrow)
+			{
+				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/close"));
+			}
+			else
+			{
+				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/far"));
 			}
 		}
 
@@ -161,14 +171,6 @@ namespace TheZealousMachine
 			}
 		}
 
-		public override void _Process(double delta)
-		{
-			float spinRadians = 360f * ZGU.DEG2RAD;
-			_bodyMeshes.Visible = (_cameraPylon.GetLastFraction() > 0.25f);
-			_gatlingNode.RotateZ(spinRadians * (float)delta);
-			_boostNode.RotateZ(spinRadians * (float)delta);
-		}
-
 		private void _CheckDebugSpawns()
 		{
 			if (Input.IsActionJustPressed("slot_5"))
@@ -181,32 +183,56 @@ namespace TheZealousMachine
 
 		private float GetMaxPushSpeed()
 		{
-			if (_formation == TurretFormation.Boost)
+			switch (_formation)
 			{
-				return 40f;
+				case TurretFormation.Boost:
+					return 30f;
+				case TurretFormation.Narrow:
+					return 10f;
+				default:
+					return 20f;
 			}
-			return 20f;
 		}
 
 		public float GetPushForce()
 		{
-			if (_formation == TurretFormation.Boost)
+			switch (_formation)
 			{
-				return 100f;
+				case TurretFormation.Boost:
+					return 100f;
+				case TurretFormation.Narrow:
+					return 200f;
+				default:
+					return 160f;
 			}
-			return 160f;
+		}
+		
+		public float GetDrag()
+		{
+			switch (_formation)
+			{
+				case TurretFormation.Boost:
+					return 0.97f;
+				case TurretFormation.Narrow:
+					return 0.8f;
+				default:
+					return 0.97f;
+			}
 		}
 
 		private void _TickDebugInputs(PlayerInput input, float delta)
 		{
 			if (Input.IsActionJustPressed("attack_2"))
 			{
-				Transform3D t = GlobalTransform;
 				var info = ProjectileLaunchInfo.FromNode3D(this, 10, Interactions.TEAM_ID_PLAYER, 1);
 				IProjectile prj = _game.CreateProjectile(2);
 				prj.Launch(info);
 
-				info.up = GlobalTransform.basis.x;
+				//Vector3 origin = info.t.origin;
+				//info.t.origin = Vector3.Zero;
+				//info.t = info.t.Rotated(info.t.basis.z, 90f * ZGU.DEG2RAD);
+				//info.t.origin = origin;
+				info.t = info.t.RotateAtOrigin(info.t.basis.z, 90f * ZGU.DEG2RAD);
 				prj = _game.CreateProjectile(2);
 				prj.Launch(info);
 			}
@@ -217,6 +243,14 @@ namespace TheZealousMachine
 			GlobalPosition = _origin;
 			Velocity = Vector3.Zero;
 			_angularVelocity = Vector3.Zero;
+		}
+
+		public override void _Process(double delta)
+		{
+			float spinRadians = 360f * ZGU.DEG2RAD;
+			_bodyMeshes.Visible = (_formation != TurretFormation.Narrow && _cameraPylon.GetLastFraction() > 0.25f);
+			_gatlingNode.RotateZ(spinRadians * (float)delta);
+			_boostNode.RotateZ(spinRadians * (float)delta);
 		}
 
 		public override void _PhysicsProcess(double delta)
@@ -316,7 +350,7 @@ namespace TheZealousMachine
 			else
 			{
 				// apply drag
-				Velocity *= 0.97f;
+				Velocity *= GetDrag();
 			}
 
 			if (Velocity.LengthSquared() < (0.05f * 0.05f))

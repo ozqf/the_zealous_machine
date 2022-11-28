@@ -76,7 +76,21 @@ public partial class Main : Node3D, IGame
 		AddChild(map);
 	}
 
-	public IProjectile CreateProjectile(int type = 0)
+
+    public bool CheckLoS(Vector3 origin, Vector3 target)
+	{
+		PhysicsRayQueryParameters3D ray = new PhysicsRayQueryParameters3D();
+		ray.CollideWithAreas = false;
+		ray.CollideWithBodies = true;
+		ray.From = origin;
+		ray.To = target;
+		ray.CollisionMask = 1;
+        PhysicsDirectSpaceState3D space = GetWorld3d().DirectSpaceState;
+        Godot.Collections.Dictionary result = space.IntersectRay(ray);
+		return result.Count == 0;
+	}
+
+    public IProjectile CreateProjectile(int type = 0)
 	{
 		IProjectile prj;
 
@@ -126,9 +140,9 @@ public partial class Main : Node3D, IGame
 		return vol;
 	}
 
-	const bool debuggingRooms = false;
+	public bool debuggingRooms = false;
 
-	private List<Arena> _pendingArenas = new List<Arena>();
+	//private List<Arena> _pendingArenas = new List<Arena>();
 
 	private Arena AddInterimArena(Transform3D exitSeal)
 	{
@@ -143,11 +157,11 @@ public partial class Main : Node3D, IGame
 	public void SpawnNextRoom(Transform3D exitSeal, int roomIndex = -1, int arenaIndex = -1)
 	{
         PackedScene arenaType;
-		int numRooms = 3;
+		int numRooms = 4;
 
 		// spawn runs until we get one that fits.
 		int escape = 999;
-		while (escape >0)
+		while (escape > 0)
 		{
 			escape--;
             if (roomIndex < 0 || roomIndex >= numRooms)
@@ -156,7 +170,7 @@ public partial class Main : Node3D, IGame
             }
             if (debuggingRooms)
             {
-                roomIndex = 2;
+                roomIndex = 0;
             }
 
             switch (roomIndex)
@@ -170,6 +184,9 @@ public partial class Main : Node3D, IGame
                 case 2:
                     arenaType = GD.Load<PackedScene>("res://actors/rooms/room_03.tscn");
                     break;
+                case 3:
+                    arenaType = GD.Load<PackedScene>("res://actors/rooms/room_04.tscn");
+                    break;
                 default:
                     arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
                     break;
@@ -182,7 +199,9 @@ public partial class Main : Node3D, IGame
 			{
 				GD.Print($"Failed to add roomIndex type {roomIndex} trying again...");
 				next.Free();
-				continue;
+                // reset the index or it will just try this room again!
+                roomIndex = -1;
+                continue;
 			}
             AddChild(next);
             if (!next.MatchToOthersSeal(exitSeal))
@@ -192,8 +211,6 @@ public partial class Main : Node3D, IGame
                 _arenas.ForEach(x => RemoveChild(x));
                 _arenas.Clear();
 				_player.Reset();
-				// reset the index or it will just try this room again!
-				roomIndex = -1;
             }
             _arenas.Add(next);
 			break;
@@ -203,6 +220,11 @@ public partial class Main : Node3D, IGame
 	public IMob CreateMob(Vector3 pos, MobType type = 0)
 	{
 		PackedScene scene;
+		if ((int)type == -1)
+		{
+			type = (MobType)ZGU.RandomIndex((int)MobType.End, GD.Randf());
+		}
+		//type = MobType.Cross;
 		switch (type)
 		{
 			case MobType.Gunship:
@@ -210,6 +232,9 @@ public partial class Main : Node3D, IGame
                 break;
             case MobType.Shark:
                 scene = GD.Load<PackedScene>("res://actors/mobs/shark/mob_shark.tscn");
+                break;
+            case MobType.Cross:
+                scene = GD.Load<PackedScene>("res://actors/mobs/cross/mob_cross.tscn");
                 break;
             default:
                 scene = GD.Load<PackedScene>("res://actors/mobs/drone/mob_drone.tscn");

@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://rc5576hhmjvg"]
+[gd_scene load_steps=7 format=3 uid="uid://rc5576hhmjvg"]
 
 [ext_resource type="BoxMesh" uid="uid://dejrj8rmqqjsl" path="res://shared/primitives/box.tres" id="1_3gb1w"]
+[ext_resource type="Texture2D" uid="uid://cei5ma5cskkk" path="res://shared/dev_materials/tech_block_emission_red.png" id="2_bbr44"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3iocs"]
 
@@ -16,6 +17,8 @@ noise = SubResource("FastNoiseLite_r0krh")
 albedo_color = Color(0.254902, 0.254902, 0.254902, 1)
 metallic = 0.71
 roughness_texture = SubResource("NoiseTexture2D_i3khf")
+emission_enabled = true
+emission_texture = ExtResource("2_bbr44")
 uv1_triplanar = true
 uv1_world_triplanar = true
 texture_filter = 2

@@ -101,8 +101,9 @@ namespace TheZealousMachine.actors.players
 				_tick = 0.1f;
 				IProjectile prj = Servicelocator.Locate<IGame>().CreateProjectile();
 				ProjectileLaunchInfo info = new ProjectileLaunchInfo();
-				info.forward = -GlobalTransform.basis.z;
-				info.position = GlobalPosition + (info.forward * 0.5f);
+				info.t = GlobalTransform.MovedForward(0.5f);
+				//info.forward = -GlobalTransform.basis.z;
+				//info.position = GlobalPosition + (info.forward * 0.5f);
 				info.speed = 200f;
 				info.damage = 8;
 				info.teamId = Interactions.TEAM_ID_PLAYER;

@@ -8,6 +8,7 @@ namespace TheZealousMachine.actors.mobs
         public Transform3D t;
         public Vector3 toward;
         public float distSqr;
+        public bool canSeeTarget = true;
 
         public void Refresh(Node3D self, IGame game)
         {
@@ -17,6 +18,7 @@ namespace TheZealousMachine.actors.mobs
 
             distSqr = t.origin.DistanceSquaredTo(targetInfo.position);
             toward = (targetInfo.position - t.origin).Normalized();
+            canSeeTarget = game.CheckLoS(t.origin, targetInfo.position);
         }
 
         public bool HasTarget()

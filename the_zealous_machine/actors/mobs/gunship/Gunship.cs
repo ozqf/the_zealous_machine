@@ -8,18 +8,19 @@ namespace TheZealousMachine.actors.mobs.gunship
         {
             base._Ready();
             _health = 1000;
-            _shootTime = 0.05f;
+            _shootTime = 0.1f;
+            _onlyMoveIfOutOfLoS = true;
         }
 
-        override protected void _HuntingTick(float delta)
-        {
-            _LookAtThinkTarget();
-            _shootTick -= (float)delta;
-            if (_shootTick <= 0)
-            {
-                _shootTick = _shootTime;
-                _Shoot();
-            }
-        }
+        //override protected void _HuntingTick(float delta)
+        //{
+        //    _LookAtThinkTarget();
+        //    _shootTick -= (float)delta;
+        //    if (_shootTick <= 0)
+        //    {
+        //        _shootTick = _shootTime;
+        //        _Shoot();
+        //    }
+        //}
     }
 }

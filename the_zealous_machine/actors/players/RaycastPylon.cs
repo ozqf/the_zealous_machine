@@ -62,6 +62,12 @@ namespace TheZealousMachine
 			}
 		}
 
+		public void OverrideFarPositionTarget(Node3D node3D)
+		{
+			if (node3D == null) { return; }
+			_far = node3D;
+		}
+
 		public float GetLastFraction() { return _lastFraction; }
 
 		private float _FindCameraRayFraction()

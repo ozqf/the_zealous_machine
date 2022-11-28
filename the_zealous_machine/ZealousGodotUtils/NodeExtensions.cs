@@ -19,6 +19,21 @@ namespace ZealousGodotUtils
 
         public static Vector3 Forward(this Transform3D t) { return -t.basis.z; }
 
+        public static Transform3D MovedForward(this Transform3D t, float distance)
+        {
+            t.origin += (-t.basis.z) * distance;
+            return t;
+        }
+
+        public static Transform3D RotateAtOrigin(this Transform3D t, Vector3 axis, float radians)
+        {
+            Vector3 origin = t.origin;
+            t.origin = Vector3.Zero;
+            t = t.Rotated(axis, radians);
+            t.origin = origin;
+            return t;
+        }
+
         public static int GetTotalOverlaps(this Area3D area)
         {
             return area.GetOverlappingAreas().Count() + area.GetOverlappingBodies().Count();

@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://cyin18rnuen2g"]
+
+[ext_resource type="Script" path="res://actors/mobs/cross/MobCross.cs" id="1_yyp2t"]
+[ext_resource type="PackedScene" uid="uid://8dtigvuktre7" path="res://gfx/booster_particles.tscn" id="3_l3egy"]
+[ext_resource type="Material" uid="uid://beygr3tycvx7o" path="res://shared/dev_materials/fullbright_red.tres" id="4_kqgp6"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pmqqx"]
+radius = 1.6
+
+[sub_resource type="TorusMesh" id="TorusMesh_jtqm2"]
+inner_radius = 1.5
+outer_radius = 2.091
+
+[sub_resource type="TorusMesh" id="TorusMesh_iie0s"]
+
+[node name="mob_cross" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 15
+script = ExtResource("1_yyp2t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_pmqqx")
+
+[node name="booster_particles" parent="." instance=ExtResource("3_l3egy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.7)
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_jtqm2")
+skeleton = NodePath("../MeshInstance3D")
+surface_material_override/0 = ExtResource("4_kqgp6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-8.74228e-08, 2, 0, -2, -8.74228e-08, 0, 0, 0, 2, 0, 0, 0)
+mesh = SubResource("TorusMesh_iie0s")

@@ -36,7 +36,7 @@ namespace TheZealousMachine.actors.volumes
 			else if (isEntrance)
 			{
 				_light.Visible = true;
-				_light.LightColor = Colors.Cyan;
+				_light.LightColor = Colors.Blue;
 			}
 			else
 			{

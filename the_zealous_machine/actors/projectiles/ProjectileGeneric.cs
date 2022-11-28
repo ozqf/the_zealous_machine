@@ -25,12 +25,7 @@ namespace TheZealousMachine.actors.projectiles
 		public void Launch(ProjectileLaunchInfo launchInfo)
 		{
 			_launchInfo = launchInfo;
-			Transform3D t = this.GlobalTransform;
-			t.origin = launchInfo.position;
-			Vector3 up = launchInfo.up;
-			if (up == Vector3.Zero) { up = Vector3.Up; }
-			t = t.LookingAt(launchInfo.position + launchInfo.forward, up);
-			GlobalTransform = t;
+			GlobalTransform = launchInfo.t;
 			_speed = launchInfo.speed;
 			_teamId = launchInfo.teamId;
 			if (_teamId == Interactions.TEAM_ID_PLAYER)

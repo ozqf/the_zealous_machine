@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://coucm0ffxf7kt"
+path="res://.godot/imported/room_type_04.obj-3e1bc2f52d9dd5ab5e8eceb98c2dbbdf.mesh"
+
+[deps]
+
+files=["res://.godot/imported/room_type_04.obj-3e1bc2f52d9dd5ab5e8eceb98c2dbbdf.mesh"]
+
+source_file="res://actors/rooms/room_type_04.obj"
+dest_files=["res://.godot/imported/room_type_04.obj-3e1bc2f52d9dd5ab5e8eceb98c2dbbdf.mesh", "res://.godot/imported/room_type_04.obj-3e1bc2f52d9dd5ab5e8eceb98c2dbbdf.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
