@@ -37,6 +37,7 @@ public partial class Main : Node3D, IGame
 	private MouseLock _mouseLock = new MouseLock();
 	private MainMenu _menu;
 	private int _nextActorId = 1;
+	private List<IMob> _mobs = new List<IMob>();
 
 	private List<Arena> _arenas = new List<Arena>();
 
@@ -76,6 +77,15 @@ public partial class Main : Node3D, IGame
 		AddChild(map);
 	}
 
+    public void RegisterMob(IMob mob)
+	{
+		_mobs.Add(mob);
+    }
+
+    public void UnregisterMob(IMob mob)
+	{
+		_mobs.Remove(mob);
+	}
 
     public bool CheckLoS(Vector3 origin, Vector3 target)
 	{

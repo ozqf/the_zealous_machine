@@ -23,6 +23,16 @@ namespace TheZealousMachine.actors.mobs
 		{
 			_game = Servicelocator.Locate<IGame>();
 			_head = GetNode<Node3D>("head");
+			_game.RegisterMob(this);
+			GlobalEvents.Send(GameEvents.MOB_SPAWNED, this);
+		}
+
+		public Node3D GetBaseNode() { return this; }
+
+
+		public override void _ExitTree()
+		{
+			_game.UnregisterMob(this);
 		}
 
 		public void SetMobId(Guid id)

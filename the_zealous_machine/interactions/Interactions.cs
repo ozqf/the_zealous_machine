@@ -19,6 +19,7 @@ namespace TheZealousMachine
 
     public static class GameEvents
     {
+        public const string MOB_SPAWNED = "mob_spawned";
         public const string MOB_DIED = "mob_died";
     }
 
@@ -42,6 +43,8 @@ namespace TheZealousMachine
         IProjectile CreateProjectile(int type = 0);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
         IMob CreateMob(Vector3 pos, MobType type = MobType.Drone);
+        void RegisterMob(IMob mob);
+        void UnregisterMob(IMob mob);
         Node3D CreateMobDebris(Vector3 pos, Vector3 direction);
     }
 
@@ -49,6 +52,8 @@ namespace TheZealousMachine
     {
         public void SetMobId(Guid id);
         public Guid mobId { get; }
+
+        public Node3D GetBaseNode();
     }
 
     public struct HitInfo
