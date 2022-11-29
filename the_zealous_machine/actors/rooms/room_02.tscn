@@ -20,9 +20,9 @@ script = ExtResource("1_8bi83")
 
 [node name="spawner" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 13)
-maxMobs = 4
-perSpawnCount = 4
-mobType = 1
+maxMobs = 6
+perSpawnCount = 6
+mobType = -1
 
 [node name="room_8x1x8" parent="." instance=ExtResource("1_wvw1v")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 20.2, -20)
@@ -33,7 +33,7 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 roomSeal = true
 
 [node name="trigger_touch" parent="." instance=ExtResource("3_deqgq")]
-transform = Transform3D(56.168, 0, 0, 0, 1, 0, 0, 0, 57.456, -28, 15, -28)
+transform = Transform3D(56.168, 0, 0, 0, 27.72, 0, 0, 0, 57.456, -28, -14, -28)
 _message = "start"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

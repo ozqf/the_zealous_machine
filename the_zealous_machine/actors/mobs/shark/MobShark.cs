@@ -13,12 +13,13 @@ namespace TheZealousMachine.actors.mobs.shark
             _strafeDir.y = (float)GD.RandRange(-1f, 1f);
             _strafeDir.z = (float)GD.RandRange(-1f, 1f);
             _strafeDir = _strafeDir.Normalized();
+            _shootTime = 0.3f;
         }
 
         protected override void _HuntingTick(float delta)
         {
             Vector3 movePoint = _think.toward + (_strafeDir * 30f);
-            _PushMoveToward(movePoint, 30f, 30f, delta);
+            _PushMoveToward(movePoint, 20f, 20f, delta);
             _LookInDirectionOfMovement();
 
             _shootTick -= (float)delta;

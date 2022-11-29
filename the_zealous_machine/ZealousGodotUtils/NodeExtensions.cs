@@ -25,6 +25,11 @@ namespace ZealousGodotUtils
             return t;
         }
 
+        public static Vector3 ForwardGlobal(this Node3D node)
+        {
+            return -node.GlobalTransform.basis.z;
+        }
+
         public static Transform3D RotateAtOrigin(this Transform3D t, Vector3 axis, float radians)
         {
             Vector3 origin = t.origin;

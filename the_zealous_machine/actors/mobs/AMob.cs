@@ -92,7 +92,8 @@ namespace TheZealousMachine.actors.mobs
 		virtual protected ProjectileLaunchInfo CreateLaunchInfo(int prjType)
 		{
 			ProjectileLaunchInfo info = new ProjectileLaunchInfo();
-			info.speed = 40f;
+			info.damage = 10;
+			info.speed = 30f;
 			return info;
 		}
 

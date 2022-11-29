@@ -20,27 +20,31 @@ script = ExtResource("1_8bi83")
 
 [node name="spawner2" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
-mobType = 2
+mobType = -1
 
 [node name="spawner" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 15, 12)
 maxMobs = 1
 perSpawnCount = 1
+mobType = -1
 
 [node name="spawner3" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 15, 12)
 maxMobs = 1
 perSpawnCount = 1
+mobType = -1
 
 [node name="spawner4" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 15, -13)
 maxMobs = 1
 perSpawnCount = 1
+mobType = -1
 
 [node name="spawner5" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 15, -13)
 maxMobs = 1
 perSpawnCount = 1
+mobType = -1
 
 [node name="room_8x1x8" parent="." instance=ExtResource("1_wvw1v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 88.2, 0)
@@ -51,7 +55,7 @@ transform = Transform3D(0.999586, 0.0287591, 0, -0.0287591, 0.999586, 0, 0, 0, 1
 roomSeal = true
 
 [node name="trigger_touch" parent="." instance=ExtResource("3_deqgq")]
-transform = Transform3D(84.252, 0, 0, 0, 1, 0, 0, 0, 86.184, -43, 47, -42)
+transform = Transform3D(64, 0, 0, 0, 64, 0, 0, 0, 64, -31, 16, -32)
 _message = "start"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

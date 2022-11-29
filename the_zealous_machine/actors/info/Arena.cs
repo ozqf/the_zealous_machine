@@ -14,7 +14,6 @@ namespace TheZealousMachine.actors.info
 		private List<RoomSeal> _seals;
 		private bool _running = false;
 
-
 		public override void _Ready()
 		{
 			ScanForComponents();
@@ -32,42 +31,6 @@ namespace TheZealousMachine.actors.info
 			_doors.ForEach(d => d.SetOpen(true));
 		}
 
-		public RoomSeal FindHighestSeal()
-		{
-			int numSeals = _seals.Count;
-			if (numSeals == 0) { return null; }
-			RoomSeal seal = _seals[0];
-			float y = seal.Position.y;
-			for (int i = 1; i < numSeals; i++)
-			{
-				RoomSeal query = _seals[i];
-				if (query.Position.y > y)
-				{
-					y = query.Position.y;
-					seal = query;
-				}
-			}
-			return seal;
-		}
-
-		public RoomSeal FindLowestSeal()
-		{
-			int numSeals = _seals.Count;
-			if (numSeals == 0) { return null; }
-			RoomSeal seal = _seals[0];
-			float y = seal.Position.y;
-			for (int i = 1; i < numSeals; i++)
-			{
-				RoomSeal query = _seals[i];
-				if (query.Position.y < y)
-				{
-					y = query.Position.y;
-					seal = query;
-				}
-			}
-			return seal;
-		}
-
 		public RoomSeal PickExit()
 		{
 			int escape = 999;
@@ -77,7 +40,12 @@ namespace TheZealousMachine.actors.info
 				escape--;
 				int i = ZGU.RandomIndex(numSeals, GD.Randf());
 				RoomSeal candidate = _seals[i];
-				if (candidate.isEntrance || candidate.IsNextToRoom()) { continue; }
+				if (candidate.isEntrance
+					|| candidate.IsNextToRoom()
+					|| candidate.ForwardGlobal() == Vector3.Up)
+				{
+					continue;
+				}
 				candidate.isExit = true;
 				return candidate;
 			}
@@ -117,7 +85,6 @@ namespace TheZealousMachine.actors.info
 		{
 			// Remember we are not in the tree yet and cannot
 			// change our global position yet
-			//RoomSeal entrance = FindHighestSeal();
 			RoomSeal entrance = PickEntrance(other);
 			if (entrance == null)
 			{

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2w4bhm715wos"]
+
+[sub_resource type="FogMaterial" id="FogMaterial_ksb3h"]
+
+[sub_resource type="Environment" id="Environment_ove3p"]
+background_mode = 1
+background_color = Color(0.470588, 0.639216, 1, 1)
+background_energy_multiplier = 2.0
+volumetric_fog_enabled = true
+
+[node name="machine_surface" type="Node3D"]
+
+[node name="FogVolume" type="FogVolume" parent="."]
+extents = Vector3(24, 1, 24)
+material = SubResource("FogMaterial_ksb3h")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ove3p")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.961262, -0.275637, 0, 0.275637, 0.961262, 0, 2, 23)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

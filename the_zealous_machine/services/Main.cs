@@ -6,10 +6,10 @@ using TheZealousMachine;
 using TheZealousMachine.actors.volumes;
 using TheZealousMachine.actors.info;
 using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
 
 public partial class Main : Node3D, IGame
 {
+	enum AppState { Playing, Dead }
 	// maps
     private PackedScene _mapBox = GD.Load<PackedScene>("res://maps/box.tscn");
 	private PackedScene _mapTerainTest1 = GD.Load<PackedScene>("res://maps/terrain_test_01/terrain_test_01.tscn");
@@ -54,6 +54,7 @@ public partial class Main : Node3D, IGame
 		AddChild(_menu);
 		_menu.Init(this);
 		LoadEmbeddedMap(_mapEndless);
+		_menu.SetActive(true);
 	}
 
 	public void AddMouseLock(string lockName)

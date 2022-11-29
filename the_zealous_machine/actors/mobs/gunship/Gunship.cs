@@ -7,7 +7,7 @@ namespace TheZealousMachine.actors.mobs.gunship
         public override void _Ready()
         {
             base._Ready();
-            _health = 1000;
+            _health = 500;
             _shootTime = 0.1f;
             _onlyMoveIfOutOfLoS = true;
         }

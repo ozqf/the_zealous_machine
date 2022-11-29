@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhh1vk5cryegt"]
+[gd_scene load_steps=15 format=3 uid="uid://bhh1vk5cryegt"]
 
 [ext_resource type="PackedScene" uid="uid://cwwbu12b28b5h" path="res://actors/players/body_meshes.tscn" id="1_ptacq"]
 [ext_resource type="Script" path="res://actors/players/six_degrees/PlayerSixDegrees.cs" id="1_vo387"]
 [ext_resource type="PackedScene" uid="uid://11nh5ohu0j28" path="res://actors/players/aim_laser.tscn" id="3_jgp8p"]
 [ext_resource type="PackedScene" uid="uid://8gpog7nvjwpa" path="res://actors/players/raycast_pylon.tscn" id="3_n3yfh"]
+[ext_resource type="Script" path="res://gfx/TimedVisible.cs" id="3_ye8n3"]
 [ext_resource type="PackedScene" uid="uid://db4p6st64pmax" path="res://actors/players/player_turret.tscn" id="4_2b0gq"]
 [ext_resource type="SphereMesh" uid="uid://ct68g57i70lya" path="res://shared/primitives/sphere.tres" id="5_8bwar"]
 [ext_resource type="PackedScene" uid="uid://8dtigvuktre7" path="res://gfx/booster_particles.tscn" id="7_d4sd8"]
@@ -12,6 +13,18 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8f4q5"]
 height = 1.3
+
+[sub_resource type="SphereMesh" id="SphereMesh_wgkw1"]
+radius = 0.7
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2d6x"]
+transparency = 1
+shading_mode = 2
+albedo_color = Color(0.0823529, 0.376471, 1, 0.196078)
+emission_enabled = true
+emission = Color(0.356863, 0.670588, 1, 1)
+emission_energy_multiplier = 1.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2wku5"]
 radius = 2.0
@@ -26,6 +39,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 shape = SubResource("CapsuleShape3D_8f4q5")
 
 [node name="body_meshes" parent="." instance=ExtResource("1_ptacq")]
+
+[node name="shield_mesh" type="MeshInstance3D" parent="body_meshes"]
+mesh = SubResource("SphereMesh_wgkw1")
+surface_material_override/0 = SubResource("StandardMaterial3D_s2d6x")
+script = ExtResource("3_ye8n3")
 
 [node name="head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

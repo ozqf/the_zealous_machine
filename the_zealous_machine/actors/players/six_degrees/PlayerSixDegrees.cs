@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TheZealousMachine.actors.players;
+using TheZealousMachine.actors.volumes;
 using ZealousGodotUtils;
 
 namespace TheZealousMachine
 {
-	public partial class PlayerSixDegrees : CharacterBody3D, IPlayer
+	public partial class PlayerSixDegrees : CharacterBody3D, IPlayer, IHittable
 	{
 		private IGame _game;
 
@@ -25,6 +26,10 @@ namespace TheZealousMachine
 		private Node3D _boostNode;
 		private RaycastPylon _cameraPylon;
 		private AimLaser _aimLaser;
+		private HudStatus _hudStatus = new HudStatus();
+		private TimedVisible _shieldMesh;
+
+		private int _health = 100;
 
 		private TurretFormation _formation = TurretFormation.Boost;
 		private PlayerTurret _centreTurret;
@@ -37,6 +42,8 @@ namespace TheZealousMachine
 		{
 			_cameraPylon = GetNode<RaycastPylon>("head/raycast_pylon");
 			_bodyMeshes = GetNode<Node3D>("body_meshes");
+			_shieldMesh = GetNode<TimedVisible>("body_meshes/shield_mesh");
+			_shieldMesh.flash = true;
 			_nearSurface = GetNode<Area3D>("near_surface");
 			_debugText = GetNode<Label>("debug_print");
 			_origin = GlobalTransform.origin;
@@ -123,6 +130,22 @@ namespace TheZealousMachine
 			}
 		}
 
+		public HitResponse Hit(HitInfo hit)
+		{
+			GD.Print($"Player: ow for {hit.damage}");
+			_health -= hit.damage;
+			if (_health <= 0)
+			{
+				_health = 999999;
+				QueueFree();
+			}
+			_shieldMesh.Run(1.5f);
+			HitResponse response = new HitResponse();
+			response.type = HitResponseType.Damaged;
+			response.damage = hit.damage;
+			return response;
+		}
+
 		private void AddTurret(string turretPath, string targetPath)
 		{
 
@@ -176,8 +199,8 @@ namespace TheZealousMachine
 			if (Input.IsActionJustPressed("slot_5"))
 			{
 				Vector3 pos = _aimLaser.GetSpawnPosition();
-				_game.CreateSpawnVolume(pos);
-
+				SpawnVolume vol = _game.CreateSpawnVolume(pos);
+				vol.mobType = MobType.Cross;
 			}
 		}
 
@@ -253,8 +276,16 @@ namespace TheZealousMachine
 			_boostNode.RotateZ(spinRadians * (float)delta);
 		}
 
+		private void BroadcastHudStatus()
+		{
+			_hudStatus.health = _health;
+			GlobalEvents.Send(GameEvents.HUD_STATUS, _hudStatus);
+		}
+
 		public override void _PhysicsProcess(double delta)
 		{
+			BroadcastHudStatus();
+
 			if (_game.IsMouseLocked())
 			{
 				return;
@@ -377,6 +408,5 @@ namespace TheZealousMachine
 			}
 			base._Input(@event);
 		}
-
 	}
 }

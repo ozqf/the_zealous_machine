@@ -20,31 +20,31 @@ script = ExtResource("1_8bi83")
 
 [node name="spawner2" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21, 0)
-mobType = 3
+mobType = -1
 
 [node name="spawner" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -26, 12)
 maxMobs = 1
 perSpawnCount = 1
-mobType = 1
+mobType = -1
 
 [node name="spawner3" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -26, 12)
 maxMobs = 1
 perSpawnCount = 1
-mobType = 1
+mobType = -1
 
 [node name="spawner4" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -26, -13)
 maxMobs = 1
 perSpawnCount = 1
-mobType = 1
+mobType = -1
 
 [node name="spawner5" parent="." instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -26, -13)
 maxMobs = 1
 perSpawnCount = 1
-mobType = 1
+mobType = -1
 
 [node name="room_8x1x8" parent="." instance=ExtResource("1_wvw1v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 32.2, 0)
