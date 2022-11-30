@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://75b6plhexttf"]
+
+[ext_resource type="Texture2D" uid="uid://i0lr0gdvkaix" path="res://actors/hud/retacle_square_albedo.png" id="1_5iqf5"]
+[ext_resource type="Texture2D" uid="uid://bpc366t5upt8q" path="res://actors/hud/retacle_square_emission.png" id="2_18dc2"]
+
+[resource]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_5iqf5")
+emission_enabled = true
+emission_energy_multiplier = 2.0
+emission_texture = ExtResource("2_18dc2")

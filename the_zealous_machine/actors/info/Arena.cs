@@ -42,7 +42,7 @@ namespace TheZealousMachine.actors.info
 				RoomSeal candidate = _seals[i];
 				if (candidate.isEntrance
 					|| candidate.IsNextToRoom()
-					|| candidate.ForwardGlobal() == Vector3.Up)
+					|| candidate.ForwardGlobal().Dot(Vector3.Up) > 0.9f)
 				{
 					continue;
 				}
@@ -93,7 +93,8 @@ namespace TheZealousMachine.actors.info
 			Vector3 joinPoint = other.origin;
 			Vector3 newPos = joinPoint - entrance.Position;
 			GlobalPosition = newPos;
-			GD.Print($"Arena spawning at {newPos} with entrance at {entrance.Position}. Join point {joinPoint}");
+			GD.Print($"Arena joining to other forward: {-other.basis.z}");
+			//GD.Print($"Arena spawning at {newPos} with entrance at {entrance.Position}. Join point {joinPoint}");
 			return true;
 		}
 

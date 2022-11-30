@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://kiftma23oja8"]
+[gd_scene load_steps=3 format=3 uid="uid://kiftma23oja8"]
 
 [ext_resource type="Script" path="res://actors/hud/HUDRadarItem.cs" id="1_ghyc3"]
+[ext_resource type="Texture2D" uid="uid://i0lr0gdvkaix" path="res://actors/hud/retacle_square_albedo.png" id="2_qrfry"]
 
 [node name="crosshair_radar_item" type="Control"]
 layout_mode = 3
@@ -18,7 +19,7 @@ pivot_offset = Vector2(32, 320)
 script = ExtResource("1_ghyc3")
 
 [node name="icon" type="Control" parent="."]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -27,9 +28,12 @@ anchor_bottom = 1.0
 offset_left = -32.0
 offset_top = -320.0
 offset_right = 32.0
+grow_horizontal = 2
+grow_vertical = 0
 pivot_offset = Vector2(32, 320)
 
 [node name="ColorRect" type="ColorRect" parent="icon"]
+layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.497
 anchor_top = 0.075
@@ -42,14 +46,16 @@ offset_bottom = 8.0
 pivot_offset = Vector2(8, 8)
 color = Color(0, 1, 0, 1)
 
-[node name="screen_position" type="ColorRect" parent="."]
-visible = false
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="screen_position" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.475
+anchor_right = 0.5
+anchor_bottom = 0.475
 
 [node name="Label" type="Label" parent="screen_position"]
+visible = false
+layout_mode = 0
 offset_left = -152.0
 offset_top = 8.0
 offset_right = 168.0
@@ -57,3 +63,18 @@ offset_bottom = 34.0
 text = "12345678901234567890"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="screen_position"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+rotation = 0.785398
+pivot_offset = Vector2(16, 16)
+texture = ExtResource("2_qrfry")

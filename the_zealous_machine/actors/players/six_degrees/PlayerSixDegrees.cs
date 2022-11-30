@@ -245,20 +245,16 @@ namespace TheZealousMachine
 
 		private void _TickDebugInputs(PlayerInput input, float delta)
 		{
-			if (Input.IsActionJustPressed("attack_2"))
+			/*if (Input.IsActionJustPressed("attack_2"))
 			{
 				var info = ProjectileLaunchInfo.FromNode3D(this, 10, Interactions.TEAM_ID_PLAYER, 1);
 				IProjectile prj = _game.CreateProjectile(2);
 				prj.Launch(info);
 
-				//Vector3 origin = info.t.origin;
-				//info.t.origin = Vector3.Zero;
-				//info.t = info.t.Rotated(info.t.basis.z, 90f * ZGU.DEG2RAD);
-				//info.t.origin = origin;
 				info.t = info.t.RotateAtOrigin(info.t.basis.z, 90f * ZGU.DEG2RAD);
 				prj = _game.CreateProjectile(2);
 				prj.Launch(info);
-			}
+			}*/
 		}
 
 		public void Reset()

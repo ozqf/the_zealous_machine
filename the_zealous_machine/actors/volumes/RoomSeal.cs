@@ -90,7 +90,7 @@ namespace TheZealousMachine.actors.volumes
 			Vector3 match = (-other.basis.z).Normalized();
 			float dot = (match).Dot(self);
 			float diff = dot - 1;
-			GD.Print($"Seal dot {dot} (diff {diff}) matching {match} vs self {self}");
+			//GD.Print($"Seal dot {dot} (diff {diff}) matching {match} vs self {self}");
 			return (Mathf.Abs(diff) < 0.1);
 			//return dot == 1;
 		}

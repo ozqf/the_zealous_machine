@@ -7,6 +7,7 @@ namespace TheZealousMachine
 	{
 		private Control _iconSpoke;
 		private Control _icon;
+		private Control _retacle;
 		private Label _label;
 		private Control _aimPoint;
 		private IMob _mob = null;
@@ -15,6 +16,7 @@ namespace TheZealousMachine
 		{
 			_iconSpoke = GetNode<Control>("icon");
 			_icon = GetNode<Control>("icon/ColorRect");
+			_retacle = GetNode<Control>("screen_position");
 			_label = GetNode<Label>("screen_position/Label");
 			_label.Visible = false;
 			GlobalEvents.Register(_OnGlobalEvent);
@@ -43,17 +45,22 @@ namespace TheZealousMachine
 		{
 			Vector3 subject = _mob.GetBaseNode().GlobalPosition;
 			Camera3D camera = GetViewport().GetCamera3d();
+			Vector2 screenPos = camera.UnprojectPosition(subject);
 			Transform3D cameraT = camera.GlobalTransform;
 			Vector3 toward = (subject - cameraT.origin).Normalized();
 			float distSqr = subject.DistanceSquaredTo(cameraT.origin);
 			float dot = toward.Dot(cameraT.Forward());
 			if (dot > 0.5f)
 			{
-				Visible = false;
+				_retacle.Visible = true;
+				_retacle.GlobalPosition = screenPos;
+				_iconSpoke.Visible = false;
+				//Visible = false;
 				return;
 			}
-			Visible = true;
-			Vector2 screenPos = camera.UnprojectPosition(subject);
+			_retacle.Visible = false;
+			_iconSpoke.Visible = true;
+			//Visible = true;
 			Control posNode = GetNode<Control>("screen_position");
 			posNode.GlobalPosition = screenPos;
 			Vector2 between = screenPos - _aimPoint.GlobalPosition;
