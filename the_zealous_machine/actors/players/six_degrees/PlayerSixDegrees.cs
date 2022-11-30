@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using TheZealousMachine.actors.players;
 using TheZealousMachine.actors.volumes;
+using TheZealousMachine.gfx;
 using ZealousGodotUtils;
 
 namespace TheZealousMachine
 {
-	public partial class PlayerSixDegrees : CharacterBody3D, IPlayer, IHittable
+	public partial class PlayerSixDegrees : CharacterBody3D, IPlayer, IHittable, IItemCollector
 	{
 		private IGame _game;
 
@@ -30,6 +31,7 @@ namespace TheZealousMachine
 		private TimedVisible _shieldMesh;
 
 		private int _health = 100;
+		private int _energy = 0;
 
 		private TurretFormation _formation = TurretFormation.Boost;
 		private PlayerTurret _centreTurret;
@@ -130,14 +132,41 @@ namespace TheZealousMachine
 			}
 		}
 
+		public int GiveItem(string type, int count)
+		{
+			if (count <= 0) { return 0; }
+			if (type == "energy")
+			{
+				_energy += count;
+				return count;
+			}
+			return 0;
+		}
+
+		public int CanTake(string type, int count)
+		{
+			if (_energy < 100) { return count; }
+			return 0;
+		}
+
+		private void _Die()
+		{
+			_health = 999999;
+			QueueFree();
+			PackedScene scene = GD.Load<PackedScene>("res://actors/players/player_wreck.tscn");
+			PlayerWreck wreck = scene.Instantiate<PlayerWreck>();
+			_game.GetActorRoot().AddChild(wreck);
+			Camera3D cam = GetNode<Camera3D>("head/raycast_pylon/target/Camera3D");
+			wreck.Launch(GlobalTransform, cam.GlobalTransform, Velocity);
+		}
+
 		public HitResponse Hit(HitInfo hit)
 		{
 			GD.Print($"Player: ow for {hit.damage}");
 			_health -= hit.damage;
 			if (_health <= 0)
 			{
-				_health = 999999;
-				QueueFree();
+				_Die();
 			}
 			_shieldMesh.Run(1.5f);
 			HitResponse response = new HitResponse();
@@ -162,11 +191,15 @@ namespace TheZealousMachine
 		private void _RefreshDebugText()
 		{
 			_debugStr.Clear();
-			_debugStr.Append($"Formation: {_formation}");
-			_debugStr.Append($"Push max {GetMaxPushSpeed()} push force {GetPushForce()}\n");
-			_debugStr.Append($"Boost: {boostGauge}\n");
-			_debugStr.Append($"Speed: {Velocity.Length()}\nVelocity: {Velocity}\n");
-			_debugStr.Append($"Angular Velocity: {_angularVelocity}\n");
+			_debugStr.Append($"{Engine.GetFramesPerSecond()} fps\n");
+			_debugStr.Append($"{_health} Health\n");
+			_debugStr.Append($"{_energy} Energy\n");
+			_debugStr.Append($"Ejected brasss: {BulletCasing.GetCount()}");
+			//_debugStr.Append($"Formation: {_formation}\n");
+			//_debugStr.Append($"Push max {GetMaxPushSpeed()} push force {GetPushForce()}\n");
+			//_debugStr.Append($"Boost: {boostGauge}\n");
+			//_debugStr.Append($"Speed: {Velocity.Length()}\nVelocity: {Velocity}\n");
+			//_debugStr.Append($"Angular Velocity: {_angularVelocity}\n");
 			_debugText.Text = _debugStr.ToString();
 		}
 

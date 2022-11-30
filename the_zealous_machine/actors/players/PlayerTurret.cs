@@ -12,6 +12,8 @@ namespace TheZealousMachine.actors.players
 
 	public partial class PlayerTurret : Node3D
 	{
+		private PackedScene _bulletCasing = GD.Load<PackedScene>("res://gfx/bullet_casing.tscn");
+
 		// current position tracking target
 		private Node3D _subject;
 		private AimLaser _target;
@@ -20,6 +22,7 @@ namespace TheZealousMachine.actors.players
 		private TimedVisible _light;
 		private TimedVisible _flash;
 		private GPUParticles3D _boostParticles;
+		private IGame _game;
 
 		private Node3D _spreadTarget = null;
 		private Node3D _narrowTarget = null;
@@ -27,6 +30,7 @@ namespace TheZealousMachine.actors.players
 
 		public override void _Ready()
 		{
+			_game = Servicelocator.Locate<IGame>();
 			_light = GetNode<TimedVisible>("light");
 			_flash = GetNode<TimedVisible>("muzzle_spikes");
 			_boostParticles = GetNode<GPUParticles3D>("booster_particles");
@@ -79,6 +83,31 @@ namespace TheZealousMachine.actors.players
 			_target = node;
 		}
 
+		private void _RunMuzzleGFX()
+		{
+			_light.Run(0.05f);
+			_flash.Run(0.05f);
+			_flash.RotateZ(GD.RandRange(0, 360) * ZGU.DEG2RAD);
+		}
+
+		private void _SpawnBulletCasing()
+		{
+			var casing = _bulletCasing.Instantiate<RigidBody3D>();
+			_game.GetActorRoot().AddChild(casing);
+			casing.GlobalTransform = GlobalTransform;
+			Vector3 dir = new Vector3(
+				(float)GD.RandRange(-0.5f, 0.5f),
+				(float)GD.RandRange(-0.5f, 0.5f),
+				(float)GD.RandRange(-0.5f, 0.5f)
+				);
+			casing.LinearVelocity = (GlobalTransform.basis.y + dir) * 10f;
+			casing.AngularVelocity = new Vector3(
+				(float)GD.RandRange(-3.2, 3.2f),
+				(float)GD.RandRange(-3.2, 3.2f),
+				(float)GD.RandRange(-3.2, 3.2f)
+				);
+		}
+
 		public override void _PhysicsProcess(double delta)
 		{
 			if (_tick > 0f)
@@ -95,19 +124,39 @@ namespace TheZealousMachine.actors.players
 
 			if (Input.IsActionPressed("attack_1"))
 			{
-				_light.Run(0.05f);
-				_flash.Run(0.05f);
-				_flash.RotateZ(GD.RandRange(0, 360) * ZGU.DEG2RAD);
+				_RunMuzzleGFX();
+				_SpawnBulletCasing();
 				_tick = 0.1f;
-				IProjectile prj = Servicelocator.Locate<IGame>().CreateProjectile();
+				IProjectile prj = _game.CreateProjectile();
 				ProjectileLaunchInfo info = new ProjectileLaunchInfo();
 				info.t = GlobalTransform.MovedForward(0.5f);
-				//info.forward = -GlobalTransform.basis.z;
-				//info.position = GlobalPosition + (info.forward * 0.5f);
 				info.speed = 200f;
 				info.damage = 8;
 				info.teamId = Interactions.TEAM_ID_PLAYER;
 				prj.Launch(info);
+			}
+			else if (Input.IsActionPressed("attack_2"))
+			{
+				_RunMuzzleGFX();
+				_SpawnBulletCasing();
+				_tick = 1f;
+				Transform3D t = GlobalTransform;
+				Vector3 origin = t.origin;
+				float spread = 5f * ZGU.DEG2RAD;
+				for (int i = 0; i < 10; ++i)
+				{
+					IProjectile prj = _game.CreateProjectile();
+					ProjectileLaunchInfo info = new ProjectileLaunchInfo();
+					info.t = GlobalTransform.MovedForward(0.5f);
+					info.t.origin = Vector3.Zero;
+					info.t = info.t.Rotated(t.basis.x, (float)GD.RandRange(-spread, spread));
+					info.t = info.t.Rotated(t.basis.y, (float)GD.RandRange(-spread, spread));
+					info.t.origin = origin;
+					info.speed = 200f;
+					info.damage = 8;
+					info.teamId = Interactions.TEAM_ID_PLAYER;
+					prj.Launch(info);
+				}
 			}
 		}
 

@@ -32,6 +32,8 @@ namespace TheZealousMachine
     public interface IGame
     {
         // generic stuff
+        Node3D GetActorRoot();
+
         void RegisterPlayer(IPlayer player);
         void UnregisterPlayer(IPlayer player);
         TargetInfo GetPlayerTarget();
@@ -44,7 +46,11 @@ namespace TheZealousMachine
         bool CheckLoS(Vector3 origin, Vector3 target);
 
         // game specific
+
+        IItemCollector GetPlayerCollector();
+
         void SpawnNextRoom(Transform3D t, int roomIndex = -1, int arenaIndex = -1);
+        void SpawnQuickPickups(Vector3 p, int count = 1);
         Node3D CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
         IProjectile CreateProjectile(int type = 0);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
@@ -95,6 +101,14 @@ namespace TheZealousMachine
     public interface IHittable
     {
         public HitResponse Hit(HitInfo hit);
+    }
+
+    public interface IItemCollector
+    {
+        Vector3 GlobalPosition { get; set; }
+        int GiveItem(string type, int count);
+
+        int CanTake(string type, int count);
     }
 
     public interface IArena

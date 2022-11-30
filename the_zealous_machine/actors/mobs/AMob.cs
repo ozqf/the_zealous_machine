@@ -45,6 +45,7 @@ namespace TheZealousMachine.actors.mobs
 		virtual protected void _RemoveFromGame()
 		{
 			_dead = true;
+			_game.SpawnQuickPickups(GlobalPosition, 3);
 			_game.CreateMobDebris(GlobalPosition, Velocity.Normalized());
 			//GD.Print($"{Name} - killed");
 			GlobalEvents.Send(GameEvents.MOB_DIED, this);

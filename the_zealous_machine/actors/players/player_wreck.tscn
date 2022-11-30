@@ -1,0 +1,70 @@
+[gd_scene load_steps=12 format=3 uid="uid://c8gickcr03qwt"]
+
+[ext_resource type="Script" path="res://actors/players/PlayerWreck.cs" id="1_3gvsb"]
+[ext_resource type="SphereMesh" uid="uid://ct68g57i70lya" path="res://shared/primitives/sphere.tres" id="2_7r3rh"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_avje6"]
+friction = 0.3
+bounce = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujyul"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_s5phl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ql32f"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="Gradient" id="Gradient_ooq21"]
+colors = PackedColorArray(1, 1, 1, 1, 0.137255, 0, 0.0980392, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_j1tok"]
+gradient = SubResource("Gradient_ooq21")
+
+[sub_resource type="Curve" id="Curve_bywpl"]
+_data = [Vector2(0, 0.245455), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_wgi5k"]
+curve = SubResource("Curve_bywpl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_suxbb"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+gravity = Vector3(0, 4, 0)
+scale_curve = SubResource("CurveTexture_wgi5k")
+color = Color(1, 1, 0, 1)
+color_ramp = SubResource("GradientTexture1D_j1tok")
+
+[node name="player_wreck" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_avje6")
+script = ExtResource("1_3gvsb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_7r3rh")
+surface_material_override/0 = SubResource("StandardMaterial3D_ujyul")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_s5phl")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_ql32f")
+amount = 128
+lifetime = 3.0
+randomness = 0.39
+visibility_aabb = AABB(-13, -10, -10, 26, 20, 20)
+process_material = SubResource("ParticleProcessMaterial_suxbb")
+draw_pass_1 = ExtResource("2_7r3rh")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+top_level = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.776471, 0, 1)
+light_energy = 2.0
+omni_range = 20.0
+omni_attenuation = 0.535887

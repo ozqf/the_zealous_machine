@@ -6,6 +6,7 @@ using TheZealousMachine;
 using TheZealousMachine.actors.volumes;
 using TheZealousMachine.actors.info;
 using System.Collections.Generic;
+using TheZealousMachine.actors.items;
 
 public partial class Main : Node3D, IGame
 {
@@ -26,8 +27,11 @@ public partial class Main : Node3D, IGame
     private PackedScene _bulletImpactGrey = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact_grey.tscn");
     private PackedScene _mobDebrisType = GD.Load<PackedScene>("res://gfx/mob_debris/mob_debris.tscn");
 
+	// items
+	private PackedScene _quickDrop = GD.Load<PackedScene>("res://actors/items/quick_drop.tscn");
+
 	// info
-    private PackedScene _spawnVolume = GD.Load<PackedScene>("res://actors/volumes/spawn_volume.tscn");
+	private PackedScene _spawnVolume = GD.Load<PackedScene>("res://actors/volumes/spawn_volume.tscn");
     
 	// service
 	private PackedScene _mainMenuType = GD.Load<PackedScene>("res://services/menus/main_menu.tscn");
@@ -40,9 +44,11 @@ public partial class Main : Node3D, IGame
 	private List<IMob> _mobs = new List<IMob>();
 
 	private List<Arena> _arenas = new List<Arena>();
+    public int debugRoom = -1;
 
-	// application entry point
-	public override void _Ready()
+
+    // application entry point
+    public override void _Ready()
 	{
 		GD.Print("Main init");
 		// todo - drop this service cack and just do everything through IGame
@@ -57,7 +63,9 @@ public partial class Main : Node3D, IGame
 		_menu.SetActive(true);
 	}
 
-	public void AddMouseLock(string lockName)
+    public Node3D GetActorRoot() { return this; }
+
+    public void AddMouseLock(string lockName)
 	{
         _mouseLock.AddLock(lockName);
 	}
@@ -143,17 +151,23 @@ public partial class Main : Node3D, IGame
 		return gfx;
 	}
 
-	public SpawnVolume CreateSpawnVolume(Vector3 pos)
+    public void SpawnQuickPickups(Vector3 p, int count = 1)
+	{
+		for (int i = 0; i < count; ++i)
+		{
+			QuickDrop drop = _quickDrop.Instantiate<QuickDrop>();
+			AddChild(drop);
+			drop.Launch(p);
+		}
+	}
+
+    public SpawnVolume CreateSpawnVolume(Vector3 pos)
 	{
 		SpawnVolume vol = _spawnVolume.Instantiate<SpawnVolume>();
 		AddChild(vol);
 		vol.GlobalPosition = pos;
 		return vol;
 	}
-
-	public bool debuggingRooms = false;
-
-	//private List<Arena> _pendingArenas = new List<Arena>();
 
 	private Arena AddInterimArena(Transform3D exitSeal)
 	{
@@ -179,9 +193,9 @@ public partial class Main : Node3D, IGame
             {
                 roomIndex = ZGU.RandomIndex(numRooms, GD.Randf());
             }
-            if (debuggingRooms)
+            if (debugRoom >= 0)
             {
-                roomIndex = 0;
+                roomIndex = debugRoom;
             }
 
             switch (roomIndex)
@@ -288,6 +302,8 @@ public partial class Main : Node3D, IGame
 		return info;
 
     }
+
+	public IItemCollector GetPlayerCollector() { return _player as IItemCollector; }
 
     public int AssignActorId()
     {

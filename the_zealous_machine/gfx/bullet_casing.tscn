@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://bukcubj6xh38g"]
+
+[ext_resource type="BoxMesh" uid="uid://dejrj8rmqqjsl" path="res://shared/primitives/box.tres" id="1_7yqtp"]
+[ext_resource type="Script" path="res://gfx/BulletCasing.cs" id="1_la6h2"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xplqf"]
+friction = 0.5
+bounce = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ne4ml"]
+size = Vector3(0.1, 0.1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_58asg"]
+albedo_color = Color(0.917647, 0.603922, 0, 1)
+metallic = 1.0
+
+[node name="bullet_casing" type="RigidBody3D"]
+collision_layer = 256
+physics_material_override = SubResource("PhysicsMaterial_xplqf")
+gravity_scale = 0.5
+script = ExtResource("1_la6h2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ne4ml")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("1_7yqtp")
+surface_material_override/0 = SubResource("StandardMaterial3D_58asg")
