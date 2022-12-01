@@ -46,16 +46,9 @@ maxMobs = 1
 perSpawnCount = 1
 mobType = -1
 
-[node name="room_8x1x8" parent="." instance=ExtResource("1_wvw1v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 88.2, 0)
-roomSeal = true
-
-[node name="room_8x1x9" parent="." instance=ExtResource("1_wvw1v")]
-transform = Transform3D(0.999586, 0.0287591, 0, -0.0287591, 0.999586, 0, 0, 0, 1, 0, 6.8, 0)
-roomSeal = true
-
 [node name="trigger_touch" parent="." instance=ExtResource("3_deqgq")]
 transform = Transform3D(64, 0, 0, 0, 64, 0, 0, 0, 64, -31, 16, -32)
+visible = false
 _message = "start"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -71,17 +64,37 @@ shape = SubResource("ConcavePolygonShape3D_tokh5")
 [node name="seal_top" parent="." instance=ExtResource("7_eksjy")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 96, 0)
 
+[node name="room_8x1x8" parent="seal_top" instance=ExtResource("1_wvw1v")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.49691e-07, 8)
+roomSeal = true
+
 [node name="seal_top2" parent="." instance=ExtResource("7_eksjy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 48, -48)
+
+[node name="room_8x1x10" parent="seal_top2" instance=ExtResource("1_wvw1v")]
+transform = Transform3D(0.999586, 0.0287591, 0, 1.2571e-09, -4.36933e-08, 1, 0.0287591, -0.999586, -4.37114e-08, 0, 0, 8)
+roomSeal = true
 
 [node name="seal_top3" parent="." instance=ExtResource("7_eksjy")]
 transform = Transform3D(-4.37114e-08, 1.91068e-15, 1, 4.37114e-08, 1, -8.35188e-23, -1, 4.37114e-08, -4.37114e-08, -48, 48, 0)
 
+[node name="room_8x1x11" parent="seal_top3" instance=ExtResource("1_wvw1v")]
+transform = Transform3D(1, -8.74228e-08, 0, 0, -4.37114e-08, -1, 8.74228e-08, 1, -4.37114e-08, 2.25822e-05, 0, 7)
+roomSeal = true
+
 [node name="seal_top4" parent="." instance=ExtResource("7_eksjy")]
 transform = Transform3D(-1, 8.74227e-08, -8.74228e-08, 8.74227e-08, 1, -3.34075e-22, 8.74228e-08, -7.64274e-15, -1, 0, 48, 48)
 
+[node name="room_8x1x12" parent="seal_top4" instance=ExtResource("1_wvw1v")]
+transform = Transform3D(1, -1.74845e-07, 9.61919e-14, 9.9476e-14, -4.37114e-08, -1, 1.74845e-07, 1, -4.37114e-08, -6.11961e-07, 0, 7.00001)
+roomSeal = true
+
 [node name="seal_top5" parent="." instance=ExtResource("7_eksjy")]
 transform = Transform3D(-4.37114e-08, 5.73204e-15, -1, 1.31134e-07, 1, -7.51667e-22, 1, -1.31134e-07, -4.37114e-08, 48, 48, 0)
+
+[node name="room_8x1x13" parent="seal_top5" instance=ExtResource("1_wvw1v")]
+transform = Transform3D(-4.37112e-08, 4.37114e-08, -1, -1, 4.37113e-08, 4.37112e-08, 4.37113e-08, 1, 4.37114e-08, -1.11381e-05, 0, 7)
+roomSeal = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 5, 2.67029e-05)
@@ -92,6 +105,10 @@ omni_range = 8.0
 
 [node name="seal_bottom" parent="." instance=ExtResource("7_eksjy")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="room_8x1x9" parent="seal_bottom" instance=ExtResource("1_wvw1v")]
+transform = Transform3D(0.999586, 0.0287591, 0, 1.2571e-09, -4.36933e-08, -1, -0.0287591, 0.999586, -4.37114e-08, 0, 0, 7)
+roomSeal = true
 
 [node name="volume" type="Area3D" parent="."]
 collision_layer = 1024

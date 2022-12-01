@@ -17,31 +17,44 @@ namespace TheZealousMachine.actors.volumes
 		private MeshInstance3D _mesh;
 		private bool _isEntrance = false;
 		private bool _isExit = false;
+		private bool _forceClosed = false;
+		private IDoor? _door;
 
 		public override void _Ready()
 		{
 			_ray = GetNode<RayCast3D>("RayCast3D");
 			_light = GetNode<OmniLight3D>("OmniLight3D");
-			_mesh = GetNode<MeshInstance3D>("MeshInstance3D");
+			_door = this.FindFirstChildOfType<IDoor>();
+			_door?.SetOpen(false);
+            _mesh = GetNode<MeshInstance3D>("MeshInstance3D");
 			_mesh.Visible = false;
 		}
 
-		private void _RefreshLight()
+		private void _Refresh()
 		{
-			if (_isExit)
+			if (_isExit && !_forceClosed)
 			{
 				_light.Visible = true;
 				_light.LightColor = Colors.Green;
+				_door?.SetOpen(true);
 			}
-			else if (isEntrance)
+			else if (isEntrance && !_forceClosed)
 			{
 				_light.Visible = true;
 				_light.LightColor = Colors.Blue;
-			}
+                _door?.SetOpen(true);
+            }
 			else
 			{
 				_light.Visible = false;
-			}	
+                _door?.SetOpen(false);
+            }	
+		}
+
+		public void SetForceClosed(bool flag)
+		{
+			_forceClosed = flag;
+			_Refresh();
 		}
 
 		public bool isEntrance
@@ -53,7 +66,7 @@ namespace TheZealousMachine.actors.volumes
 			set
 			{
 				_isEntrance = value;
-				_RefreshLight();
+				_Refresh();
 			}
 		}
 
@@ -66,7 +79,7 @@ namespace TheZealousMachine.actors.volumes
 			set
 			{
 				_isExit = value;
-				_RefreshLight();
+				_Refresh();
 			}
 		}
 

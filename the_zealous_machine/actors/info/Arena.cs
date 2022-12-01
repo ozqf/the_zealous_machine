@@ -25,7 +25,8 @@ namespace TheZealousMachine.actors.info
 			_scanned = true;
 			_spawners = this.FindChildrenOfType<Spawner>();
 			_barriers = this.FindChildrenOfType<PlayerBarrier>();
-			_doors = this.FindChildrenOfType<IDoor>();
+			_doors = new List<IDoor>();
+			//_doors = this.FindChildrenOfType<IDoor>();
 			_seals = this.FindChildrenOfType<RoomSeal>();
 			GD.Print($"Arena {Name} found {_spawners.Count} spawners, {_seals.Count} seals, {_barriers.Count} barriers");
 			_doors.ForEach(d => d.SetOpen(true));
@@ -124,6 +125,7 @@ namespace TheZealousMachine.actors.info
 		{
 			_running = true;
 			_doors.ForEach(d => d.SetOpen(false));
+			_seals.ForEach(s => s.SetForceClosed(true));
 			for (int i = 0; i < _spawners.Count; i++)
 			{
 				_spawners[i].Start();
@@ -144,6 +146,8 @@ namespace TheZealousMachine.actors.info
 				_barriers[i].SetOn(false);
 			}
 			_doors.ForEach(d => d.SetOpen(true));
+			// unseal everything that isn't the entrance
+			_seals.ForEach(s => { if (!s.isEntrance) { s.SetForceClosed(false); } });
 			_NextRoom();
 		}
 

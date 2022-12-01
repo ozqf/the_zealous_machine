@@ -83,6 +83,21 @@ namespace ZealousGodotUtils
             return FindParentOfTypeRecursive<T>(parent);
         }
 
+        public static T FindFirstChildOfType<T>(this Node node)
+        {
+            int numChildren = node.GetChildCount();
+            for (int i = 0; i < numChildren; i++)
+            {
+                Node child = node.GetChild(i);
+                if (child is T)
+                {
+                    T obj = (T)Convert.ChangeType(child, typeof(T));
+                    return obj;
+                }
+            }
+            return default(T);
+        }
+
         public static List<T> FindChildrenOfType<T>(this Node node)
         {
             List<T> values = new List<T>();
