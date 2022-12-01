@@ -1,4 +1,5 @@
 using Godot;
+using ZealousGodotUtils;
 
 namespace TheZealousMachine
 {
@@ -11,6 +12,12 @@ namespace TheZealousMachine
 		{
 			_game = game;
 			SetActive(false);
+			GetNode<Button>("VBoxContainer/start").Pressed += _StartClicked;
+		}
+
+		private void _StartClicked()
+		{
+			GlobalEvents.Send(GameEvents.APP_START, null);
 		}
 
 		public void SetActive(bool flag)

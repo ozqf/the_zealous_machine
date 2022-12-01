@@ -4,3 +4,5 @@
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_caooj")
+
+[node name="map" type="Node3D" parent="."]

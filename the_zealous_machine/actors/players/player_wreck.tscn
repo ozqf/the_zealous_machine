@@ -35,7 +35,7 @@ curve = SubResource("Curve_bywpl")
 emission_shape = 1
 emission_sphere_radius = 1.0
 direction = Vector3(0, 1, 0)
-gravity = Vector3(0, 4, 0)
+gravity = Vector3(0, 10, 0)
 scale_curve = SubResource("CurveTexture_wgi5k")
 color = Color(1, 1, 0, 1)
 color_ramp = SubResource("GradientTexture1D_j1tok")
@@ -56,7 +56,7 @@ material_override = SubResource("StandardMaterial3D_ql32f")
 amount = 128
 lifetime = 3.0
 randomness = 0.39
-visibility_aabb = AABB(-13, -10, -10, 26, 20, 20)
+visibility_aabb = AABB(-35, -49, -47, 70, 98, 94)
 process_material = SubResource("ParticleProcessMaterial_suxbb")
 draw_pass_1 = ExtResource("2_7r3rh")
 

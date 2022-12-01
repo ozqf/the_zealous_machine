@@ -22,6 +22,7 @@ namespace TheZealousMachine
         public const string MOB_SPAWNED = "mob_spawned";
         public const string MOB_DIED = "mob_died";
         public const string HUD_STATUS = "hud_status";
+        public const string APP_START = "app_start";
     }
 
     public class HudStatus

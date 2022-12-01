@@ -16,6 +16,13 @@ namespace TheZealousMachine.actors.players
 		{
 			GlobalTransform = wreckT;
 			_camera.GlobalTransform = cameraT;
+			if (velocity.LengthSquared() < 1f)
+			{
+				velocity.x = (float)GD.RandRange(-15f, 15f);
+				velocity.y = (float)GD.RandRange(-15f, 15f);
+				velocity.z = (float)GD.RandRange(-15f, 15f);
+			}
+			
 			LinearVelocity = velocity;
 			AngularVelocity = new Vector3(
 				(float)GD.RandRange(-3.2, 3.2f),
