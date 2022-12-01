@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://j86xx3idvgm"]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://actors/info/Arena.cs" id="1_8bi83"]
-[ext_resource type="PackedScene" uid="uid://4q20t2h4r31a" path="res://actors/rooms/doors/room_8x1x8.tscn" id="1_wvw1v"]
+[ext_resource type="PackedScene" uid="uid://4q20t2h4r31a" path="res://actors/rooms/doors/door_size_8x8_.tscn" id="1_wvw1v"]
 [ext_resource type="PackedScene" uid="uid://d3yp5aln8avq" path="res://actors/info/spawner.tscn" id="2_o3ktp"]
 [ext_resource type="Material" uid="uid://b3k78a04h2mae" path="res://shared/dev_materials/tech_block.tres" id="3_crar6"]
 [ext_resource type="PackedScene" uid="uid://cll3tpaytrgu7" path="res://actors/volumes/trigger_touch.tscn" id="3_deqgq"]

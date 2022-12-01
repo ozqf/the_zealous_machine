@@ -28,7 +28,7 @@ script = ExtResource("1_7vfah")
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 material_override = ExtResource("2_35abl")
 emitting = false
-amount = 16
+amount = 4
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_od400")

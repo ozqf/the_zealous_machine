@@ -50,7 +50,7 @@ namespace TheZealousMachine
 		private List<IMob> _mobs = new List<IMob>();
 
 		private List<Arena> _arenas = new List<Arena>();
-		public int debugRoom = 2;
+		public int debugRoom = -1;
 
 
 		// application entry point
