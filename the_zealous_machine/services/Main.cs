@@ -50,7 +50,7 @@ namespace TheZealousMachine
 		private List<IMob> _mobs = new List<IMob>();
 
 		private List<Arena> _arenas = new List<Arena>();
-		public int debugRoom = -1;
+		public int debugRoom = 2;
 
 
 		// application entry point
@@ -346,17 +346,9 @@ namespace TheZealousMachine
 			return result;
 		}
 
-		public override void _PhysicsProcess(double delta)
+		public void RefreshPaused()
 		{
-			switch (_state)
-			{
-				case AppState.Dead:
-					if (Input.IsActionJustPressed("reset"))
-					{
-
-					}
-					break;
-			}
+			GetTree().Paused = _menu.Active;
 		}
 	}
 }

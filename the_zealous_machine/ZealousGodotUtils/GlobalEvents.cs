@@ -22,6 +22,8 @@ namespace ZealousGodotUtils
 
         public static void Send(string msg, object data)
         {
+            // TODO: This is not safe if listeners Unregister during send!
+            // also if listeners are added during send it will extend.
             for (int i = 0; i < _listeners.Count; i++)
             {
                 _listeners[i].Invoke(msg, data);

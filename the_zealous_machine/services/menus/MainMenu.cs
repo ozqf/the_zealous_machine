@@ -20,6 +20,8 @@ namespace TheZealousMachine
 			GlobalEvents.Send(GameEvents.APP_START, null);
 		}
 
+		public bool Active { get { return _active; } }
+
 		public void SetActive(bool flag)
 		{
 			_active = flag;
@@ -40,6 +42,8 @@ namespace TheZealousMachine
 			if (Input.IsActionJustPressed("main_menu"))
 			{
 				SetActive(!_active);
+				_game.RefreshPaused();
+
 			}
 		}
 	}

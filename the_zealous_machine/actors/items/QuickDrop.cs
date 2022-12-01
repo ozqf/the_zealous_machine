@@ -41,7 +41,7 @@ namespace TheZealousMachine.actors.items
 			Vector3 toward = (p - GlobalPosition).Normalized();
 			if (LinearVelocity.Dot(toward) < 0)
 			{
-				LinearVelocity *= 0.95f;
+				LinearVelocity *= 0.9f;
 			}
 			LinearVelocity += (toward * 120f) * delta;
 		}

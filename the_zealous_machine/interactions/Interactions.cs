@@ -42,6 +42,8 @@ namespace TheZealousMachine
         void RemoveMouseLock(string lockName);
         bool IsMouseLocked();
 
+        void RefreshPaused();
+
         int AssignActorId();
 
         bool CheckLoS(Vector3 origin, Vector3 target);
