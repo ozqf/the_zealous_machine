@@ -10,12 +10,48 @@ using ZealousGodotUtils;
 
 namespace TheZealousMachine
 {
-	public partial class PlayerSixDegrees : CharacterBody3D, IPlayer, IHittable, IItemCollector
+	internal struct PlayerMoveSettings
+	{
+		public static PlayerMoveSettings Get(TurretFormation formation)
+		{
+			switch (formation)
+			{
+				case TurretFormation.Boost:
+					return new PlayerMoveSettings
+					{
+						pushForce = 100f,
+						maxSpeed = 30f,
+						drag = 0.9f
+					};
+				case TurretFormation.Narrow:
+					return new PlayerMoveSettings
+					{
+						pushForce = 200f,
+						maxSpeed = 15f,
+						drag = 0.8f
+					};
+				default:
+					return new PlayerMoveSettings
+					{
+						pushForce = 160f,
+						maxSpeed = 20f,
+						drag = 0.9f
+					};
+			}
+		}
+
+		public float maxSpeed;
+		public float drag;
+		public float pushForce;
+	}
+
+	public partial class PlayerSixDegrees : CharacterBody3D, IPlayer, IHittable, IItemCollector, ITurretUser
 	{
 		private IGame _game;
 
 		Vector3 _origin;
 		Vector3 _angularVelocity = Vector3.Zero;
+		private PlayerMoveSettings _moveSettings;
 		float _gravityStrength = 20f;
 		private float boostGauge = 0f;
 		private float boostPerSecond = 50f;
@@ -82,9 +118,12 @@ namespace TheZealousMachine
 			{
 				_remoteTurrets[i].SetTrackTargets(_spreadTurretPositions[i], _narrowTurretPositions[i], _boostTurretPositions[i]);
 				_remoteTurrets[i].SetAimTarget(_aimLaser);
+				_remoteTurrets[i].SetUser(this);
 			}
 
 			_centreTurret.SetAimTarget(_aimLaser);
+			_centreTurret.SetUser(this);
+
 
 			SetFormation(TurretFormation.Spread);
 
@@ -97,6 +136,39 @@ namespace TheZealousMachine
 			_game = Servicelocator.Locate<IGame>();
 			_game.RegisterPlayer(this);
 			GlobalEvents.Register(_OnGlobalEvent);
+		}
+
+		public int GetItemCount(string name)
+		{
+			switch (name)
+			{
+				case "energy":
+					return _energy;
+			}
+			return 0;
+		}
+
+		public void TakeItem(string name, int count)
+		{
+			switch (name)
+			{
+				case "energy":
+					_energy -= count;
+					if (_energy < 0) { _energy = 0; }
+					break;
+			}
+		}
+
+		public bool CheckAndTakeItem(string name, int count)
+		{
+			switch (name)
+			{
+				case "energy":
+					if (_energy < count) { return false; }
+					_energy -= count;
+					return true;
+			}
+			return false;
 		}
 
 		public override void _ExitTree()
@@ -122,14 +194,15 @@ namespace TheZealousMachine
 			{
 				_remoteTurrets[i].SetFormation(formation);
 			}
-			if (_formation == TurretFormation.Narrow)
+			_moveSettings = PlayerMoveSettings.Get(formation);
+			/*if (_formation == TurretFormation.Narrow)
 			{
 				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/close"));
 			}
 			else
 			{
 				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/far"));
-			}
+			}*/
 		}
 
 		public int GiveItem(string type, int count)
@@ -235,44 +308,9 @@ namespace TheZealousMachine
 				SpawnVolume vol = _game.CreateSpawnVolume(pos);
 				vol.mobType = MobType.Cross;
 			}
-		}
-
-		private float GetMaxPushSpeed()
-		{
-			switch (_formation)
+			if (Input.IsActionPressed("slot_0"))
 			{
-				case TurretFormation.Boost:
-					return 30f;
-				case TurretFormation.Narrow:
-					return 10f;
-				default:
-					return 20f;
-			}
-		}
-
-		public float GetPushForce()
-		{
-			switch (_formation)
-			{
-				case TurretFormation.Boost:
-					return 100f;
-				case TurretFormation.Narrow:
-					return 200f;
-				default:
-					return 160f;
-			}
-		}
-		
-		public float GetDrag()
-		{
-			switch (_formation)
-			{
-				case TurretFormation.Boost:
-					return 0.97f;
-				case TurretFormation.Narrow:
-					return 0.8f;
-				default:
-					return 0.97f;
+				_game.SpawnQuickPickups(_aimLaser.GetSpawnPosition(), 1);
 			}
 		}
 
@@ -300,7 +338,8 @@ namespace TheZealousMachine
 		public override void _Process(double delta)
 		{
 			float spinRadians = 360f * ZGU.DEG2RAD;
-			_bodyMeshes.Visible = (_formation != TurretFormation.Narrow && _cameraPylon.GetLastFraction() > 0.25f);
+			//_bodyMeshes.Visible = (_formation != TurretFormation.Narrow && _cameraPylon.GetLastFraction() > 0.25f);
+			_bodyMeshes.Visible = _cameraPylon.GetLastFraction() > 0.25f;
 			_gatlingNode.RotateZ(spinRadians * (float)delta);
 			_boostNode.RotateZ(spinRadians * (float)delta);
 		}
@@ -386,7 +425,7 @@ namespace TheZealousMachine
 			// push
 			Vector3 push = PlayerUtils.InputAxesToCharacterPush(input.pushAxes, this.GlobalTransform.basis);
 
-			float cappedSpeed = GetMaxPushSpeed();
+			float cappedSpeed = _moveSettings.maxSpeed;
 			float currentSpeed = Velocity.Length();
 			if (currentSpeed > cappedSpeed)
 			{
@@ -396,7 +435,7 @@ namespace TheZealousMachine
 			if (push.LengthSquared() > 0)
 			{
 				// apply thrust
-				Vector3 thrust = push * (GetPushForce() * (float)delta);
+				Vector3 thrust = push * (_moveSettings.pushForce * (float)delta);
 				Velocity += thrust;
 				// don't allow the push to exceed the cap
 				if (Velocity.LengthSquared() > (cappedSpeed * cappedSpeed))
@@ -410,7 +449,7 @@ namespace TheZealousMachine
 			else
 			{
 				// apply drag
-				Velocity *= GetDrag();
+				Velocity *= _moveSettings.drag;
 			}
 
 			if (Velocity.LengthSquared() < (0.05f * 0.05f))

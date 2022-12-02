@@ -135,6 +135,15 @@ namespace TheZealousMachine
         void Reset();
     }
 
+    public interface ITurretUser
+    {
+        public int GetItemCount(string name);
+
+        public void TakeItem(string name, int count);
+
+        public bool CheckAndTakeItem(string name, int count);
+    }
+
     public struct TargetInfo
     {
         public bool valid;

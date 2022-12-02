@@ -17,7 +17,6 @@ metallic = 1.0
 [node name="bullet_casing" type="RigidBody3D"]
 collision_layer = 256
 physics_material_override = SubResource("PhysicsMaterial_xplqf")
-gravity_scale = 0.5
 script = ExtResource("1_la6h2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

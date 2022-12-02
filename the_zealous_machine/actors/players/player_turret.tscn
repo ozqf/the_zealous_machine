@@ -8,10 +8,12 @@
 [sub_resource type="BoxMesh" id="BoxMesh_0ypl3"]
 size = Vector3(0.25, 0.25, 1)
 
-[node name="player_turret" type="MeshInstance3D"]
+[node name="player_turret" type="Node3D"]
+script = ExtResource("1_7n2nj")
+
+[node name="mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_0ypl3")
 skeleton = NodePath("../..")
-script = ExtResource("1_7n2nj")
 
 [node name="booster_particles" parent="." instance=ExtResource("2_7yn1t")]
 emitting = false

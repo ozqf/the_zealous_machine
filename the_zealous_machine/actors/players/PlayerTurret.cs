@@ -14,14 +14,23 @@ namespace TheZealousMachine.actors.players
 	{
 		private PackedScene _bulletCasing = GD.Load<PackedScene>("res://gfx/bullet_casing.tscn");
 
+		public enum TurretState { InFormation, Recoiling, Reloading, Launched, Returning }
+
+		private TurretState _state = TurretState.InFormation;
 		// current position tracking target
 		private Node3D _subject;
 		private AimLaser _target;
 		private TurretFormation _formation;
+		private ITurretUser _user = null;
+		private bool _longReload = false;
 		private float _tick = 0f;
+		private float _jerkTick = 0f;
+		private float _jerkTime = 0f;
+		private Vector3 _jerkOrigin = new Vector3(0, 0, 0.5f);
 		private TimedVisible _light;
 		private TimedVisible _flash;
 		private GPUParticles3D _boostParticles;
+		private MeshInstance3D _mesh;
 		private IGame _game;
 
 		private Node3D _spreadTarget = null;
@@ -34,6 +43,7 @@ namespace TheZealousMachine.actors.players
 			_light = GetNode<TimedVisible>("light");
 			_flash = GetNode<TimedVisible>("muzzle_spikes");
 			_boostParticles = GetNode<GPUParticles3D>("booster_particles");
+			_mesh = GetNode<MeshInstance3D>("mesh");
 
 			Node player = this.FindParentOfTypeRecursive<IPlayer>();
 			if (player != null)
@@ -44,6 +54,11 @@ namespace TheZealousMachine.actors.players
 			{
 				GD.Print("Turret found no player!");
 			}
+		}
+
+		public void SetUser(ITurretUser user)
+		{
+			_user = user;
 		}
 
 		public void SetFormation(TurretFormation formation)
@@ -116,6 +131,7 @@ namespace TheZealousMachine.actors.players
 				return;
 			}
 
+			_longReload = false;
 			// No firing if in boost mode
 			if (_formation == TurretFormation.Boost)
 			{
@@ -125,7 +141,7 @@ namespace TheZealousMachine.actors.players
 			if (Input.IsActionPressed("attack_1"))
 			{
 				_RunMuzzleGFX();
-				_SpawnBulletCasing();
+				//_SpawnBulletCasing();
 				_tick = 0.1f;
 				IProjectile prj = _game.CreateProjectile();
 				ProjectileLaunchInfo info = new ProjectileLaunchInfo();
@@ -135,8 +151,11 @@ namespace TheZealousMachine.actors.players
 				info.teamId = Interactions.TEAM_ID_PLAYER;
 				prj.Launch(info);
 			}
-			else if (Input.IsActionPressed("attack_2"))
+			else if (Input.IsActionPressed("attack_2") && _user.CheckAndTakeItem("energy", 2))
 			{
+				_jerkTime = 0.3f;
+				_jerkTick = 0;
+				_state = TurretState.Recoiling;
 				_RunMuzzleGFX();
 				_SpawnBulletCasing();
 				_tick = 1f;
@@ -162,13 +181,51 @@ namespace TheZealousMachine.actors.players
 
 		public override void _Process(double delta)
 		{
+			// TODO: This movement is framerate dependent!
+			// perhaps only mesh should move like this?
 			if (_subject != null)
 			{
-				GlobalPosition = _subject.GlobalTransform.origin;
+				Vector3 tPos = _subject.GlobalPosition;
+				Vector3 p = GlobalPosition.Lerp(tPos, 0.25f);
+				GlobalPosition = p;
 			}
-			if (_formation == TurretFormation.Spread && _target != null)
+
+			if (_jerkTime > 0)
 			{
-				this.LookAtSafe(_target.GetAimPosition(), Vector3.Up, Vector3.Left);
+				
+			}
+
+			switch (_state)
+			{
+				case TurretState.Recoiling:
+					_jerkTick += (float)delta;
+					if (_jerkTick >= _jerkTime)
+					{
+						_jerkTick = _jerkTime;
+						_state = TurretState.Reloading;
+					}
+					_mesh.Position = _jerkOrigin.Lerp(Vector3.Zero, _jerkTick / _jerkTime);
+					break;
+				case TurretState.Reloading:
+					this.Rotation = new Vector3(90f * ZGU.DEG2RAD, 0, 0);
+					if (_tick <= 0)
+					{
+						_state = TurretState.InFormation;
+					}
+					break;
+				default:
+					if (_longReload)
+					{
+						this.Rotation = new Vector3(90f * ZGU.DEG2RAD, 0, 0);
+						return;
+					}
+					if ((_formation == TurretFormation.Spread
+						|| _formation == TurretFormation.Narrow)
+						&& _target != null)
+					{
+						this.LookAtSafe(_target.GetAimPosition(), Vector3.Up, Vector3.Left);
+					}
+					break;
 			}
 		}
 	}
