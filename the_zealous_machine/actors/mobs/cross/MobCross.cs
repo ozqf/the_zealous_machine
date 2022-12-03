@@ -8,7 +8,7 @@ namespace TheZealousMachine.actors.mobs.cross
 		public override void _Ready()
 		{
 			base._Ready();
-			_nextProjectileType = 2;
+			_nextProjectileType = ProjectileType.Column;
 			_shootTime = 2f;
 			_health = 200;
 			_onlyMoveIfOutOfLoS = true;
@@ -21,7 +21,7 @@ namespace TheZealousMachine.actors.mobs.cross
 			base._PushMoveToward(target, pushForce, maxSpeed, delta);
 		}
 
-		protected override ProjectileLaunchInfo CreateLaunchInfo(int prjType)
+		protected override ProjectileLaunchInfo CreateLaunchInfo(ProjectileType prjType)
 		{
 			ProjectileLaunchInfo info = base.CreateLaunchInfo(prjType);
 			info.speed = 10f;

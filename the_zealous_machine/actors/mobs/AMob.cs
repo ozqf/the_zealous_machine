@@ -16,7 +16,7 @@ namespace TheZealousMachine.actors.mobs
 		protected int _health = 80;
 		protected float _shootTick = 1;
 		protected float _shootTime = 0.5f;
-		protected int _nextProjectileType = 1;
+		protected ProjectileType _nextProjectileType = ProjectileType.MobBasic;
 		protected bool _onlyMoveIfOutOfLoS = false;
 
 		public override void _Ready()
@@ -90,7 +90,7 @@ namespace TheZealousMachine.actors.mobs
 			this.LookAtSafe(_think.targetInfo.position, Vector3.Up, Vector3.Left);
 		}
 
-		virtual protected ProjectileLaunchInfo CreateLaunchInfo(int prjType)
+		virtual protected ProjectileLaunchInfo CreateLaunchInfo(ProjectileType prjType)
 		{
 			ProjectileLaunchInfo info = new ProjectileLaunchInfo();
 			info.damage = 10;

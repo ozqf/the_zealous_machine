@@ -171,3 +171,7 @@ main_menu={
 3d_physics/layer_10="spawn_volumes"
 3d_physics/layer_11="room_volume"
 3d_physics/layer_12="item_collector"
+
+[rendering]
+
+anti_aliasing/quality/msaa_3d=1

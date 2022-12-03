@@ -138,6 +138,9 @@ namespace TheZealousMachine
 			GlobalEvents.Register(_OnGlobalEvent);
 		}
 
+		public IItemCollector GetItemCollector() { return this; }
+
+
 		public int GetItemCount(string name)
 		{
 			switch (name)
@@ -195,14 +198,14 @@ namespace TheZealousMachine
 				_remoteTurrets[i].SetFormation(formation);
 			}
 			_moveSettings = PlayerMoveSettings.Get(formation);
-			/*if (_formation == TurretFormation.Narrow)
+			if (_formation == TurretFormation.Narrow)
 			{
 				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/close"));
 			}
 			else
 			{
 				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/far"));
-			}*/
+			}
 		}
 
 		public int GiveItem(string type, int count)

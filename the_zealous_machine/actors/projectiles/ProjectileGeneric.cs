@@ -8,7 +8,7 @@ namespace TheZealousMachine.actors.projectiles
 		private IGame _game;
 		private float _speed = 50f;
 		private RayCast3D _ray;
-		private float _timeToLive = 30f;
+		private float _timeToLive = 15f;
 		private int _teamId = Interactions.TEAM_ID_MOBS;
 		private ImpactType _damagingImpactType = ImpactType.Yellow;
 		private ImpactType _dudImpactType = ImpactType.Grey;
@@ -47,13 +47,19 @@ namespace TheZealousMachine.actors.projectiles
 			GlobalPosition += (-GlobalTransform.basis.z) * (_speed * delta);
 		}
 
+		public void Remove()
+		{
+			this.QueueFree();
+			SetPhysicsProcess(false);
+		}
+
 		public override void _PhysicsProcess(double delta)
 		{
 			float dt = (float)delta;
 			_timeToLive -= dt;
 			if ( _timeToLive <= 0 )
 			{
-				this.QueueFree();
+				Remove();
 				return;
 			}
 			float fraction = _ray.GetRayFraction();
@@ -80,12 +86,12 @@ namespace TheZealousMachine.actors.projectiles
 				hit.damage = _launchInfo.damage;
 				HitResponse res = victim.Hit(hit);
 				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal(), _damagingImpactType);
-				this.QueueFree();
+				Remove();
 			}
 			else
 			{
 				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal(), _dudImpactType);
-				this.QueueFree();
+				Remove();
 			}
 		}
 	}

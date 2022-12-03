@@ -10,7 +10,7 @@ namespace TheZealousMachine.actors.players
 		Boost
 	}
 
-	public partial class PlayerTurret : Node3D
+	public partial class PlayerTurret : Node3D, IItemCollector
 	{
 		private PackedScene _bulletCasing = GD.Load<PackedScene>("res://gfx/bullet_casing.tscn");
 
@@ -143,7 +143,7 @@ namespace TheZealousMachine.actors.players
 				_RunMuzzleGFX();
 				//_SpawnBulletCasing();
 				_tick = 0.1f;
-				IProjectile prj = _game.CreateProjectile();
+				IProjectile prj = _game.CreateProjectile(ProjectileType.PlayerBasic);
 				ProjectileLaunchInfo info = new ProjectileLaunchInfo();
 				info.t = GlobalTransform.MovedForward(0.5f);
 				info.speed = 200f;
@@ -164,7 +164,7 @@ namespace TheZealousMachine.actors.players
 				float spread = 5f * ZGU.DEG2RAD;
 				for (int i = 0; i < 10; ++i)
 				{
-					IProjectile prj = _game.CreateProjectile();
+					IProjectile prj = _game.CreateProjectile(ProjectileType.PlayerBasic);
 					ProjectileLaunchInfo info = new ProjectileLaunchInfo();
 					info.t = GlobalTransform.MovedForward(0.5f);
 					info.t.origin = Vector3.Zero;
@@ -227,6 +227,16 @@ namespace TheZealousMachine.actors.players
 					}
 					break;
 			}
+		}
+
+		public int GiveItem(string type, int count)
+		{
+			return _user.GetItemCollector().GiveItem(type, count);
+		}
+
+		public int CanTake(string type, int count)
+		{
+			return _user.GetItemCollector().CanTake(type, count);
 		}
 	}
 }

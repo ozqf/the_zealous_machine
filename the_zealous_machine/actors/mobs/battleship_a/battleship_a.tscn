@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3ikpx0phpo73"]
+
+[ext_resource type="Script" path="res://actors/mobs/battleship_a/Battleship.cs" id="1_f06dg"]
+[ext_resource type="Material" uid="uid://bbhl6vpdc4cn2" path="res://shared/dev_materials/grey_block_planar.tres" id="1_kvibd"]
+[ext_resource type="PackedScene" uid="uid://blbafanqojdh1" path="res://actors/mobs/turrets/turret_a.tscn" id="2_y10co"]
+[ext_resource type="PackedScene" uid="uid://cx128whm7o22q" path="res://actors/mobs/turrets/mob_gun_a.tscn" id="4_677g6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8mnma"]
+radius = 6.0
+height = 24.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_20q5p"]
+radius = 6.0
+height = 24.0
+
+[node name="battleship_a" type="CharacterBody3D"]
+script = ExtResource("1_f06dg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_8mnma")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_20q5p")
+surface_material_override/0 = ExtResource("1_kvibd")
+
+[node name="turret" parent="." instance=ExtResource("2_y10co")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 0)
+trackY = false
+
+[node name="barrels" type="Node3D" parent="turret"]
+
+[node name="gun" parent="turret/barrels" instance=ExtResource("4_677g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+projectileType = 2
+projectileSpeed = 10.0
+refireTime = 0.5
+
+[node name="turret2" parent="." instance=ExtResource("2_y10co")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, -6)
+trackZ = false
+
+[node name="barrels" type="Node3D" parent="turret2"]
+
+[node name="gun" parent="turret2/barrels" instance=ExtResource("4_677g6")]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, -1)
+projectileType = 2
+projectileSpeed = 10.0
+
+[node name="turret3" parent="." instance=ExtResource("2_y10co")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 6)
+trackX = false
+trackY = false
+trackZ = false
+
+[node name="barrels" type="Node3D" parent="turret3"]
+
+[node name="gun" parent="turret3/barrels" instance=ExtResource("4_677g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+projectileType = 2
+degreesRandomRotation = Vector3(0, 0, 180)
+
+[node name="gun2" parent="turret3/barrels" instance=ExtResource("4_677g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+projectileType = 2
+degreesRandomRotation = Vector3(0, 0, 180)
+
+[node name="gun3" parent="turret3/barrels" instance=ExtResource("4_677g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+projectileType = 2
+degreesRandomRotation = Vector3(0, 0, 180)

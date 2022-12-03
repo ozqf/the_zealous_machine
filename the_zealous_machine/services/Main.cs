@@ -22,6 +22,7 @@ namespace TheZealousMachine
 		private PackedScene _prjGeneric = GD.Load<PackedScene>("res://actors/projectiles/projectile_generic.tscn");
 		private PackedScene _prjMobBasic = GD.Load<PackedScene>("res://actors/projectiles/projectile_mob_basic.tscn");
 		private PackedScene _prjColumn = GD.Load<PackedScene>("res://actors/projectiles/projectile_column.tscn");
+		private PackedScene _prjMobVolume = GD.Load<PackedScene>("res://actors/projectiles/projectile_mob_volume.tscn");
 
 		// gfx
 		private PackedScene _bulletImpact = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact.tscn");
@@ -135,17 +136,23 @@ namespace TheZealousMachine
 			return result.Count == 0;
 		}
 
-		public IProjectile CreateProjectile(int type = 0)
+		public IProjectile CreateProjectile(ProjectileType type)
 		{
 			IProjectile prj;
 
 			switch (type)
 			{
-				case 0:
+				case ProjectileType.MobBasic:
+                    prj = _prjMobBasic.Instantiate<IProjectile>();
+                    break;
+                case ProjectileType.PlayerBasic:
 					prj = _prjGeneric.Instantiate<IProjectile>();
 					break;
-				case 2:
+				case ProjectileType.Column:
 					prj = _prjColumn.Instantiate<IProjectile>();
+					break;
+				case ProjectileType.MobVolume:
+					prj = _prjMobVolume.Instantiate<IProjectile>();
 					break;
 				default:
 					prj = _prjMobBasic.Instantiate<IProjectile>();

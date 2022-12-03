@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://x3720n4mkgd5"]
+[gd_scene load_steps=10 format=3 uid="uid://bl8n6lojfqn55"]
 
 [ext_resource type="ArrayMesh" uid="uid://b7h1vx7kqce0e" path="res://maps/terrain_test_01/geometry/surface.obj" id="1_ixj2m"]
 [ext_resource type="Material" uid="uid://b3k78a04h2mae" path="res://shared/dev_materials/tech_block.tres" id="2_6ugja"]
 [ext_resource type="PackedScene" uid="uid://di76hngcq80pu" path="res://actors/players/player_start.tscn" id="4_pr30c"]
 [ext_resource type="Environment" uid="uid://7brsyxghhkhk" path="res://env/env_gloomy.tres" id="5_hl05p"]
+[ext_resource type="PackedScene" uid="uid://d3ikpx0phpo73" path="res://actors/mobs/battleship_a/battleship_a.tscn" id="6_pqtan"]
+[ext_resource type="PackedScene" uid="uid://mmu2g0vqllyp" path="res://actors/rooms/square_shaft_geometry.tscn" id="7_qigsy"]
 [ext_resource type="PackedScene" uid="uid://bdhcrwyw021re" path="res://actors/info/endless_start.tscn" id="7_qinbe"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_kd2lc"]
@@ -27,7 +29,7 @@ shape = SubResource("ConcavePolygonShape3D_kd2lc")
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="player_start" parent="." instance=ExtResource("4_pr30c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 90, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 90, 39)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("5_hl05p")
@@ -49,3 +51,11 @@ shape = SubResource("BoxShape3D_q3t3q")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 185, 208)
+
+[node name="battleship_a" parent="." instance=ExtResource("6_pqtan")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 118, 0)
+
+[node name="sandbox" type="Node3D" parent="."]
+
+[node name="square_shaft_geometry" parent="sandbox" instance=ExtResource("7_qigsy")]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 126, 0)

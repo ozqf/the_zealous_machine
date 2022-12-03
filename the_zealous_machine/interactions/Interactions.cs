@@ -25,6 +25,11 @@ namespace TheZealousMachine
         public const string APP_START = "app_start";
     }
 
+    public enum ProjectileType
+    {
+        MobBasic, PlayerBasic, Column, MobVolume 
+    }
+
     public class HudStatus
     {
         public int health = 100;
@@ -55,7 +60,7 @@ namespace TheZealousMachine
         void SpawnNextRoom(Transform3D t, int roomIndex = -1, int arenaIndex = -1);
         void SpawnQuickPickups(Vector3 p, int count = 1);
         Node3D CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
-        IProjectile CreateProjectile(int type = 0);
+        IProjectile CreateProjectile(ProjectileType type);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
         IMob CreateMob(Vector3 pos, MobType type = MobType.Drone);
         void RegisterMob(IMob mob);
@@ -142,6 +147,8 @@ namespace TheZealousMachine
         public void TakeItem(string name, int count);
 
         public bool CheckAndTakeItem(string name, int count);
+
+        public IItemCollector GetItemCollector();
     }
 
     public struct TargetInfo

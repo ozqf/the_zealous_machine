@@ -1,13 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://bhh1vk5cryegt"]
+[gd_scene load_steps=17 format=3 uid="uid://cgke5wc2hbgwn"]
 
-[ext_resource type="PackedScene" uid="uid://cwwbu12b28b5h" path="res://actors/players/body_meshes.tscn" id="1_ptacq"]
+[ext_resource type="PackedScene" path="res://actors/players/body_meshes.tscn" id="1_ptacq"]
 [ext_resource type="Script" path="res://actors/players/six_degrees/PlayerSixDegrees.cs" id="1_vo387"]
-[ext_resource type="PackedScene" uid="uid://11nh5ohu0j28" path="res://actors/players/aim_laser.tscn" id="3_jgp8p"]
+[ext_resource type="PackedScene" path="res://actors/players/aim_laser.tscn" id="3_jgp8p"]
 [ext_resource type="PackedScene" uid="uid://8gpog7nvjwpa" path="res://actors/players/raycast_pylon.tscn" id="3_n3yfh"]
 [ext_resource type="Script" path="res://gfx/TimedVisible.cs" id="3_ye8n3"]
 [ext_resource type="PackedScene" uid="uid://db4p6st64pmax" path="res://actors/players/player_turret.tscn" id="4_2b0gq"]
 [ext_resource type="SphereMesh" uid="uid://ct68g57i70lya" path="res://shared/primitives/sphere.tres" id="5_8bwar"]
-[ext_resource type="PackedScene" uid="uid://8dtigvuktre7" path="res://gfx/booster_particles.tscn" id="7_d4sd8"]
+[ext_resource type="PackedScene" path="res://gfx/booster_particles.tscn" id="7_d4sd8"]
 [ext_resource type="PackedScene" uid="uid://ql3e3i6qcxev" path="res://actors/hud/hud.tscn" id="8_yp0fk"]
 [ext_resource type="Script" path="res://actors/hud/HUD.cs" id="9_u7hsh"]
 
@@ -25,6 +25,9 @@ albedo_color = Color(0.0823529, 0.376471, 1, 0.196078)
 emission_enabled = true
 emission = Color(0.356863, 0.670588, 1, 1)
 emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_q0lj6"]
+size = Vector3(0.1, 0.1, 0.5)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2wku5"]
 radius = 2.0
@@ -76,23 +79,18 @@ current = true
 
 [node name="turret_centre" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -0.5)
-skeleton = NodePath("..")
 
 [node name="player_turret" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1, 2)
-skeleton = NodePath("..")
 
 [node name="player_turret2" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 1, 2)
-skeleton = NodePath("..")
 
 [node name="player_turret3" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, -1, 2)
-skeleton = NodePath("..")
 
 [node name="player_turret4" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, -1, 2)
-skeleton = NodePath("..")
 
 [node name="raycast_pylon" parent="head/options" instance=ExtResource("3_n3yfh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0.4)
@@ -168,6 +166,33 @@ visible = false
 mesh = ExtResource("5_8bwar")
 skeleton = NodePath("../../raycast_pylon")
 
+[node name="gatling_node2" type="Node3D" parent="head/options"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -1)
+
+[node name="target" type="MeshInstance3D" parent="head/options/gatling_node2"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.9, 0, 0.5)
+visible = false
+mesh = SubResource("BoxMesh_q0lj6")
+skeleton = NodePath("../../raycast_pylon")
+
+[node name="target2" type="MeshInstance3D" parent="head/options/gatling_node2"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -7.45058e-09, -0.9, 0.5)
+visible = false
+mesh = SubResource("BoxMesh_q0lj6")
+skeleton = NodePath("../../raycast_pylon")
+
+[node name="target3" type="MeshInstance3D" parent="head/options/gatling_node2"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.9, 0, 0.5)
+visible = false
+mesh = SubResource("BoxMesh_q0lj6")
+skeleton = NodePath("../../raycast_pylon")
+
+[node name="target4" type="MeshInstance3D" parent="head/options/gatling_node2"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0.9, 0.5)
+visible = false
+mesh = SubResource("BoxMesh_q0lj6")
+skeleton = NodePath("../../raycast_pylon")
+
 [node name="boost_node" type="Node3D" parent="head/options"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0.8)
 
@@ -182,6 +207,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="4" type="Node3D" parent="head/options/boost_node"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+
+[node name="Node3D" type="Node3D" parent="head/options"]
 
 [node name="debug_print" type="Label" parent="."]
 offset_right = 320.0

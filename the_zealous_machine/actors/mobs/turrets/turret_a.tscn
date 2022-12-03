@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://blbafanqojdh1"]
+
+[ext_resource type="SphereMesh" uid="uid://ct68g57i70lya" path="res://shared/primitives/sphere.tres" id="1_lbqb4"]
+[ext_resource type="Script" path="res://actors/mobs/turrets/MobTurret.cs" id="1_tb5fb"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_733kr"]
+radius = 1.0
+
+[node name="turret" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 5)
+script = ExtResource("1_tb5fb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_733kr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+mesh = ExtResource("1_lbqb4")

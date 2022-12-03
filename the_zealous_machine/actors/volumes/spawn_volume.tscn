@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cw4s1htpryrhl"]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="SphereMesh" uid="uid://ct68g57i70lya" path="res://shared/primitives/sphere.tres" id="1_bekjl"]
 [ext_resource type="Script" path="res://actors/volumes/SpawnVolume.cs" id="1_db48o"]
