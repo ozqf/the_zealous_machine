@@ -341,7 +341,11 @@ namespace TheZealousMachine
 			TargetInfo info = new TargetInfo();
 			info.valid = false;
 			return info;
+		}
 
+		public bool hasPlayer()
+		{
+			return _player!= null;
 		}
 
 		public IItemCollector GetPlayerCollector() { return _player as IItemCollector; }

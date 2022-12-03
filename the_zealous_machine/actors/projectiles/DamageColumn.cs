@@ -8,6 +8,7 @@ namespace TheZealousMachine.actors.projectiles
 		private IHittable _hittable;
 		private float _hurtTick = 0f;
 		private HitInfo _hit;
+		private const float spinDegreesPerSecond = 180f;
 
 		public override void _Ready()
 		{
@@ -43,6 +44,9 @@ namespace TheZealousMachine.actors.projectiles
 
 		public override void _PhysicsProcess(double delta)
 		{
+			Vector3 rot = Rotation;
+			rot.z += (spinDegreesPerSecond * ZGU.DEG2RAD) * (float)delta;
+			Rotation = rot;
 			float range = TargetPosition.Length();
 			float fraction = this.GetRayFraction();
 			this.Scale = new Vector3(0.5f, 0.5f, range * fraction);

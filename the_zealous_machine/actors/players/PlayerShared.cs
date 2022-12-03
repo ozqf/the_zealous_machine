@@ -7,7 +7,7 @@ namespace TheZealousMachine
         public static PlayerInput Empty { get { return new PlayerInput(); } }
 
         public Vector3 pushAxes;
-        public Vector3 roll;
+        public Vector3 pitchYawRoll;
         public bool boosting;
         public bool gliding;
         public bool attack1;
@@ -68,11 +68,28 @@ namespace TheZealousMachine
             }
             if (Input.IsActionPressed("roll_left"))
             {
-                input.roll.z += 1;
+                input.pitchYawRoll.z += 1;
             }
             if (Input.IsActionPressed("roll_right"))
             {
-                input.roll.z -= 1;
+                input.pitchYawRoll.z -= 1;
+            }
+            // look would usually be on mouse but keys are sometimes useful when testing...
+            if (Input.IsActionPressed("turn_left"))
+            {
+                input.pitchYawRoll.y -= 1;
+            }
+            if (Input.IsActionPressed("turn_right"))
+            {
+                input.pitchYawRoll.y += 1;
+            }
+            if (Input.IsActionPressed("pitch_up"))
+            {
+                input.pitchYawRoll.x += 1;
+            }
+            if (Input.IsActionPressed("pitch_down"))
+            {
+                input.pitchYawRoll.x -= 1;
             }
             input.boosting = Input.IsActionPressed("boost");
             input.gliding = Input.IsActionPressed("glide");

@@ -65,6 +65,8 @@ namespace TheZealousMachine
 		private AimLaser _aimLaser;
 		private HudStatus _hudStatus = new HudStatus();
 		private TimedVisible _shieldMesh;
+		private Vector3 _aimPosition = new Vector3();
+
 
 		private int _health = 100;
 		private int _energy = 0;
@@ -117,11 +119,9 @@ namespace TheZealousMachine
 			for (int i = 0; i < turretCount; i++)
 			{
 				_remoteTurrets[i].SetTrackTargets(_spreadTurretPositions[i], _narrowTurretPositions[i], _boostTurretPositions[i]);
-				_remoteTurrets[i].SetAimTarget(_aimLaser);
 				_remoteTurrets[i].SetUser(this);
 			}
 
-			_centreTurret.SetAimTarget(_aimLaser);
 			_centreTurret.SetUser(this);
 
 
@@ -207,6 +207,12 @@ namespace TheZealousMachine
 				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/far"));
 			}
 		}
+
+		public Vector3 GetTurretAimPoint()
+		{
+			return _aimPosition;
+		}
+
 
 		public int GiveItem(string type, int count)
 		{
@@ -366,6 +372,11 @@ namespace TheZealousMachine
 				Reset();
 			}
 
+			if (!Input.IsActionPressed("attack_2"))
+			{
+				_aimPosition = _aimLaser.GetAimPosition();
+			}
+
 			_CheckDebugSpawns();
 
 			PlayerInput input = _game.IsMouseLocked()
@@ -409,7 +420,9 @@ namespace TheZealousMachine
 
 			// roll
 			float rollrate = 75f / 12f;
-			float rollDegrees = input.roll.z * (rollrate * (float)delta);
+			float rollDegrees = input.pitchYawRoll.z * (rollrate * (float)delta);
+			float pitchDegrees = input.pitchYawRoll.x * (90f * (float)delta);
+			float yawDegrees = input.pitchYawRoll.y * (90f * (float)delta);
 			if (Mathf.Abs(_angularVelocity.z) < 0.1)
 			{
 				_angularVelocity.z = 0;
@@ -424,6 +437,15 @@ namespace TheZealousMachine
 			}
 			_angularVelocity.z = Mathf.Clamp(_angularVelocity.z, -10, 10);
 			this.Rotate(GlobalTransform.basis.z.Normalized(), _angularVelocity.z * PlayerUtils.DEG2RAD);
+
+			if (pitchDegrees != 0)
+			{
+				this.Rotate(GlobalTransform.basis.x.Normalized(), pitchDegrees * PlayerUtils.DEG2RAD);
+			}
+			if (yawDegrees != 0)
+			{
+				this.Rotate(GlobalTransform.basis.y.Normalized(), yawDegrees * PlayerUtils.DEG2RAD);
+			}
 
 			// push
 			Vector3 push = PlayerUtils.InputAxesToCharacterPush(input.pushAxes, this.GlobalTransform.basis);

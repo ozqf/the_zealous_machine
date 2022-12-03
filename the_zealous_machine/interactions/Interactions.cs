@@ -43,6 +43,7 @@ namespace TheZealousMachine
         void RegisterPlayer(IPlayer player);
         void UnregisterPlayer(IPlayer player);
         TargetInfo GetPlayerTarget();
+        bool hasPlayer();
         void AddMouseLock(string lockName);
         void RemoveMouseLock(string lockName);
         bool IsMouseLocked();
@@ -142,6 +143,8 @@ namespace TheZealousMachine
 
     public interface ITurretUser
     {
+        public Vector3 GetTurretAimPoint();
+
         public int GetItemCount(string name);
 
         public void TakeItem(string name, int count);

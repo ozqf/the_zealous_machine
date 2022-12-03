@@ -19,7 +19,6 @@ namespace TheZealousMachine.actors.players
 		private TurretState _state = TurretState.InFormation;
 		// current position tracking target
 		private Node3D _subject;
-		private AimLaser _target;
 		private TurretFormation _formation;
 		private ITurretUser _user = null;
 		private bool _longReload = false;
@@ -91,11 +90,6 @@ namespace TheZealousMachine.actors.players
 		public void SetTrackTarget(Node3D node)
 		{
 			_subject = node;
-		}
-
-		public void SetAimTarget(AimLaser node)
-		{
-			_target = node;
 		}
 
 		private void _RunMuzzleGFX()
@@ -220,10 +214,9 @@ namespace TheZealousMachine.actors.players
 						return;
 					}
 					if ((_formation == TurretFormation.Spread
-						|| _formation == TurretFormation.Narrow)
-						&& _target != null)
+						|| _formation == TurretFormation.Narrow))
 					{
-						this.LookAtSafe(_target.GetAimPosition(), Vector3.Up, Vector3.Left);
+						this.LookAtSafe(_user.GetTurretAimPoint(), Vector3.Up, Vector3.Left);
 					}
 					break;
 			}

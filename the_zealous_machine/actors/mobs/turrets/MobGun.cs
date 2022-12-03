@@ -49,6 +49,7 @@ namespace TheZealousMachine.actors.mobs.turrets
 		public override void _Process(double delta)
 		{
 			if (!on) { return; }
+			if (!_game.hasPlayer()) { return; }
 			_tick -= (float)delta;
 			if (_tick <= 0f)
 			{

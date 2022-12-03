@@ -25,48 +25,55 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 
 mesh = SubResource("CapsuleMesh_20q5p")
 surface_material_override/0 = ExtResource("1_kvibd")
 
-[node name="turret" parent="." instance=ExtResource("2_y10co")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 0)
+[node name="centre" parent="." instance=ExtResource("2_y10co")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
 trackY = false
 
-[node name="barrels" type="Node3D" parent="turret"]
+[node name="barrels" type="Node3D" parent="centre"]
 
-[node name="gun" parent="turret/barrels" instance=ExtResource("4_677g6")]
+[node name="gun" parent="centre/barrels" instance=ExtResource("4_677g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 projectileType = 2
-projectileSpeed = 10.0
-refireTime = 0.5
+projectileSpeed = 5.0
+refireTime = 0.75
 
-[node name="turret2" parent="." instance=ExtResource("2_y10co")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, -6)
+[node name="north" parent="." instance=ExtResource("2_y10co")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -6)
 trackZ = false
 
-[node name="barrels" type="Node3D" parent="turret2"]
+[node name="barrels" type="Node3D" parent="north"]
 
-[node name="gun" parent="turret2/barrels" instance=ExtResource("4_677g6")]
+[node name="gun" parent="north/barrels" instance=ExtResource("4_677g6")]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, -1)
 projectileType = 2
-projectileSpeed = 10.0
+projectileSpeed = 5.0
+refireTime = 0.5
 
-[node name="turret3" parent="." instance=ExtResource("2_y10co")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 6)
+[node name="south" parent="." instance=ExtResource("2_y10co")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.5, 0, 6)
 trackX = false
 trackY = false
 trackZ = false
 
-[node name="barrels" type="Node3D" parent="turret3"]
+[node name="barrels" type="Node3D" parent="south"]
 
-[node name="gun" parent="turret3/barrels" instance=ExtResource("4_677g6")]
+[node name="gun" parent="south/barrels" instance=ExtResource("4_677g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 projectileType = 2
+projectileSpeed = 5.0
+refireTime = 2.0
 degreesRandomRotation = Vector3(0, 0, 180)
 
-[node name="gun2" parent="turret3/barrels" instance=ExtResource("4_677g6")]
+[node name="gun2" parent="south/barrels" instance=ExtResource("4_677g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 projectileType = 2
+projectileSpeed = 5.0
+refireTime = 2.0
 degreesRandomRotation = Vector3(0, 0, 180)
 
-[node name="gun3" parent="turret3/barrels" instance=ExtResource("4_677g6")]
+[node name="gun3" parent="south/barrels" instance=ExtResource("4_677g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 projectileType = 2
+projectileSpeed = 5.0
+refireTime = 2.0
 degreesRandomRotation = Vector3(0, 0, 180)
