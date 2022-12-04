@@ -73,19 +73,23 @@ namespace TheZealousMachine.actors.players
 				case TurretFormation.Spread:
 					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = false;
+					Scale = new Vector3(1, 1, 1);
 					SetTrackTarget(_spreadTarget); break;
 				case TurretFormation.Narrow:
 					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = false;
-					SetTrackTarget(_narrowTarget); break;
+                    Scale = new Vector3(0.5f, 0.5f, 0.5f);
+                    SetTrackTarget(_narrowTarget); break;
 				case TurretFormation.Boost:
 					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = true;
-					SetTrackTarget(_boostTarget); break;
+                    Scale = new Vector3(1, 1, 1);
+                    SetTrackTarget(_boostTarget); break;
 				case TurretFormation.LockOn:
 					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = false;
-					SetTrackTarget(_lockOnTarget); break;
+                    Scale = new Vector3(1, 1, 1);
+                    SetTrackTarget(_lockOnTarget); break;
 
 			}
 		}

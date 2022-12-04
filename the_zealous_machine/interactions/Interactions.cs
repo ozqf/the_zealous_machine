@@ -33,6 +33,8 @@ namespace TheZealousMachine
     public class HudStatus
     {
         public int health = 100;
+        public int ammo = 100;
+        public float speed = 0;
     }
 
     public interface IGame
@@ -60,7 +62,7 @@ namespace TheZealousMachine
 
         void SpawnNextRoom(Transform3D t, int roomIndex = -1, int arenaIndex = -1);
         void SpawnQuickPickups(Vector3 p, int count = 1);
-        Node3D CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
+        void CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
         IProjectile CreateProjectile(ProjectileType type);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
         IMob CreateMob(Vector3 pos, MobType type = MobType.Drone);

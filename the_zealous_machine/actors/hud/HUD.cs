@@ -8,10 +8,14 @@ namespace TheZealousMachine
         private PackedScene _itemScene = GD.Load<PackedScene>("res://actors/hud/crosshair_radar_item.tscn");
         private Control _aimPoint;
         private Label _health;
+        private Label _ammo;
+        private Label _speed;
 
         public override void _Ready()
         {
-            _health = GetNode<Label>("health");
+            _health = GetNode<Label>("aim_point/health");
+            _ammo = GetNode<Label>("aim_point/ammo");
+            _speed = GetNode<Label>("aim_point/speed");
             _aimPoint = GetNode<Control>("aim_point");
             GlobalEvents.Register(_OnGlobalEvent);
         }
@@ -29,6 +33,8 @@ namespace TheZealousMachine
                 if (status != null)
                 {
                     _health.Text = status.health.ToString();
+                    _ammo.Text = status.ammo.ToString();
+                    _speed.Text = Mathf.Round(status.speed).ToString();
                 }
             }
             if (message == GameEvents.MOB_SPAWNED)

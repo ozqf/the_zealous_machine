@@ -19,9 +19,9 @@ namespace TheZealousMachine
 				case TurretFormation.Boost:
 					return new PlayerMoveSettings
 					{
-						pushForce = 100f,
-						maxSpeed = 30f,
-						drag = 0.9f
+						pushForce = 60f,
+						maxSpeed = 40f,
+						drag = 0.95f
 					};
 				case TurretFormation.Narrow:
 					return new PlayerMoveSettings
@@ -58,9 +58,9 @@ namespace TheZealousMachine
 		private Label _debugText;
 		private StringBuilder _debugStr = new StringBuilder();
 		private Area3D _nearSurface;
-		
+
+		private Node3D _gatlingNode;		
 		private Node3D _bodyMeshes;
-		private Node3D _gatlingNode;
 		private Node3D _boostNode;
 		private Node3D _lockOnLeftNode;
 		private Node3D _lockOnRightNode;
@@ -69,6 +69,7 @@ namespace TheZealousMachine
 		private AimLaser _aimLaser;
 		private HudStatus _hudStatus = new HudStatus();
 		private TimedVisible _shieldMesh;
+		private LockOnTarget _lockOnTarget;
 		private Vector3 _aimPosition = new Vector3();
 
 		private bool _targetLocked = false;
@@ -90,6 +91,7 @@ namespace TheZealousMachine
 			_shieldMesh = GetNode<TimedVisible>("body_meshes/shield_mesh");
 			_shieldMesh.flash = true;
 			_nearSurface = GetNode<Area3D>("near_surface");
+			_lockOnTarget = GetNode<LockOnTarget>("lock_target");
 			_debugText = GetNode<Label>("debug_print");
 			_origin = GlobalTransform.origin;
 
@@ -219,10 +221,12 @@ namespace TheZealousMachine
 			if (_formation == TurretFormation.Narrow)
 			{
 				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/close"));
+				_centreTurret.Visible = false;
 			}
 			else
 			{
 				_cameraPylon.OverrideFarPositionTarget(GetNode<Node3D>("head/raycast_pylon/far"));
+				_centreTurret.Visible = true;
 			}
 		}
 
@@ -232,7 +236,14 @@ namespace TheZealousMachine
 			{
 				return _aimLaser.GetAimPosition();
 			}
-			return _aimPosition;
+			if (_targetLocked && _formation == TurretFormation.LockOn)
+			{
+				return _lockOnTarget.GlobalPosition;
+			}
+			return _aimLaser.GetAimPosition();
+
+			//if (_targetLocked)
+			//return _aimPosition;
 		}
 
 
@@ -333,14 +344,20 @@ namespace TheZealousMachine
 
 		private void _CheckDebugSpawns()
 		{
-			if (Input.IsActionJustPressed("slot_5"))
+			if (Input.IsActionJustPressed("slot_9"))
+			{
+				Vector3 pos = _aimLaser.GetSpawnPosition();
+				SpawnVolume vol = _game.CreateSpawnVolume(pos);
+				vol.mobType = MobType.Shark;
+			}
+			if (Input.IsActionJustPressed("slot_0"))
 			{
 				Vector3 pos = _aimLaser.GetSpawnPosition();
 				_game.CreateMob(pos, MobType.BattleshipA);
 				//SpawnVolume vol = _game.CreateSpawnVolume(pos);
 				//vol.mobType = MobType.Cross;
 			}
-			if (Input.IsActionPressed("slot_0"))
+			if (Input.IsActionPressed("slot_5"))
 			{
 				_game.SpawnQuickPickups(_aimLaser.GetSpawnPosition(), 1);
 			}
@@ -372,20 +389,25 @@ namespace TheZealousMachine
 			float spinRadians = 360f * ZGU.DEG2RAD;
 			_gatlingNode.RotateZ(spinRadians * (float)delta);
 			_boostNode.RotateZ(spinRadians * (float)delta);
-			_lockOnLeftNode.RotateZ(spinRadians * delta);
-			_lockOnRightNode.RotateZ(-spinRadians * delta);
+			if (_lockOnTarget.HasTarget())
+			{
+				_lockOnLeftNode.RotateZ(-spinRadians * delta);
+				_lockOnRightNode.RotateZ(spinRadians * delta);
+			}
 		}
 
 		public override void _Process(double delta)
 		{
 			_SpinFormationNodes((float)delta);
-			//_bodyMeshes.Visible = (_formation != TurretFormation.Narrow && _cameraPylon.GetLastFraction() > 0.25f);
-			_bodyMeshes.Visible = _cameraPylon.GetLastFraction() > 0.25f;
+			_bodyMeshes.Visible = (_formation != TurretFormation.Narrow && _cameraPylon.GetLastFraction() > 0.25f);
+			//_bodyMeshes.Visible = _cameraPylon.GetLastFraction() > 0.25f;
 		}
 
 		private void BroadcastHudStatus()
 		{
 			_hudStatus.health = _health;
+			_hudStatus.ammo = _energy;
+			_hudStatus.speed = Velocity.Length();
 			GlobalEvents.Send(GameEvents.HUD_STATUS, _hudStatus);
 		}
 
@@ -405,7 +427,24 @@ namespace TheZealousMachine
 			if (Input.IsActionJustPressed("attack_4"))
 			{
 				_targetLocked = !_targetLocked;
+				if (_targetLocked)
+				{
+					IMob mob = _aimLaser.GetCollider() as IMob;
+					if (mob != null)
+					{
+						_lockOnTarget.SetTrackTarget(mob.GetBaseNode(), _aimLaser.GetAimPosition());
+					}
+				}
+				else
+				{
+					_lockOnTarget.SetTrackTarget(null, Vector3.Zero);
+				}
 			}
+			if (_targetLocked && !_lockOnTarget.HasTarget())
+			{
+				_targetLocked = false;
+			}
+
 			if (!_targetLocked)
 			{
 				_aimPosition = _aimLaser.GetAimPosition();

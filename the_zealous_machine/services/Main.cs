@@ -24,14 +24,29 @@ namespace TheZealousMachine
 		private PackedScene _prjColumn = GD.Load<PackedScene>("res://actors/projectiles/projectile_column.tscn");
 		private PackedScene _prjMobVolume = GD.Load<PackedScene>("res://actors/projectiles/projectile_mob_volume.tscn");
 
+		// mobs
+		private PackedScene _mobDrone = GD.Load<PackedScene>("res://actors/mobs/drone/mob_drone.tscn");
+		private PackedScene _mobGunship = GD.Load<PackedScene>("res://actors/mobs/gunship/mob_gunship.tscn");
+		private PackedScene _mobShark = GD.Load<PackedScene>("res://actors/mobs/shark/mob_shark.tscn");
+		private PackedScene _mobCross = GD.Load<PackedScene>("res://actors/mobs/cross/mob_cross.tscn");
+		private PackedScene _mobBattleshipA = GD.Load<PackedScene>("res://actors/mobs/battleship_a/battleship_a.tscn");
+
 		// gfx
 		private PackedScene _bulletImpact = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact.tscn");
 		private PackedScene _bulletImpactPurple = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact_purple.tscn");
 		private PackedScene _bulletImpactGrey = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact_grey.tscn");
 		private PackedScene _mobDebrisType = GD.Load<PackedScene>("res://gfx/mob_debris/mob_debris.tscn");
 
-		// items
-		private PackedScene _quickDrop = GD.Load<PackedScene>("res://actors/items/quick_drop.tscn");
+        // rooms
+        private PackedScene _room01 = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+		private PackedScene _room02 = GD.Load<PackedScene>("res://actors/rooms/room_02.tscn");
+        private PackedScene _room03 = GD.Load<PackedScene>("res://actors/rooms/room_03.tscn");
+        private PackedScene _room04 = GD.Load<PackedScene>("res://actors/rooms/room_04.tscn");
+		private PackedScene _room05 = GD.Load<PackedScene>("res://actors/rooms/room_05.tscn");
+		private PackedScene _room06 = GD.Load<PackedScene>("res://actors/rooms/room_06.tscn");
+
+        // items
+        private PackedScene _quickDrop = GD.Load<PackedScene>("res://actors/items/quick_drop.tscn");
 
 		// info
 		private PackedScene _spawnVolume = GD.Load<PackedScene>("res://actors/volumes/spawn_volume.tscn");
@@ -163,8 +178,9 @@ namespace TheZealousMachine
 			return prj;
 		}
 
-		public Node3D CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0)
+		public void CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0)
 		{
+			
 			BulletImpact gfx;
 			switch (type)
 			{
@@ -181,7 +197,8 @@ namespace TheZealousMachine
 			GetActorRoot().AddChild(gfx);
 			gfx.GlobalPosition = pos;
 			gfx.LookAtSafe(pos + directon, Vector3.Up, Vector3.Left);
-			return gfx;
+			
+			//return gfx;
 		}
 
 		public void SpawnQuickPickups(Vector3 p, int count = 1)
@@ -215,7 +232,7 @@ namespace TheZealousMachine
 		public void SpawnNextRoom(Transform3D exitSeal, int roomIndex = -1, int arenaIndex = -1)
 		{
 			PackedScene arenaType;
-			int numRooms = 4;
+			int numRooms = 6;
 
 			// spawn runs until we get one that fits.
 			int escape = 999;
@@ -234,19 +251,25 @@ namespace TheZealousMachine
 				switch (roomIndex)
 				{
 					case 0:
-						arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+						arenaType = _room01;
 						break;
 					case 1:
-						arenaType = GD.Load<PackedScene>("res://actors/rooms/room_02.tscn");
-						break;
+						arenaType = _room02;
+                        break;
 					case 2:
-						arenaType = GD.Load<PackedScene>("res://actors/rooms/room_03.tscn");
-						break;
+						arenaType = _room03;
+                        break;
 					case 3:
-						arenaType = GD.Load<PackedScene>("res://actors/rooms/room_04.tscn");
-						break;
-					default:
-						arenaType = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+						arenaType = _room04;
+                        break;
+                    case 4:
+                        arenaType = _room05;
+                        break;
+                    case 5:
+                        arenaType = _room05;
+                        break;
+                    default:
+						arenaType = _room01;
 						break;
 				}
 				Arena next = arenaType.Instantiate<Arena>();
@@ -286,19 +309,19 @@ namespace TheZealousMachine
 			switch (type)
 			{
 				case MobType.Gunship:
-					scene = GD.Load<PackedScene>("res://actors/mobs/gunship/mob_gunship.tscn");
+					scene = _mobGunship;
 					break;
 				case MobType.Shark:
-					scene = GD.Load<PackedScene>("res://actors/mobs/shark/mob_shark.tscn");
+					scene = _mobShark;
 					break;
 				case MobType.Cross:
-					scene = GD.Load<PackedScene>("res://actors/mobs/cross/mob_cross.tscn");
+					scene = _mobCross;
 					break;
 				case MobType.BattleshipA:
-					scene = GD.Load<PackedScene>("res://actors/mobs/battleship_a/battleship_a.tscn");
+					scene = _mobBattleshipA;
 					break;
 				default:
-					scene = GD.Load<PackedScene>("res://actors/mobs/drone/mob_drone.tscn");
+					scene = _mobDrone;
 					break;
 			}
 			Node3D mob = scene.Instantiate<Node3D>();

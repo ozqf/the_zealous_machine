@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cgke5wc2hbgwn"]
+[gd_scene load_steps=18 format=3 uid="uid://cgke5wc2hbgwn"]
 
 [ext_resource type="PackedScene" path="res://actors/players/body_meshes.tscn" id="1_ptacq"]
 [ext_resource type="Script" path="res://actors/players/six_degrees/PlayerSixDegrees.cs" id="1_vo387"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" path="res://gfx/booster_particles.tscn" id="7_d4sd8"]
 [ext_resource type="PackedScene" uid="uid://ql3e3i6qcxev" path="res://actors/hud/hud.tscn" id="8_yp0fk"]
 [ext_resource type="Script" path="res://actors/hud/HUD.cs" id="9_u7hsh"]
+[ext_resource type="Script" path="res://actors/players/LockOnTarget.cs" id="11_7m5jc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8f4q5"]
 height = 1.3
@@ -33,7 +34,7 @@ size = Vector3(0.1, 0.1, 0.5)
 radius = 2.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_rvxq6"]
-radius = 8.0
+radius = 12.0
 
 [node name="player_six_degrees" type="CharacterBody3D"]
 collision_layer = 2
@@ -265,3 +266,10 @@ collision_mask = 2048
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="item_collector"]
 shape = SubResource("SphereShape3D_rvxq6")
+
+[node name="lock_target" type="Node3D" parent="."]
+script = ExtResource("11_7m5jc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="lock_target"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("5_8bwar")

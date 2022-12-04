@@ -12,6 +12,7 @@ namespace TheZealousMachine
 		private OmniLight3D _light;
 		private float _tick = 0;
 		private Vector3 _originalScale;
+		private bool _dead = false;
 
 		public override void _Ready()
 		{
@@ -25,11 +26,13 @@ namespace TheZealousMachine
 
 		public override void _Process(double delta)
 		{
+			if (_dead) { return; }
 			_tick += (float)delta;
 			if (_tick > timeToLive)
 			{
 				_tick = 0;
-				SetProcess(false);
+				_dead = true;
+                SetProcess(false);
 				QueueFree();
 				return;
 			}

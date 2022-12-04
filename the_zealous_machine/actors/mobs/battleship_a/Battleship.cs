@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using ZealousGodotUtils;
 
 namespace TheZealousMachine.actors.mobs.battleship_a
 {
@@ -9,10 +10,24 @@ namespace TheZealousMachine.actors.mobs.battleship_a
 		private int _health = 1000;
 
 		public Guid mobId => _mobId;
+		private bool _dead = false;
+
+		public override void _Ready()
+		{
+			GlobalEvents.Send(GameEvents.MOB_SPAWNED, this);
+		}
 
 		public Node3D GetBaseNode()
 		{
 			return this;
+		}
+
+		private void _Remove()
+		{
+			if (_dead) { return; }
+			_dead = true;
+			QueueFree();
+			GlobalEvents.Send(GameEvents.MOB_DIED, this);
 		}
 
 		public HitResponse Hit(HitInfo hit)
@@ -24,7 +39,7 @@ namespace TheZealousMachine.actors.mobs.battleship_a
 			_health -= hit.damage;
 			if (_health <= 0)
 			{
-				QueueFree();
+				_Remove();
 			}
 			return new HitResponse
 			{

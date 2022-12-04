@@ -1,0 +1,122 @@
+[gd_scene load_steps=9 format=3 uid="uid://t5701r0t3r3g"]
+
+[ext_resource type="Script" path="res://actors/info/Arena.cs" id="1_io51c"]
+[ext_resource type="ArrayMesh" uid="uid://cstbhe8vgpmrk" path="res://actors/rooms/room_type_06.obj" id="2_wcgyc"]
+[ext_resource type="Material" uid="uid://b3k78a04h2mae" path="res://shared/dev_materials/tech_block.tres" id="3_eoy0o"]
+[ext_resource type="PackedScene" uid="uid://d3yp5aln8avq" path="res://actors/info/spawner.tscn" id="5_2hvot"]
+[ext_resource type="PackedScene" uid="uid://cll3tpaytrgu7" path="res://actors/volumes/trigger_touch.tscn" id="6_w4c7n"]
+[ext_resource type="PackedScene" uid="uid://fdxqbqxti61n" path="res://actors/rooms/doors/seal_8x8.tscn" id="7_0yjh1"]
+[ext_resource type="PackedScene" uid="uid://4q20t2h4r31a" path="res://actors/rooms/doors/door_size_8x8_.tscn" id="8_1tuev"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_13ayx"]
+size = Vector3(52, 52, 48)
+
+[node name="room_04" type="Node3D"]
+script = ExtResource("1_io51c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_wcgyc")
+surface_material_override/0 = ExtResource("3_eoy0o")
+
+[node name="spawner2" parent="." instance=ExtResource("5_2hvot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+maxMobs = 1
+perSpawnCount = 1
+mobType = -1
+
+[node name="spawner6" parent="." instance=ExtResource("5_2hvot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+maxMobs = 1
+perSpawnCount = 1
+mobType = -1
+
+[node name="spawner7" parent="." instance=ExtResource("5_2hvot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+maxMobs = 1
+perSpawnCount = 1
+mobType = -1
+
+[node name="spawner8" parent="." instance=ExtResource("5_2hvot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+maxMobs = 1
+perSpawnCount = 1
+mobType = -1
+
+[node name="spawner" parent="." instance=ExtResource("5_2hvot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+maxMobs = 1
+perSpawnCount = 3
+mobType = -1
+
+[node name="spawner3" parent="." instance=ExtResource("5_2hvot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
+maxMobs = 1
+perSpawnCount = 3
+mobType = -1
+
+[node name="spawner4" parent="." instance=ExtResource("5_2hvot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -6)
+maxMobs = 1
+perSpawnCount = 3
+mobType = -1
+
+[node name="spawner5" parent="." instance=ExtResource("5_2hvot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -6)
+maxMobs = 1
+perSpawnCount = 3
+mobType = -1
+
+[node name="trigger_touch" parent="." instance=ExtResource("6_w4c7n")]
+transform = Transform3D(9.60472, 0, 0, 0, 3.819, 0, 0, 0, 25.9379, 2, -2, -14)
+_message = "start"
+
+[node name="seal_top" parent="." instance=ExtResource("7_0yjh1")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 8, 16, 0)
+
+[node name="room_8x1x8" parent="seal_top" instance=ExtResource("8_1tuev")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.74846e-07, 4)
+
+[node name="seal_top2" parent="." instance=ExtResource("7_0yjh1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -24)
+
+[node name="room_8x1x8" parent="seal_top2" instance=ExtResource("8_1tuev")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 3)
+
+[node name="seal_top3" parent="." instance=ExtResource("7_0yjh1")]
+transform = Transform3D(-4.37114e-08, 1.91068e-15, 1, 4.37114e-08, 1, -8.35188e-23, -1, 4.37114e-08, -4.37114e-08, -28, 4, 0)
+
+[node name="room_8x1x8" parent="seal_top3" instance=ExtResource("8_1tuev")]
+transform = Transform3D(1, -8.74228e-08, 0, 0, -4.37114e-08, -1, 8.74228e-08, 1, -4.37114e-08, -1.31134e-07, 5.73206e-15, 3)
+
+[node name="seal_top4" parent="." instance=ExtResource("7_0yjh1")]
+transform = Transform3D(-1, 8.74227e-08, -8.74228e-08, 8.74227e-08, 1, -3.34075e-22, 8.74228e-08, -7.64274e-15, -1, 12, 0, 24)
+
+[node name="room_8x1x8" parent="seal_top4" instance=ExtResource("8_1tuev")]
+transform = Transform3D(1, 9.9476e-14, 1.74845e-07, -1.74845e-07, -4.37114e-08, 1, 9.9476e-14, -1, -4.37114e-08, -3.49691e-07, 3.0571e-14, 4)
+
+[node name="seal_top5" parent="." instance=ExtResource("7_0yjh1")]
+transform = Transform3D(-4.37114e-08, 5.73204e-15, -1, 1.31134e-07, 1, -7.51667e-22, 1, -1.31134e-07, -4.37114e-08, 24, 0, 0)
+
+[node name="room_8x1x8" parent="seal_top5" instance=ExtResource("8_1tuev")]
+transform = Transform3D(1, -8.74226e-08, -1.74845e-07, -1.74845e-07, -4.37114e-08, -1, 8.74226e-08, 1, -4.37114e-08, 1.31134e-07, -1.71961e-14, 3)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, -36, 2.67029e-05)
+visible = false
+light_color = Color(0, 1, 0, 1)
+shadow_enabled = true
+omni_range = 8.0
+
+[node name="seal_bottom" parent="." instance=ExtResource("7_0yjh1")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 12, -36, 0)
+
+[node name="room_8x1x8" parent="seal_bottom" instance=ExtResource("8_1tuev")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -1.74847e-07, 4)
+
+[node name="volume" type="Area3D" parent="."]
+collision_layer = 1024
+collision_mask = 1024
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="volume"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -10, 0)
+shape = SubResource("BoxShape3D_13ayx")
