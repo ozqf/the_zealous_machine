@@ -11,6 +11,7 @@ namespace TheZealousMachine
 		private Label _label;
 		private Control _aimPoint;
 		private IMob _mob = null;
+		private bool _dead = false;
 
 		public override void _Ready()
 		{
@@ -35,8 +36,10 @@ namespace TheZealousMachine
 
 		private void _OnGlobalEvent(string message, object data)
 		{
+			if (_dead) { return; }
 			if (message == GameEvents.MOB_DIED && data == _mob)
 			{
+				_dead = true;
 				QueueFree();
 			}
 		}

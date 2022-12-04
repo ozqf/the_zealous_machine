@@ -37,7 +37,8 @@ namespace TheZealousMachine
 			_tick -= (float)delta;
 			if (_tick <= 0)
 			{
-				SetProcess(false);
+				_tick = 99999;
+				SetPhysicsProcess(false);
 				QueueFree();
 				return;
 			}

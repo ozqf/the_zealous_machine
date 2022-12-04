@@ -14,7 +14,7 @@ namespace TheZealousMachine
 
     public enum MobType
     {
-        Drone, Gunship, Shark, Cross, End
+        Drone, Gunship, Shark, Cross, LastCommon, BattleshipA
     }
 
     public static class GameEvents
@@ -143,7 +143,7 @@ namespace TheZealousMachine
 
     public interface ITurretUser
     {
-        public Vector3 GetTurretAimPoint();
+        public Vector3 GetTurretAimPoint(int index);
 
         public int GetItemCount(string name);
 

@@ -28,6 +28,7 @@ namespace TheZealousMachine
 			_tick += (float)delta;
 			if (_tick > timeToLive)
 			{
+				_tick = 0;
 				SetProcess(false);
 				QueueFree();
 				return;

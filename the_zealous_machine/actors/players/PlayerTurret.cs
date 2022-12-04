@@ -7,7 +7,8 @@ namespace TheZealousMachine.actors.players
 	{
 		Spread,
 		Narrow,
-		Boost
+		Boost,
+		LockOn
 	}
 
 	public partial class PlayerTurret : Node3D, IItemCollector
@@ -21,6 +22,7 @@ namespace TheZealousMachine.actors.players
 		private Node3D _subject;
 		private TurretFormation _formation;
 		private ITurretUser _user = null;
+		private int _aimPointIndex = 0;
 		private bool _longReload = false;
 		private float _tick = 0f;
 		private float _jerkTick = 0f;
@@ -35,6 +37,7 @@ namespace TheZealousMachine.actors.players
 		private Node3D _spreadTarget = null;
 		private Node3D _narrowTarget = null;
 		private Node3D _boostTarget = null;
+		private Node3D _lockOnTarget = null;
 
 		public override void _Ready()
 		{
@@ -55,10 +58,12 @@ namespace TheZealousMachine.actors.players
 			}
 		}
 
-		public void SetUser(ITurretUser user)
+		public void SetUser(ITurretUser user, int aimPointIndex)
 		{
 			_user = user;
-		}
+            _aimPointIndex = aimPointIndex;
+
+        }
 
 		public void SetFormation(TurretFormation formation)
 		{
@@ -77,14 +82,20 @@ namespace TheZealousMachine.actors.players
 					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = true;
 					SetTrackTarget(_boostTarget); break;
+				case TurretFormation.LockOn:
+					Rotation = Vector3.Zero;
+					_boostParticles.Emitting = false;
+					SetTrackTarget(_lockOnTarget); break;
+
 			}
 		}
 
-		public void SetTrackTargets(Node3D spread, Node3D narrow, Node3D boost)
+		public void SetTrackTargets(Node3D spread, Node3D narrow, Node3D boost, Node3D lockOnNode)
 		{
 			_spreadTarget = spread;
 			_narrowTarget = narrow;
 			_boostTarget = boost;
+			_lockOnTarget = lockOnNode;
 		}
 
 		public void SetTrackTarget(Node3D node)
@@ -141,7 +152,7 @@ namespace TheZealousMachine.actors.players
 				ProjectileLaunchInfo info = new ProjectileLaunchInfo();
 				info.t = GlobalTransform.MovedForward(0.5f);
 				info.speed = 200f;
-				info.damage = 8;
+				info.damage = 6;
 				info.teamId = Interactions.TEAM_ID_PLAYER;
 				prj.Launch(info);
 			}
@@ -166,7 +177,7 @@ namespace TheZealousMachine.actors.players
 					info.t = info.t.Rotated(t.basis.y, (float)GD.RandRange(-spread, spread));
 					info.t.origin = origin;
 					info.speed = 200f;
-					info.damage = 8;
+					info.damage = 10;
 					info.teamId = Interactions.TEAM_ID_PLAYER;
 					prj.Launch(info);
 				}
@@ -213,13 +224,18 @@ namespace TheZealousMachine.actors.players
 						this.Rotation = new Vector3(90f * ZGU.DEG2RAD, 0, 0);
 						return;
 					}
-					if ((_formation == TurretFormation.Spread
-						|| _formation == TurretFormation.Narrow))
+					if (_IsFormationAimed(_formation))
 					{
-						this.LookAtSafe(_user.GetTurretAimPoint(), Vector3.Up, Vector3.Left);
+						this.LookAtSafe(_user.GetTurretAimPoint(_aimPointIndex), Vector3.Up, Vector3.Left);
 					}
 					break;
 			}
+		}
+
+		private bool _IsFormationAimed(TurretFormation formation)
+		{
+			if (formation == TurretFormation.Boost) { return false; }
+			return true;
 		}
 
 		public int GiveItem(string type, int count)

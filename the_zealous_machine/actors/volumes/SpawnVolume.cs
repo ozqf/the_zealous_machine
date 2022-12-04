@@ -27,6 +27,7 @@ namespace TheZealousMachine.actors.volumes
 				{
 					mob.SetMobId(mobId);
 				}
+				SetPhysicsProcess(false);
 				QueueFree();
 			}
 			else

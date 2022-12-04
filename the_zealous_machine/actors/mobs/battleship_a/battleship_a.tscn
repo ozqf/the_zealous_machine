@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://d3ikpx0phpo73"]
 
 [ext_resource type="Script" path="res://actors/mobs/battleship_a/Battleship.cs" id="1_f06dg"]
-[ext_resource type="Material" uid="uid://bbhl6vpdc4cn2" path="res://shared/dev_materials/grey_block_planar.tres" id="1_kvibd"]
+[ext_resource type="Material" uid="uid://crnn58f8u7ba" path="res://shared/dev_materials/red_solid_grid.tres" id="2_n2tst"]
 [ext_resource type="PackedScene" uid="uid://blbafanqojdh1" path="res://actors/mobs/turrets/turret_a.tscn" id="2_y10co"]
 [ext_resource type="PackedScene" uid="uid://cx128whm7o22q" path="res://actors/mobs/turrets/mob_gun_a.tscn" id="4_677g6"]
 
@@ -14,6 +14,8 @@ radius = 6.0
 height = 24.0
 
 [node name="battleship_a" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 11
 script = ExtResource("1_f06dg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -23,7 +25,7 @@ shape = SubResource("CapsuleShape3D_8mnma")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_20q5p")
-surface_material_override/0 = ExtResource("1_kvibd")
+surface_material_override/0 = ExtResource("2_n2tst")
 
 [node name="centre" parent="." instance=ExtResource("2_y10co")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
@@ -77,3 +79,5 @@ projectileType = 2
 projectileSpeed = 5.0
 refireTime = 2.0
 degreesRandomRotation = Vector3(0, 0, 180)
+
+[node name="lights" type="Node3D" parent="."]

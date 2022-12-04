@@ -58,15 +58,20 @@ namespace TheZealousMachine
 		private Label _debugText;
 		private StringBuilder _debugStr = new StringBuilder();
 		private Area3D _nearSurface;
+		
 		private Node3D _bodyMeshes;
 		private Node3D _gatlingNode;
 		private Node3D _boostNode;
+		private Node3D _lockOnLeftNode;
+		private Node3D _lockOnRightNode;
+
 		private RaycastPylon _cameraPylon;
 		private AimLaser _aimLaser;
 		private HudStatus _hudStatus = new HudStatus();
 		private TimedVisible _shieldMesh;
 		private Vector3 _aimPosition = new Vector3();
 
+		private bool _targetLocked = false;
 
 		private int _health = 100;
 		private int _energy = 0;
@@ -90,6 +95,9 @@ namespace TheZealousMachine
 
 			_gatlingNode = GetNode<Node3D>("head/options/gatling_node");
 			_boostNode = GetNode<Node3D>("head/options/boost_node");
+			_lockOnLeftNode = GetNode<Node3D>("head/options/lock_on_left_pylon/far");
+			_lockOnRightNode = GetNode<Node3D>("head/options/lock_on_right_pylon/far");
+
 			_aimLaser = GetNode<AimLaser>("head/raycast_pylon/target/aim_laser");
 
 			_centreTurret = GetNode<PlayerTurret>("head/options/turret_centre");
@@ -115,14 +123,24 @@ namespace TheZealousMachine
 			_boostTurretPositions.Add(GetNode<Node3D>("head/options/boost_node/4"));
 			Color c = Colors.Yellow;
 
+			var lockOnNodes = new List<Node3D>(4);
+			lockOnNodes.Add(GetNode<Node3D>("head/options/lock_on_left_pylon/far/upper"));
+			lockOnNodes.Add(GetNode<Node3D>("head/options/lock_on_right_pylon/far/upper"));
+			lockOnNodes.Add(GetNode<Node3D>("head/options/lock_on_left_pylon/far/lower"));
+			lockOnNodes.Add(GetNode<Node3D>("head/options/lock_on_right_pylon/far/lower"));
+
 			int turretCount = _remoteTurrets.Count;
 			for (int i = 0; i < turretCount; i++)
 			{
-				_remoteTurrets[i].SetTrackTargets(_spreadTurretPositions[i], _narrowTurretPositions[i], _boostTurretPositions[i]);
-				_remoteTurrets[i].SetUser(this);
+				_remoteTurrets[i].SetTrackTargets(
+					_spreadTurretPositions[i],
+					_narrowTurretPositions[i],
+					_boostTurretPositions[i],
+					lockOnNodes[i]);
+				_remoteTurrets[i].SetUser(this, 0);
 			}
 
-			_centreTurret.SetUser(this);
+			_centreTurret.SetUser(this, 1);
 
 
 			SetFormation(TurretFormation.Spread);
@@ -208,8 +226,12 @@ namespace TheZealousMachine
 			}
 		}
 
-		public Vector3 GetTurretAimPoint()
+		public Vector3 GetTurretAimPoint(int index)
 		{
+			if (index == 1)
+			{
+				return _aimLaser.GetAimPosition();
+			}
 			return _aimPosition;
 		}
 
@@ -314,8 +336,9 @@ namespace TheZealousMachine
 			if (Input.IsActionJustPressed("slot_5"))
 			{
 				Vector3 pos = _aimLaser.GetSpawnPosition();
-				SpawnVolume vol = _game.CreateSpawnVolume(pos);
-				vol.mobType = MobType.Cross;
+				_game.CreateMob(pos, MobType.BattleshipA);
+				//SpawnVolume vol = _game.CreateSpawnVolume(pos);
+				//vol.mobType = MobType.Cross;
 			}
 			if (Input.IsActionPressed("slot_0"))
 			{
@@ -344,13 +367,20 @@ namespace TheZealousMachine
 			_angularVelocity = Vector3.Zero;
 		}
 
-		public override void _Process(double delta)
+		private void _SpinFormationNodes(float delta)
 		{
 			float spinRadians = 360f * ZGU.DEG2RAD;
-			//_bodyMeshes.Visible = (_formation != TurretFormation.Narrow && _cameraPylon.GetLastFraction() > 0.25f);
-			_bodyMeshes.Visible = _cameraPylon.GetLastFraction() > 0.25f;
 			_gatlingNode.RotateZ(spinRadians * (float)delta);
 			_boostNode.RotateZ(spinRadians * (float)delta);
+			_lockOnLeftNode.RotateZ(spinRadians * delta);
+			_lockOnRightNode.RotateZ(-spinRadians * delta);
+		}
+
+		public override void _Process(double delta)
+		{
+			_SpinFormationNodes((float)delta);
+			//_bodyMeshes.Visible = (_formation != TurretFormation.Narrow && _cameraPylon.GetLastFraction() > 0.25f);
+			_bodyMeshes.Visible = _cameraPylon.GetLastFraction() > 0.25f;
 		}
 
 		private void BroadcastHudStatus()
@@ -372,7 +402,11 @@ namespace TheZealousMachine
 				Reset();
 			}
 
-			if (!Input.IsActionPressed("attack_2"))
+			if (Input.IsActionJustPressed("attack_4"))
+			{
+				_targetLocked = !_targetLocked;
+			}
+			if (!_targetLocked)
 			{
 				_aimPosition = _aimLaser.GetAimPosition();
 			}
@@ -392,9 +426,13 @@ namespace TheZealousMachine
 			}
 			if (input.slot2)
 			{
-				SetFormation(TurretFormation.Narrow);
+				SetFormation(TurretFormation.LockOn);
 			}
 			if (input.slot3)
+			{
+				SetFormation(TurretFormation.Narrow);
+			}
+			if (input.slot4)
 			{
 				SetFormation(TurretFormation.Boost);
 			}

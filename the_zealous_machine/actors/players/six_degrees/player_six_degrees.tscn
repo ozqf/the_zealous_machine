@@ -208,7 +208,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 [node name="4" type="Node3D" parent="head/options/boost_node"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
 
-[node name="Node3D" type="Node3D" parent="head/options"]
+[node name="lock_on_left_pylon" parent="head/options" instance=ExtResource("3_n3yfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, -0.5, 0)
+
+[node name="far" type="Node3D" parent="head/options/lock_on_left_pylon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3, 0.5, 2)
+
+[node name="upper" type="Node3D" parent="head/options/lock_on_left_pylon/far"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="lower" type="Node3D" parent="head/options/lock_on_left_pylon/far"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+
+[node name="lock_on_right_pylon" parent="head/options" instance=ExtResource("3_n3yfh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, -0.5, 0)
+
+[node name="far" type="Node3D" parent="head/options/lock_on_right_pylon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 0.5, 2)
+
+[node name="upper" type="Node3D" parent="head/options/lock_on_right_pylon/far"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="lower" type="Node3D" parent="head/options/lock_on_right_pylon/far"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
 
 [node name="debug_print" type="Label" parent="."]
 offset_right = 320.0

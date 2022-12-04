@@ -27,6 +27,7 @@ namespace TheZealousMachine.gfx
 			if (tick <= 0)
 			{
 				tick = 999999;
+				SetPhysicsProcess(false);
 				QueueFree();
 			}
 		}

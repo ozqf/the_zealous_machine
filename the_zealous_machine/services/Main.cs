@@ -280,7 +280,7 @@ namespace TheZealousMachine
 			PackedScene scene;
 			if ((int)type == -1)
 			{
-				type = (MobType)ZGU.RandomIndex((int)MobType.End, GD.Randf());
+				type = (MobType)ZGU.RandomIndex((int)MobType.LastCommon, GD.Randf());
 			}
 			//type = MobType.Cross;
 			switch (type)
@@ -293,6 +293,9 @@ namespace TheZealousMachine
 					break;
 				case MobType.Cross:
 					scene = GD.Load<PackedScene>("res://actors/mobs/cross/mob_cross.tscn");
+					break;
+				case MobType.BattleshipA:
+					scene = GD.Load<PackedScene>("res://actors/mobs/battleship_a/battleship_a.tscn");
 					break;
 				default:
 					scene = GD.Load<PackedScene>("res://actors/mobs/drone/mob_drone.tscn");

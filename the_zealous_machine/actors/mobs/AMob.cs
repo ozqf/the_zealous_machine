@@ -44,6 +44,7 @@ namespace TheZealousMachine.actors.mobs
 
 		virtual protected void _RemoveFromGame()
 		{
+			if (_dead) { return; }
 			_dead = true;
 			_game.SpawnQuickPickups(GlobalPosition, 3);
 			_game.CreateMobDebris(GlobalPosition, Velocity.Normalized());

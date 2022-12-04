@@ -50,7 +50,7 @@ namespace TheZealousMachine.actors.items
 		{
 			_tick = 9999999;
 			QueueFree();
-			SetProcess(false);
+			SetPhysicsProcess(false);
 		}
 
 		public override void _PhysicsProcess(double delta)

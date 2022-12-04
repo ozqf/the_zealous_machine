@@ -53,7 +53,7 @@ shape = SubResource("BoxShape3D_q3t3q")
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 185, 208)
 
 [node name="battleship_a" parent="." instance=ExtResource("6_pqtan")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 118, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 125, 0)
 
 [node name="sandbox" type="Node3D" parent="."]
 
