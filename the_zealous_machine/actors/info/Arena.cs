@@ -32,6 +32,14 @@ namespace TheZealousMachine.actors.info
 			_doors.ForEach(d => d.SetOpen(true));
 		}
 
+		private bool _IsValidExitNormal(Vector3 query)
+		{
+			if (query.Dot(Vector3.Up) > 0.9f) { return false; }
+			if (query.Dot(Vector3.Left) > 0.9f) { return false; }
+			if (query.Dot(Vector3.Back) > 0.9f) { return false; }
+			return true;
+		}
+
 		public RoomSeal PickExit()
 		{
 			int escape = 999;
@@ -43,7 +51,7 @@ namespace TheZealousMachine.actors.info
 				RoomSeal candidate = _seals[i];
 				if (candidate.isEntrance
 					|| candidate.IsNextToRoom()
-					|| candidate.ForwardGlobal().Dot(Vector3.Up) > 0.9f)
+					|| !_IsValidExitNormal(candidate.ForwardGlobal()))
 				{
 					continue;
 				}

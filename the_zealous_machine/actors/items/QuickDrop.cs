@@ -66,7 +66,7 @@ namespace TheZealousMachine.actors.items
 			if (collector == null) { return; }
 			
 			float dist = collector.GlobalPosition.DistanceSquaredTo(GlobalPosition);
-			float collectRange = 12f;
+			float collectRange = 20f;
 			if (dist > (collectRange * collectRange) && !_grabbed)
 			{
 				return;

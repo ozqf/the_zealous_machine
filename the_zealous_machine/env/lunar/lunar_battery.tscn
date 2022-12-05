@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7f872cvkeyyo"]
+
+[ext_resource type="SphereMesh" uid="uid://ct68g57i70lya" path="res://shared/primitives/sphere.tres" id="1_2rorj"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_b0ier"]
+size = Vector3(25, 25, 25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ycfu0"]
+size = Vector3(4, 4, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vcupk"]
+shading_mode = 0
+
+[node name="lunar_battery" type="Node3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_b0ier")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.958323, 0.0977112, -0.268459, 0, 0.939693, 0.34202, 0.285688, -0.327766, 0.900528, -3, 21, 12)
+mesh = SubResource("BoxMesh_ycfu0")
+
+[node name="muzzle_flash" type="MeshInstance3D" parent="."]
+transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, -10, 30, 37)
+mesh = ExtResource("1_2rorj")
+surface_material_override/0 = SubResource("StandardMaterial3D_vcupk")

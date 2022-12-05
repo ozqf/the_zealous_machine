@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://cstjgijt7a2tr"]
+
+[ext_resource type="ArrayMesh" uid="uid://cohci3tjud86d" path="res://env/lunar/lunar_surface.obj" id="1_l7xjw"]
+[ext_resource type="PackedScene" uid="uid://c7f872cvkeyyo" path="res://env/lunar/lunar_battery.tscn" id="2_d4meh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v1m2b"]
+albedo_color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[sub_resource type="Environment" id="Environment_3q4tw"]
+background_mode = 1
+
+[node name="lunar_landscape" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_l7xjw")
+surface_material_override/0 = SubResource("StandardMaterial3D_v1m2b")
+
+[node name="lunar_battery2" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 387, -16, -16)
+
+[node name="Camera3D" type="Camera3D" parent="lunar_battery2"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 15, 20, -10)
+environment = SubResource("Environment_3q4tw")
+fov = 85.0
+
+[node name="lunar_battery" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 234, -13, -54)
+
+[node name="lunar_battery3" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 239, -7, 25)
+
+[node name="lunar_battery4" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 16, 67)
+
+[node name="lunar_battery5" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 283, 0, -99)
+
+[node name="lunar_battery6" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 11, -105)
+
+[node name="lunar_battery7" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -224, 11, -71)
+
+[node name="lunar_battery8" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 30, 238)
+
+[node name="lunar_battery9" parent="." instance=ExtResource("2_d4meh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -344, 59, -265)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.965926, -0.12941, 0.224144, 0, 0.866025, 0.5, -0.258819, 0.482963, -0.836516, 373, 37, 0)

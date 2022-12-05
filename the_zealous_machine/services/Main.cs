@@ -44,6 +44,7 @@ namespace TheZealousMachine
         private PackedScene _room04 = GD.Load<PackedScene>("res://actors/rooms/room_04.tscn");
 		private PackedScene _room05 = GD.Load<PackedScene>("res://actors/rooms/room_05.tscn");
 		private PackedScene _room06 = GD.Load<PackedScene>("res://actors/rooms/room_06.tscn");
+		private PackedScene _room07 = GD.Load<PackedScene>("res://actors/rooms/room_07.tscn");
 
         // items
         private PackedScene _quickDrop = GD.Load<PackedScene>("res://actors/items/quick_drop.tscn");
@@ -232,7 +233,7 @@ namespace TheZealousMachine
 		public void SpawnNextRoom(Transform3D exitSeal, int roomIndex = -1, int arenaIndex = -1)
 		{
 			PackedScene arenaType;
-			int numRooms = 6;
+			int numRooms = 7;
 
 			// spawn runs until we get one that fits.
 			int escape = 999;
@@ -266,7 +267,10 @@ namespace TheZealousMachine
                         arenaType = _room05;
                         break;
                     case 5:
-                        arenaType = _room05;
+                        arenaType = _room06;
+                        break;
+                    case 6:
+                        arenaType = _room07;
                         break;
                     default:
 						arenaType = _room01;
