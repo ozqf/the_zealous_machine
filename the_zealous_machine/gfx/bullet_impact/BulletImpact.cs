@@ -24,7 +24,7 @@ namespace TheZealousMachine
 			_originalScale = Scale;
 		}
 
-		public override void _Process(double delta)
+		public override void _PhysicsProcess(double delta)
 		{
 			if (_dead) { return; }
 			_tick += (float)delta;
@@ -32,7 +32,7 @@ namespace TheZealousMachine
 			{
 				_tick = 0;
 				_dead = true;
-                SetProcess(false);
+                SetPhysicsProcess(false);
 				QueueFree();
 				return;
 			}
