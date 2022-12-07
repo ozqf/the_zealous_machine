@@ -124,8 +124,12 @@ namespace TheZealousMachine.actors.mobs
 			if (_onlyMoveIfOutOfLoS && !_think.canSeeTarget)
 			{
 				_PushMoveToward(_think.toward, 20f, 20f, delta);
-			}
-			_LookInDirectionOfMovement();
+                _LookInDirectionOfMovement();
+            }
+			else
+			{
+                _LookAtThinkTarget();
+            }
 
 			_shootTick -= (float)delta;
 			if (_shootTick <= 0)

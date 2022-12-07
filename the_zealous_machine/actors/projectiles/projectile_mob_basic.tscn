@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://6v3d58ar1hd7"]
+[gd_scene load_steps=5 format=3 uid="uid://6v3d58ar1hd7"]
 
 [ext_resource type="Script" path="res://actors/projectiles/ProjectileGeneric.cs" id="1_l25si"]
+[ext_resource type="Script" path="res://actors/projectiles/PrjLightHide.cs" id="2_btcce"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_jwtwk"]
 top_radius = 0.0
@@ -27,3 +28,5 @@ target_position = Vector3(0, 0, -10)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 light_color = Color(1, 0.239216, 1, 1)
+script = ExtResource("2_btcce")
+frameModulo = 0

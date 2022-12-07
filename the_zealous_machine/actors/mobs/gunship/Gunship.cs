@@ -8,7 +8,7 @@ namespace TheZealousMachine.actors.mobs.gunship
         {
             base._Ready();
             _health = 500;
-            _shootTime = 0.1f;
+            _shootTime = 0.2f;
             _onlyMoveIfOutOfLoS = true;
         }
 

@@ -37,17 +37,17 @@ namespace TheZealousMachine
 		private PackedScene _bulletImpactGrey = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact_grey.tscn");
 		private PackedScene _mobDebrisType = GD.Load<PackedScene>("res://gfx/mob_debris/mob_debris.tscn");
 
-        // rooms
-        private PackedScene _room01 = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
+		// rooms
+		private PackedScene _room01 = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
 		private PackedScene _room02 = GD.Load<PackedScene>("res://actors/rooms/room_02.tscn");
-        private PackedScene _room03 = GD.Load<PackedScene>("res://actors/rooms/room_03.tscn");
-        private PackedScene _room04 = GD.Load<PackedScene>("res://actors/rooms/room_04.tscn");
+		private PackedScene _room03 = GD.Load<PackedScene>("res://actors/rooms/room_03.tscn");
+		private PackedScene _room04 = GD.Load<PackedScene>("res://actors/rooms/room_04.tscn");
 		private PackedScene _room05 = GD.Load<PackedScene>("res://actors/rooms/room_05.tscn");
 		private PackedScene _room06 = GD.Load<PackedScene>("res://actors/rooms/room_06.tscn");
 		private PackedScene _room07 = GD.Load<PackedScene>("res://actors/rooms/room_07.tscn");
 
-        // items
-        private PackedScene _quickDrop = GD.Load<PackedScene>("res://actors/items/quick_drop.tscn");
+		// items
+		private PackedScene _quickDrop = GD.Load<PackedScene>("res://actors/items/quick_drop.tscn");
 
 		// info
 		private PackedScene _spawnVolume = GD.Load<PackedScene>("res://actors/volumes/spawn_volume.tscn");
@@ -55,6 +55,7 @@ namespace TheZealousMachine
 		// service
 		private PackedScene _mainMenuType = GD.Load<PackedScene>("res://services/menus/main_menu.tscn");
 
+		private Pool _impactPool;
 		// game
 		private AppState _state = AppState.Pregame;
 		// add current level to this, so main menu can be below it in node order
@@ -86,6 +87,7 @@ namespace TheZealousMachine
 			_menu.Init(this);
 			_menu.SetActive(true);
 			_RestartGame();
+			InitBulletImpactPool();
 		}
 
 		private void _OnGlobalEvent(string message, object data)
@@ -159,9 +161,9 @@ namespace TheZealousMachine
 			switch (type)
 			{
 				case ProjectileType.MobBasic:
-                    prj = _prjMobBasic.Instantiate<IProjectile>();
-                    break;
-                case ProjectileType.PlayerBasic:
+					prj = _prjMobBasic.Instantiate<IProjectile>();
+					break;
+				case ProjectileType.PlayerBasic:
 					prj = _prjGeneric.Instantiate<IProjectile>();
 					break;
 				case ProjectileType.Column:
@@ -179,9 +181,25 @@ namespace TheZealousMachine
 			return prj;
 		}
 
+		private void InitBulletImpactPool()
+		{
+			_impactPool = new Pool(_mapParent);
+			for (int i = 0; i < 100; ++i)
+			{
+				BulletImpact gfx = _bulletImpactPurple.Instantiate<BulletImpact>();
+				_impactPool.RegisterItemForPool(gfx);
+			}
+		}
+
 		public void CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0)
 		{
-			
+			IPoolItem item = _impactPool.GetFreeItem();
+			if (item == null) { return; }
+			BulletImpact gfx = item as BulletImpact;
+			gfx.GlobalPosition = pos;
+			gfx.LookAtSafe(pos + directon, Vector3.Up, Vector3.Left);
+
+			/*
 			BulletImpact gfx;
 			switch (type)
 			{
@@ -198,7 +216,7 @@ namespace TheZealousMachine
 			GetActorRoot().AddChild(gfx);
 			gfx.GlobalPosition = pos;
 			gfx.LookAtSafe(pos + directon, Vector3.Up, Vector3.Left);
-			
+			*/
 			//return gfx;
 		}
 
@@ -256,23 +274,23 @@ namespace TheZealousMachine
 						break;
 					case 1:
 						arenaType = _room02;
-                        break;
+						break;
 					case 2:
 						arenaType = _room03;
-                        break;
+						break;
 					case 3:
 						arenaType = _room04;
-                        break;
-                    case 4:
-                        arenaType = _room05;
-                        break;
-                    case 5:
-                        arenaType = _room06;
-                        break;
-                    case 6:
-                        arenaType = _room07;
-                        break;
-                    default:
+						break;
+					case 4:
+						arenaType = _room05;
+						break;
+					case 5:
+						arenaType = _room06;
+						break;
+					case 6:
+						arenaType = _room07;
+						break;
+					default:
 						arenaType = _room01;
 						break;
 				}

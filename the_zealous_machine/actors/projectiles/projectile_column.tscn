@@ -28,6 +28,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_frwy8")
 target_position = Vector3(0, 0, -10)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
+visible = false
 light_color = Color(1, 0.239216, 1, 1)
 
 [node name="up_column" parent="." instance=ExtResource("2_n6c7g")]
