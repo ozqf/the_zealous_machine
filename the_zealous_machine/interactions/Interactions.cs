@@ -73,9 +73,9 @@ namespace TheZealousMachine
 
     public interface IMob
     {
+        public void Teleport(Vector3 pos);
         public void SetMobId(Guid id);
         public Guid mobId { get; }
-
         public Node3D GetBaseNode();
     }
 

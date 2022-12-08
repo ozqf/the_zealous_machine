@@ -17,6 +17,11 @@ namespace TheZealousMachine.actors.mobs.battleship_a
 			GlobalEvents.Send(GameEvents.MOB_SPAWNED, this);
 		}
 
+		public void Teleport(Vector3 pos)
+		{
+			GlobalPosition = pos;
+		}
+
 		public Node3D GetBaseNode()
 		{
 			return this;

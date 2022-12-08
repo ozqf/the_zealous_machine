@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://b1hmhporeueli"]
+[gd_scene load_steps=10 format=3 uid="uid://b1hmhporeueli"]
 
 [ext_resource type="Script" path="res://actors/mobs/gunship/Gunship.cs" id="1_sorlu"]
-[ext_resource type="PackedScene" uid="uid://8dtigvuktre7" path="res://gfx/booster_particles.tscn" id="3_l3egy"]
+[ext_resource type="PackedScene" uid="uid://do6hlhcphycbr" path="res://actors/mobs/mob_sensors.tscn" id="2_5fkdo"]
+[ext_resource type="PackedScene" path="res://gfx/booster_particles.tscn" id="3_l3egy"]
 [ext_resource type="Material" uid="uid://beygr3tycvx7o" path="res://shared/dev_materials/fullbright_red.tres" id="4_kqgp6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7x6k8"]
@@ -20,6 +21,8 @@ size = Vector3(1, 1, 1.5)
 collision_layer = 4
 collision_mask = 15
 script = ExtResource("1_sorlu")
+
+[node name="mob_sensors" parent="." instance=ExtResource("2_5fkdo")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -0.8)

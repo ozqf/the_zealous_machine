@@ -346,10 +346,11 @@ namespace TheZealousMachine
 					scene = _mobDrone;
 					break;
 			}
-			Node3D mob = scene.Instantiate<Node3D>();
-			GetActorRoot().AddChild(mob);
-			mob.GlobalPosition = pos;
-			return mob as IMob;
+			Node3D mobNode = scene.Instantiate<Node3D>();
+			GetActorRoot().AddChild(mobNode);
+			IMob mob = mobNode as IMob;
+			mob.Teleport(pos);
+			return mob;
 		}
 
 		public Node3D CreateMobDebris(Vector3 pos, Vector3 direction)

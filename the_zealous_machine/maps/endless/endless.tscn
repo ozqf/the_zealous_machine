@@ -43,6 +43,8 @@ directional_shadow_max_distance = 500.0
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 
 [node name="Area3D" type="Area3D" parent="."]
+collision_layer = 1024
+collision_mask = 1024
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 37, 0)

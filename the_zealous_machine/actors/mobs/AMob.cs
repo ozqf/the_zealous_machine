@@ -11,6 +11,8 @@ namespace TheZealousMachine.actors.mobs
 		protected IGame _game;
 		protected MobThinkInfo _think = new MobThinkInfo();
 		protected Node3D _head;
+		protected MobSensors _sensors;
+		protected Vector3 _spawnOrigin;
 
 		bool _dead = false;
 		protected int _health = 80;
@@ -23,11 +25,19 @@ namespace TheZealousMachine.actors.mobs
 		{
 			_game = Servicelocator.Locate<IGame>();
 			_head = GetNode<Node3D>("head");
+			_sensors = GetNode<MobSensors>("mob_sensors");
 			_game.RegisterMob(this);
 			GlobalEvents.Send(GameEvents.MOB_SPAWNED, this);
 		}
 
-		public Node3D GetBaseNode() { return this; }
+		public void Teleport(Vector3 pos)
+		{
+			GlobalPosition = pos;
+			_spawnOrigin = pos;
+        }
+
+
+        public Node3D GetBaseNode() { return this; }
 
 
 		public override void _ExitTree()
@@ -145,6 +155,11 @@ namespace TheZealousMachine.actors.mobs
 			if (!_think.HasTarget())
 			{
 				return;
+			}
+			if (_sensors.overlaps == 0)
+			{
+				GD.Print($"Mob out of bounds - teleporting");
+				Teleport(_spawnOrigin);
 			}
 
 			_HuntingTick((float)delta);

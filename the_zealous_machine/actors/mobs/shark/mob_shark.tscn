@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bscwcqtnr1rsb"]
+[gd_scene load_steps=7 format=3 uid="uid://dmkcpnje6qcaw"]
 
 [ext_resource type="Script" path="res://actors/mobs/shark/MobShark.cs" id="1_5j1rt"]
-[ext_resource type="PackedScene" uid="uid://8dtigvuktre7" path="res://gfx/booster_particles.tscn" id="3_l3egy"]
+[ext_resource type="PackedScene" path="res://gfx/booster_particles.tscn" id="3_l3egy"]
 [ext_resource type="ArrayMesh" uid="uid://bx6egw2b6pllf" path="res://actors/mobs/shark/bot_shark.obj" id="4_k6axb"]
 [ext_resource type="Material" uid="uid://beygr3tycvx7o" path="res://shared/dev_materials/fullbright_red.tres" id="4_kqgp6"]
+[ext_resource type="PackedScene" uid="uid://do6hlhcphycbr" path="res://actors/mobs/mob_sensors.tscn" id="5_h13c7"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_pmqqx"]
 radius = 1.6
@@ -29,3 +30,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 mesh = ExtResource("4_k6axb")
 surface_material_override/1 = ExtResource("4_kqgp6")
+
+[node name="mob_sensors" parent="." instance=ExtResource("5_h13c7")]
