@@ -15,47 +15,37 @@ script = ExtResource("1_vv2k5")
 
 [node name="room_07_geometry" parent="." instance=ExtResource("2_gs1a2")]
 
-[node name="spawner6" parent="." instance=ExtResource("5_0124h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -14)
-maxMobs = 3
-perSpawnCount = 3
-mobType = 2
-
-[node name="spawner7" parent="." instance=ExtResource("5_0124h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 0, -11)
-maxMobs = 3
-perSpawnCount = 3
-mobType = 1
-
-[node name="spawner8" parent="." instance=ExtResource("5_0124h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 26)
-maxMobs = 3
-perSpawnCount = 3
-mobType = 2
-
 [node name="spawner" parent="." instance=ExtResource("5_0124h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 18)
-maxMobs = 1
-perSpawnCount = 3
+perIterationCount = 5
+iterations = 3
+timeBetweenSpawns = 0.25
 mobType = 2
+randPositionOffset = Vector3(4, 2, 4)
+
+[node name="spawner2" parent="." instance=ExtResource("5_0124h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -25)
+perIterationCount = 5
+iterations = 3
+timeBetweenSpawns = 0.25
+mobType = 2
+randPositionOffset = Vector3(4, 2, 4)
 
 [node name="spawner3" parent="." instance=ExtResource("5_0124h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 0, 12)
-maxMobs = 1
-perSpawnCount = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, -24)
+perIterationCount = 3
+iterations = 3
+timeBetweenSpawns = 0.25
 mobType = 1
+randPositionOffset = Vector3(4, 2, 4)
 
 [node name="spawner4" parent="." instance=ExtResource("5_0124h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -26)
-maxMobs = 1
-perSpawnCount = 3
-mobType = 2
-
-[node name="spawner5" parent="." instance=ExtResource("5_0124h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -26)
-maxMobs = 1
-perSpawnCount = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 23)
+perIterationCount = 3
+iterations = 3
+timeBetweenSpawns = 0.25
 mobType = 1
+randPositionOffset = Vector3(4, 2, 4)
 
 [node name="trigger_touch" parent="." instance=ExtResource("6_r6voj")]
 transform = Transform3D(48.0236, 0, 0, 0, 3.819, 0, 0, 0, 49.1249, -24, -2, -24)
