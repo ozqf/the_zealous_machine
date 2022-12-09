@@ -17,54 +17,36 @@ script = ExtResource("1_io51c")
 
 [node name="spawner2" parent="." instance=ExtResource("5_2hvot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
-maxMobs = 1
-perSpawnCount = 1
-mobType = -1
 
 [node name="spawner6" parent="." instance=ExtResource("5_2hvot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
-maxMobs = 1
-perSpawnCount = 1
-mobType = -1
 
 [node name="spawner7" parent="." instance=ExtResource("5_2hvot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
-maxMobs = 1
-perSpawnCount = 1
-mobType = -1
 
 [node name="spawner8" parent="." instance=ExtResource("5_2hvot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
-maxMobs = 1
-perSpawnCount = 1
-mobType = -1
 
 [node name="spawner" parent="." instance=ExtResource("5_2hvot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
-maxMobs = 1
-perSpawnCount = 3
-mobType = -1
+iterations = 5
+timeBetweenIterations = 2.0
+mobType = 2
 
 [node name="spawner3" parent="." instance=ExtResource("5_2hvot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
-maxMobs = 1
-perSpawnCount = 3
-mobType = -1
 
 [node name="spawner4" parent="." instance=ExtResource("5_2hvot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -6)
-maxMobs = 1
-perSpawnCount = 3
-mobType = -1
+iterations = 5
+timeBetweenIterations = 2.0
+mobType = 2
 
 [node name="spawner5" parent="." instance=ExtResource("5_2hvot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -6)
-maxMobs = 1
-perSpawnCount = 3
-mobType = -1
 
 [node name="trigger_touch" parent="." instance=ExtResource("6_w4c7n")]
-transform = Transform3D(9.60472, 0, 0, 0, 3.819, 0, 0, 0, 25.9379, 2, -2, -14)
+transform = Transform3D(29.7746, 0, 0, 0, 13.061, 0, 0, 0, 25.9379, -17, -8, -14)
 _message = "start"
 
 [node name="seal_top" parent="." instance=ExtResource("7_0yjh1")]
