@@ -83,6 +83,7 @@ namespace ZealousGodotUtils
             return FindParentOfTypeRecursive<T>(parent);
         }
 
+        // TODO: Doesn't work for interfaces, only classes
         public static T FindFirstChildOfType<T>(this Node node)
         {
             int numChildren = node.GetChildCount();
@@ -98,6 +99,7 @@ namespace ZealousGodotUtils
             return default(T);
         }
 
+        // TODO: Doesn't work for interfaces, only classes
         public static List<T> FindChildrenOfType<T>(this Node node)
         {
             List<T> values = new List<T>();

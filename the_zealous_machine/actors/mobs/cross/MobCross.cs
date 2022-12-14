@@ -14,11 +14,11 @@ namespace TheZealousMachine.actors.mobs.cross
 			_onlyMoveIfOutOfLoS = true;
 		}
 
-		protected override void _PushMoveToward(Vector3 target, float pushForce, float maxSpeed, float delta)
+		protected override void _PushMoveByDirection(Vector3 target, float pushForce, float maxSpeed, float delta)
 		{
 			pushForce = 10f;
 			maxSpeed = 10f;
-			base._PushMoveToward(target, pushForce, maxSpeed, delta);
+			base._PushMoveByDirection(target, pushForce, maxSpeed, delta);
 		}
 
 		protected override ProjectileLaunchInfo CreateLaunchInfo(ProjectileType prjType)

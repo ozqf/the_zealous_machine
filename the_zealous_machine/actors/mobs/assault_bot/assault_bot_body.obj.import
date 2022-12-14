@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ctc4470swd1ox"
+path="res://.godot/imported/assault_bot_body.obj-4d0b73d3754b231fbe0367d783181ab6.mesh"
+
+[deps]
+
+files=["res://.godot/imported/assault_bot_body.obj-4d0b73d3754b231fbe0367d783181ab6.mesh"]
+
+source_file="res://actors/mobs/assault_bot/assault_bot_body.obj"
+dest_files=["res://.godot/imported/assault_bot_body.obj-4d0b73d3754b231fbe0367d783181ab6.mesh", "res://.godot/imported/assault_bot_body.obj-4d0b73d3754b231fbe0367d783181ab6.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

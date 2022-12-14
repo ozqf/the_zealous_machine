@@ -5,12 +5,13 @@ using ZealousGodotUtils;
 
 namespace TheZealousMachine.actors.info
 {
-	public partial class Arena : Node3D, IArena
+	public partial class Arena : Node3D, IArena, ITriggerable
 	{
 		private bool _scanned = false;
-		private List<Spawner> _spawners;
+		private List<IMapEvent> _mapEvents;
+		private int _mapEventIndex = -1;
 		private List<PlayerBarrier> _barriers;
-		private List<IDoor> _doors;
+		//private List<IDoor> _doors;
 		private List<RoomSeal> _seals;
 		private bool _running = false;
 
@@ -19,17 +20,33 @@ namespace TheZealousMachine.actors.info
 			ScanForComponents();
 		}
 
+		public void Trigger(string name, string message)
+		{
+			GD.Print($"Arena {Name} - touch message {message} from {name}");
+			if (message == "start")
+			{
+				if (!_running)
+				{
+					_Start();
+				}
+				else
+				{
+					GD.Print($"Arena {Name} is already running!");
+				}
+			}
+		}
+
 		public void ScanForComponents()
 		{
 			if (_scanned) { return; }
 			_scanned = true;
-			_spawners = this.FindChildrenOfType<Spawner>();
+			_mapEvents = Interactions.FindMapEventChildren(this);
 			_barriers = this.FindChildrenOfType<PlayerBarrier>();
-			_doors = new List<IDoor>();
+			//_doors = new List<IDoor>();
 			//_doors = this.FindChildrenOfType<IDoor>();
 			_seals = this.FindChildrenOfType<RoomSeal>();
-			GD.Print($"Arena {Name} found {_spawners.Count} spawners, {_seals.Count} seals, {_barriers.Count} barriers");
-			_doors.ForEach(d => d.SetOpen(true));
+			GD.Print($"Arena {Name} found {_mapEvents.Count} spawners, {_seals.Count} seals, {_barriers.Count} barriers");
+			//_doors.ForEach(d => d.SetOpen(true));
 		}
 
 		private bool _IsValidExitNormal(Vector3 query)
@@ -113,30 +130,14 @@ namespace TheZealousMachine.actors.info
 			Servicelocator.Locate<IGame>().SpawnNextRoom(exit.GlobalTransform);
 		}
 
-		public void TriggerTouched(string name, string message)
-		{
-			GD.Print($"Arena {Name} - touch message {message} from {name}");
-			if (message == "start")
-			{
-				if (!_running)
-				{
-					_Start();
-				}
-				else
-				{
-					GD.Print($"Arena {Name} is already running!");
-				}
-			}
-		}
-
 		private void _Start()
 		{
 			_running = true;
-			_doors.ForEach(d => d.SetOpen(false));
+			//_doors.ForEach(d => d.SetOpen(false));
 			_seals.ForEach(s => s.SetForceClosed(true));
-			for (int i = 0; i < _spawners.Count; i++)
+			for (int i = 0; i < _mapEvents.Count; i++)
 			{
-				_spawners[i].Start();
+				_mapEvents[i].MapEventStart();
 			}
 			for (int i = 0; i < _barriers.Count; i++)
 			{
@@ -153,7 +154,7 @@ namespace TheZealousMachine.actors.info
 			{
 				_barriers[i].SetOn(false);
 			}
-			_doors.ForEach(d => d.SetOpen(true));
+			//_doors.ForEach(d => d.SetOpen(true));
 			// unseal everything that isn't the entrance
 			_seals.ForEach(s => { if (!s.isEntrance) { s.SetForceClosed(false); } });
 			_NextRoom();
@@ -163,11 +164,11 @@ namespace TheZealousMachine.actors.info
 		{
 			if (_running)
 			{
-				int numSpawners = _spawners.Count;
+				int numSpawners = _mapEvents.Count;
 				int numFinishedSpawners = 0;
 				for (int i = 0; i < numSpawners;i++)
 				{
-					numFinishedSpawners += _spawners[i].IsFinished() ? 1 : 0;
+					numFinishedSpawners += _mapEvents[i].mapEventState == MapEventState.Complete ? 1 : 0;
 				}
 				if (numSpawners == numFinishedSpawners)
 				{

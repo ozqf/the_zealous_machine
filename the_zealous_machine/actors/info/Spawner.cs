@@ -6,9 +6,9 @@ using ZealousGodotUtils;
 
 namespace TheZealousMachine.actors.info
 {
-	public partial class Spawner : Node3D
+	public partial class Spawner : Node3D, IMapEvent
 	{
-		private enum SpawnerState { Idle, Spawning, Waiting };
+		private enum SpawnerState { Idle, Spawning, Waiting, Completed };
 
 		//[Export]
 		//public int maxMobs = 1;
@@ -44,6 +44,22 @@ namespace TheZealousMachine.actors.info
 			SetPhysicsProcess(false);
 		}
 
+		public MapEventState mapEventState
+		{
+			get
+			{
+				switch (_state)
+				{
+					case SpawnerState.Idle:
+						return MapEventState.Idle;
+					case SpawnerState.Completed:
+						return MapEventState.Complete;
+					default:
+						return MapEventState.Running;
+				}
+			}
+		}
+
 		private void _OnGlobalEvent(string msg, object data)
 		{
 			if (!_active) { return; }
@@ -63,13 +79,13 @@ namespace TheZealousMachine.actors.info
 			{
 				// done
 				GD.Print($"Spawner {Name} finished");
-				_state = SpawnerState.Idle;
+				_state = SpawnerState.Completed;
 				_active = false;
 				_finished = true;
 			}
 		}
 
-		public void Start()
+		public void MapEventStart()
 		{
 			if (_state != SpawnerState.Idle)
 			{

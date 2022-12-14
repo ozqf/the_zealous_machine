@@ -36,14 +36,14 @@ namespace TheZealousMachine.actors.items
 			//collector.GiveItem()
 		}
 
-		private void _PushToPoint(Vector3 p, float delta)
+		private void _PushToPoint(Vector3 p, float delta, float pushForce, float overshootDrag)
 		{
 			Vector3 toward = (p - GlobalPosition).Normalized();
 			if (LinearVelocity.Dot(toward) < 0)
 			{
-				LinearVelocity *= 0.8f;
+				LinearVelocity *= overshootDrag;
 			}
-			LinearVelocity += (toward * 120f) * delta;
+			LinearVelocity += (toward * pushForce) * delta;
 		}
 
 		private void _Remove()
@@ -76,7 +76,7 @@ namespace TheZealousMachine.actors.items
 				if (collector.CanTake("energy", 1) > 0)
 				{
 					_grabbed = true;
-					_PushToPoint(collector.GlobalPosition, (float)delta);
+					_PushToPoint(collector.GlobalPosition, (float)delta, 120f, 0.8f);
 				}
 				else
 				{

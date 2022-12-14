@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://pmgqqcljl3jb"
+path="res://.godot/imported/assault_bot_rocket.obj-8985439f895c927a7297d0196037bedf.mesh"
+
+[deps]
+
+files=["res://.godot/imported/assault_bot_rocket.obj-8985439f895c927a7297d0196037bedf.mesh"]
+
+source_file="res://actors/mobs/assault_bot/assault_bot_rocket.obj"
+dest_files=["res://.godot/imported/assault_bot_rocket.obj-8985439f895c927a7297d0196037bedf.mesh", "res://.godot/imported/assault_bot_rocket.obj-8985439f895c927a7297d0196037bedf.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

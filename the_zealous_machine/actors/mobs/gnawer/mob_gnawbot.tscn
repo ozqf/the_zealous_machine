@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://mqgy67yom66t"]
+
+[ext_resource type="Script" path="res://actors/mobs/gnawer/MobGnawbot.cs" id="1_oby02"]
+[ext_resource type="PackedScene" uid="uid://do6hlhcphycbr" path="res://actors/mobs/mob_sensors.tscn" id="2_exrwt"]
+[ext_resource type="PackedScene" path="res://gfx/booster_particles.tscn" id="3_chm1u"]
+[ext_resource type="PackedScene" uid="uid://bnv8qbcfic15l" path="res://actors/mobs/gnawer/gnawbot_mesh.tscn" id="4_fctyd"]
+[ext_resource type="Material" uid="uid://beygr3tycvx7o" path="res://shared/dev_materials/fullbright_red.tres" id="4_movul"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_omtt3"]
+radius = 3.0
+
+[sub_resource type="TorusMesh" id="TorusMesh_jtqm2"]
+inner_radius = 1.5
+outer_radius = 2.091
+
+[node name="mob_gnawbot" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 15
+script = ExtResource("1_oby02")
+
+[node name="mob_sensors" parent="." instance=ExtResource("2_exrwt")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("SphereShape3D_omtt3")
+
+[node name="booster_particles" parent="." instance=ExtResource("3_chm1u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.7)
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="gnawbot_mesh" parent="." instance=ExtResource("4_fctyd")]
+transform = Transform3D(-1, 5.2108e-15, -8.74228e-08, 0, 1, 5.96046e-08, 8.74228e-08, 5.96046e-08, -1, 0, 0, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0, 0, 0)
+visible = false
+mesh = SubResource("TorusMesh_jtqm2")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("4_movul")

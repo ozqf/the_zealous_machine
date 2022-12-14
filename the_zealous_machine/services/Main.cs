@@ -10,6 +10,12 @@ using TheZealousMachine.actors.items;
 
 namespace TheZealousMachine
 {
+	internal struct RoomSequence
+	{
+		public int roomIndex;
+		public int arenaIndex;
+	}
+	
 	public partial class Main : Node3D, IGame
 	{
 		enum AppState { Pregame, Playing, Dead }
@@ -29,6 +35,8 @@ namespace TheZealousMachine
 		private PackedScene _mobGunship = GD.Load<PackedScene>("res://actors/mobs/gunship/mob_gunship.tscn");
 		private PackedScene _mobShark = GD.Load<PackedScene>("res://actors/mobs/shark/mob_shark.tscn");
 		private PackedScene _mobCross = GD.Load<PackedScene>("res://actors/mobs/cross/mob_cross.tscn");
+		private PackedScene _mobGnawBot = GD.Load<PackedScene>("res://actors/mobs/gnawer/mob_gnawbot.tscn");
+		private PackedScene _mobAssaultBot = GD.Load<PackedScene>("res://actors/mobs/assault_bot/mob_assault_bot.tscn");
 		private PackedScene _mobBattleshipA = GD.Load<PackedScene>("res://actors/mobs/battleship_a/battleship_a.tscn");
 
 		// gfx
@@ -67,8 +75,18 @@ namespace TheZealousMachine
 		private int _nextActorId = 1;
 		private List<IMob> _mobs = new List<IMob>();
 
+		private List<RoomSequence> _roomSequence = new List<RoomSequence>
+		{
+			new RoomSequence { roomIndex = 0, arenaIndex = - 1 },
+			new RoomSequence { roomIndex = 1, arenaIndex = - 1 },
+			new RoomSequence { roomIndex = 0, arenaIndex = - 1 },
+			new RoomSequence { roomIndex = 1, arenaIndex = - 1 },
+			new RoomSequence { roomIndex = 0, arenaIndex = - 1 },
+		};
+		private int _roomSequenceIndex = 0;
+
 		private List<Arena> _arenas = new List<Arena>();
-		public int debugRoom = 5;// -1;
+		public int debugRoom = -1;
 
 
 		// application entry point
@@ -262,6 +280,14 @@ namespace TheZealousMachine
 				{
 					roomIndex = ZGU.RandomIndex(numRooms, GD.Randf());
 				}
+
+				if (_roomSequenceIndex >= 0 && _roomSequenceIndex < _roomSequence.Count)
+				{
+					roomIndex = _roomSequence[_roomSequenceIndex].roomIndex;
+					arenaIndex = _roomSequence[_roomSequenceIndex].arenaIndex;
+					_roomSequenceIndex++;
+				}
+
 				if (debugRoom >= 0)
 				{
 					roomIndex = debugRoom;
@@ -327,7 +353,7 @@ namespace TheZealousMachine
 			{
 				type = (MobType)ZGU.RandomIndex((int)MobType.LastCommon, GD.Randf());
 			}
-			//type = MobType.Cross;
+			// TODO: replace this with a dictionary or array
 			switch (type)
 			{
 				case MobType.Gunship:
@@ -338,6 +364,12 @@ namespace TheZealousMachine
 					break;
 				case MobType.Cross:
 					scene = _mobCross;
+					break;
+				case MobType.Gnawbot:
+					scene = _mobGnawBot;
+					break;
+				case MobType.AssaultBot:
+					scene = _mobAssaultBot;
 					break;
 				case MobType.BattleshipA:
 					scene = _mobBattleshipA;

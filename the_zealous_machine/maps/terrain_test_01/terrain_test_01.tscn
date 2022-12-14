@@ -1,14 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://ddopo66uds5gi"]
+[gd_scene load_steps=9 format=3 uid="uid://ddopo66uds5gi"]
 
 [ext_resource type="PackedScene" uid="uid://di76hngcq80pu" path="res://actors/players/player_start.tscn" id="2_niupb"]
 [ext_resource type="ArrayMesh" uid="uid://dc0ikyah2iuax" path="res://maps/terrain_test_01/geometry/six_axis_test_map.obj" id="3_hryui"]
 [ext_resource type="Material" uid="uid://ctafdttsjfww6" path="res://shared/dev_materials/grey_block.tres" id="4_850kv"]
-[ext_resource type="PackedScene" uid="uid://bd4udcadqobgl" path="res://actors/info/arena.tscn" id="4_sjuuk"]
-[ext_resource type="PackedScene" uid="uid://cll3tpaytrgu7" path="res://actors/volumes/trigger_touch.tscn" id="4_vxfks"]
-[ext_resource type="PackedScene" uid="uid://bhcmnq2ym627u" path="res://actors/volumes/player_barrier/player_barrier.tscn" id="5_5y7el"]
 [ext_resource type="Material" uid="uid://b3k78a04h2mae" path="res://shared/dev_materials/tech_block.tres" id="5_440r4"]
 [ext_resource type="ArrayMesh" uid="uid://b7h1vx7kqce0e" path="res://maps/terrain_test_01/geometry/surface.obj" id="6_ycx15"]
-[ext_resource type="PackedScene" uid="uid://d3yp5aln8avq" path="res://actors/info/spawner.tscn" id="9_2v8nx"]
 
 [sub_resource type="Environment" id="Environment_6w8od"]
 background_energy_multiplier = 0.0
@@ -66,40 +62,6 @@ surface_material_override/1 = ExtResource("5_440r4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="maze/MeshInstance3D/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_regpg")
-
-[node name="actors" type="Node3D" parent="maze"]
-
-[node name="arena" parent="maze/actors" instance=ExtResource("4_sjuuk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -77, 11)
-
-[node name="player_barrier" parent="maze/actors/arena" instance=ExtResource("5_5y7el")]
-transform = Transform3D(-3.49691e-07, 0, 1, 0, 8, 0, -8, 0, -4.37114e-08, -13.5, -5, -7)
-
-[node name="player_barrier2" parent="maze/actors/arena" instance=ExtResource("5_5y7el")]
-transform = Transform3D(8, 0, 0, 0, 0, -1, 0, 8, 0, 2, 60.5, -15)
-
-[node name="trig_start" parent="maze/actors/arena" instance=ExtResource("4_vxfks")]
-transform = Transform3D(39.76, 0, 0, 0, 1, 0, 0, 0, 39.559, -13, 45, -30)
-_message = "start"
-
-[node name="spawner" parent="maze/actors/arena" instance=ExtResource("9_2v8nx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -6, -11)
-
-[node name="arena2" parent="maze/actors" instance=ExtResource("4_sjuuk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, -77, 1)
-
-[node name="player_barrier" parent="maze/actors/arena2" instance=ExtResource("5_5y7el")]
-transform = Transform3D(-3.49691e-07, 0, 1, 0, 8, 0, -8, 0, -4.37114e-08, 16.5, -5, 3)
-
-[node name="player_barrier2" parent="maze/actors/arena2" instance=ExtResource("5_5y7el")]
-transform = Transform3D(8, 0, 0, 0, 0, -1, 0, 8, 0, 1, -34.5, -5)
-
-[node name="trig_start" parent="maze/actors/arena2" instance=ExtResource("4_vxfks")]
-transform = Transform3D(39.76, 0, 0, 0, 1, 0, 0, 0, 39.559, -13, -8, -30)
-_message = "start"
-
-[node name="spawner" parent="maze/actors/arena2" instance=ExtResource("9_2v8nx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -27, -2)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.707107, 0.40558, -0.579228, 0, 0.819152, 0.573576, 0.707107, -0.40558, 0.579228, -133.32, 160.853, 130.578)

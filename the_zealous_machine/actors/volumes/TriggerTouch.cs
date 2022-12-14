@@ -7,17 +7,17 @@ namespace TheZealousMachine.actors.volumes
 	{
 		[Export]
 		private string _message = "";
-		IArena _arena;
+        ITriggerable _triggerTarget;
 		[Export]
 		private bool _active = true;
 
 		public override void _Ready()
 		{
 			GetNode<MeshInstance3D>("MeshInstance3D").Visible = false;
-			_arena = this.FindParentOfTypeRecursive<IArena>() as IArena;
-			if (_arena == null )
+			_triggerTarget = this.FindParentOfTypeRecursive<ITriggerable>() as ITriggerable;
+			if (_triggerTarget == null )
 			{
-				GD.Print($"Touch Triger {Name} found no arena parent");
+				GD.Print($"Touch Triger {Name} found no target parent");
 				_active = false;
 				return;
 			}
@@ -27,10 +27,10 @@ namespace TheZealousMachine.actors.volumes
 		private void _OnBodyEntered(Node body)
 		{
 			if (!_active) { return; }
-			if (_arena != null)
+			if (_triggerTarget != null)
 			{
 				_active = false;
-				_arena.TriggerTouched(Name, _message);
+				_triggerTarget.Trigger(Name, _message);
 			}
 		}
 	}

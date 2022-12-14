@@ -14,12 +14,14 @@ namespace TheZealousMachine.actors.mobs
 		protected MobSensors _sensors;
 		protected Vector3 _spawnOrigin;
 
-		bool _dead = false;
+		private bool _dead = false;
 		protected int _health = 80;
 		protected float _shootTick = 1;
 		protected float _shootTime = 0.5f;
 		protected ProjectileType _nextProjectileType = ProjectileType.MobBasic;
 		protected bool _onlyMoveIfOutOfLoS = false;
+		protected int _stunThreshold = 20;
+		protected int _stunAccumulator = 0;
 
 		public override void _Ready()
 		{
@@ -63,6 +65,16 @@ namespace TheZealousMachine.actors.mobs
 			QueueFree();
 		}
 
+		virtual protected void _ReactToHit(HitInfo hit)
+		{
+			_stunAccumulator += hit.damage;
+			if (_stunAccumulator >= _stunThreshold)
+			{
+				_stunAccumulator = 0;
+                Velocity += (hit.direction * 5f);
+            }
+        }
+
 		virtual public HitResponse Hit(HitInfo hit)
 		{
 			HitResponse response = HitResponse.Empty;
@@ -79,7 +91,7 @@ namespace TheZealousMachine.actors.mobs
 			}
 			else
 			{
-				Velocity += (hit.direction * 5f);
+				_ReactToHit(hit);
 			}
 			return response;
 		}
@@ -109,31 +121,79 @@ namespace TheZealousMachine.actors.mobs
 			return info;
 		}
 
-		virtual protected void _Shoot()
+        virtual protected void _Shoot(Transform3D t, ProjectileType prjType)
+        {
+            ProjectileLaunchInfo info = CreateLaunchInfo(_nextProjectileType);
+			info.t = t;
+            info.teamId = Interactions.TEAM_ID_MOBS;
+
+            IProjectile prj = _game.CreateProjectile(_nextProjectileType);
+            prj.Launch(info);
+        }
+
+        virtual protected void _Shoot()
 		{
 			Transform3D t = GlobalTransform;
-			ProjectileLaunchInfo info = CreateLaunchInfo(_nextProjectileType);
-			info.t = t.LookingAt(_think.targetInfo.position, Vector3.Up);
-			info.teamId = Interactions.TEAM_ID_MOBS;
-
-			IProjectile prj = _game.CreateProjectile(_nextProjectileType);
-			prj.Launch(info);
+			t = t.LookingAt(_think.targetInfo.position, Vector3.Up);
+            _Shoot(t, _nextProjectileType);
 		}
 
-		virtual protected void _PushMoveToward(Vector3 target, float pushForce, float maxSpeed, float delta)
+		virtual protected void _PushMoveByDirection(Vector3 dir, float pushForce, float maxSpeed, float delta)
 		{
 			Vector3 velocity = Velocity;
-			velocity += (_think.toward * pushForce) * delta;
+			velocity += (dir * pushForce) * delta;
 			velocity = velocity.ClampMagnitude(maxSpeed);
 			Velocity = velocity;
 			MoveAndSlide();
 		}
 
-		virtual protected void _HuntingTick(float delta)
+        virtual protected void _PushMoveTowardPoint(Vector3 p, float pushForce, float maxSpeed, float delta)
+        {
+            Vector3 selfPos = GlobalPosition;
+            Vector3 toward = (p - selfPos).Normalized();
+			_PushMoveByDirection(toward, pushForce, maxSpeed, delta);
+        }
+
+        virtual protected void _AccelerateTowardsPoint(Vector3 p, float delta, float pushForce, float overshootDrag)
+        {
+			Vector3 selfPos = GlobalPosition;
+			float distSqr = GlobalPosition.DistanceSquaredTo(p);
+			Vector3 forward = Velocity.Normalized();
+            Vector3 toward = (p - selfPos).Normalized();
+			float dot = forward.Dot(toward);
+			if (dot < 0f && distSqr > (10f * 10f))
+			{
+				// overshoot
+				Velocity *= overshootDrag;
+				GD.Print($"Dot {dot} Overshoot {Velocity}");
+			}
+
+			if (dot < 0.95)
+			{
+				// adjust course, maintain speed
+				float magnitude = Velocity.Length();
+				if (magnitude <= 0f)
+				{
+					magnitude = 1f;
+				}
+                Velocity += (toward * (pushForce * 2f)) * delta;
+				Velocity = Velocity.Normalized() * magnitude;
+                GD.Print($"Dot {dot} Adjust course {Velocity}");
+            }
+			else
+			{
+                // accelerate
+                Velocity += (toward * pushForce) * delta;
+                GD.Print($"Dot {dot} Accelerate toward point {Velocity}");
+            }
+			MoveAndSlide();
+        }
+
+        virtual protected void _HuntingTick(float delta)
 		{
 			if (_onlyMoveIfOutOfLoS && !_think.canSeeTarget)
 			{
-				_PushMoveToward(_think.toward, 20f, 20f, delta);
+				_PushMoveByDirection(_think.toward, 20f, 20f, delta);
                 _LookInDirectionOfMovement();
             }
 			else

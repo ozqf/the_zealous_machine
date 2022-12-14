@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://bnv8qbcfic15l"]
+
+[ext_resource type="ArrayMesh" uid="uid://b1yauymmct555" path="res://actors/mobs/gnawer/gnawer.obj" id="1_ex5y3"]
+[ext_resource type="ArrayMesh" uid="uid://3w7mv7gksw7h" path="res://actors/mobs/gnawer/gnawer_teeth_3.obj" id="2_13e4d"]
+[ext_resource type="Script" path="res://shared/scripts/Rotator3D.cs" id="3_6bvtl"]
+[ext_resource type="Material" uid="uid://dt4inbfx7lyvu" path="res://actors/mobs/gnawer/mat_gnawbot_teeth.tres" id="3_27yd0"]
+[ext_resource type="ArrayMesh" uid="uid://do4v866d6342e" path="res://actors/mobs/gnawer/gnawer_teeth_2.obj" id="4_76qjh"]
+
+[node name="gnawbot_mesh" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 5.96046e-08, 0, -5.96046e-08, 1, 0, 0, 0)
+mesh = ExtResource("1_ex5y3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, -3.55271e-15, 0, 3.55271e-15, 1, 0, 0, -0.700001)
+mesh = ExtResource("2_13e4d")
+surface_material_override/0 = ExtResource("3_27yd0")
+script = ExtResource("3_6bvtl")
+degreesPerSecond = Vector3(0, 0, 360)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.400002)
+mesh = ExtResource("4_76qjh")
+surface_material_override/0 = ExtResource("3_27yd0")
+script = ExtResource("3_6bvtl")
+degreesPerSecond = Vector3(0, 0, 720)
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0999985)
+mesh = ExtResource("4_76qjh")
+surface_material_override/0 = ExtResource("3_27yd0")
+script = ExtResource("3_6bvtl")
+degreesPerSecond = Vector3(0, 0, -360)

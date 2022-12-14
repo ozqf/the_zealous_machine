@@ -1,5 +1,6 @@
 ﻿using Godot;
 using System;
+using System.Collections.Generic;
 using TheZealousMachine.actors.projectiles;
 using TheZealousMachine.actors.volumes;
 
@@ -14,7 +15,7 @@ namespace TheZealousMachine
 
     public enum MobType
     {
-        Drone, Gunship, Shark, Cross, LastCommon, BattleshipA
+        Drone, Gunship, Shark, Cross, Gnawbot, AssaultBot, LastCommon, BattleshipA
     }
 
     public static class GameEvents
@@ -122,9 +123,24 @@ namespace TheZealousMachine
         int CanTake(string type, int count);
     }
 
+    public interface ITriggerable
+    {
+        void Trigger(string sourceName, string message);
+    }
+
+    public enum MapEventState { Idle, Running, Complete }
+
+    public interface IMapEvent
+    {
+        public MapEventState mapEventState { get; }
+
+        public void MapEventStart();
+    }
+
+    // TODO not used by main when it should be!
     public interface IArena
     {
-        public void TriggerTouched(string name, string message);
+        public void Trigger(string name, string message);
     }
 
     public interface IDoor
@@ -159,7 +175,8 @@ namespace TheZealousMachine
     public struct TargetInfo
     {
         public bool valid;
-        public Vector3 position;
+        public Transform3D t;
+        public Vector3 position { get { return t.origin; } }
     }
 
     public struct ProjectileLaunchInfo
@@ -215,6 +232,18 @@ namespace TheZealousMachine
         public static uint GetEnemyProjectileMask()
         {
             return (BIT_WORLD | BIT_PLAYER);
+        }
+
+        public static List<IMapEvent> FindMapEventChildren(Node node)
+        {
+            List<IMapEvent> events = new List<IMapEvent>();
+            int count = node.GetChildCount();
+            for (int i = 0; i < count; ++i)
+            {
+                IMapEvent ev = node.GetChild(i) as IMapEvent;
+                if (ev != null) { events.Add(ev); }
+            }
+            return events;
         }
     }
 }

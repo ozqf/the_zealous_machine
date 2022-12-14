@@ -299,7 +299,7 @@ namespace TheZealousMachine
 		{
 			TargetInfo info = new TargetInfo();
 			info.valid = true;
-			info.position = this.GlobalTransform.origin;
+			info.t = GlobalTransform;
 			return info;
 		}
 
@@ -344,11 +344,21 @@ namespace TheZealousMachine
 
 		private void _CheckDebugSpawns()
 		{
+			if (Input.IsActionPressed("slot_5"))
+			{
+				_game.SpawnQuickPickups(_aimLaser.GetSpawnPosition(), 1);
+			}
+			if (Input.IsActionJustPressed("slot_8"))
+			{
+				Vector3 pos = _aimLaser.GetSpawnPosition();
+				SpawnVolume vol = _game.CreateSpawnVolume(pos);
+				vol.mobType = MobType.AssaultBot;
+			}
 			if (Input.IsActionJustPressed("slot_9"))
 			{
 				Vector3 pos = _aimLaser.GetSpawnPosition();
 				SpawnVolume vol = _game.CreateSpawnVolume(pos);
-				vol.mobType = MobType.Shark;
+				vol.mobType = MobType.Gnawbot;
 			}
 			if (Input.IsActionJustPressed("slot_0"))
 			{
@@ -356,10 +366,6 @@ namespace TheZealousMachine
 				_game.CreateMob(pos, MobType.BattleshipA);
 				//SpawnVolume vol = _game.CreateSpawnVolume(pos);
 				//vol.mobType = MobType.Cross;
-			}
-			if (Input.IsActionPressed("slot_5"))
-			{
-				_game.SpawnQuickPickups(_aimLaser.GetSpawnPosition(), 1);
 			}
 		}
 

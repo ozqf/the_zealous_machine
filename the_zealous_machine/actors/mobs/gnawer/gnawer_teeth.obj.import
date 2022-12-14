@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://gibd0admuf6m"
+path="res://.godot/imported/gnawer_teeth.obj-825e7b827cb901eb1f8fce9d1acbc56f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/gnawer_teeth.obj-825e7b827cb901eb1f8fce9d1acbc56f.mesh"]
+
+source_file="res://actors/mobs/gnawer/gnawer_teeth.obj"
+dest_files=["res://.godot/imported/gnawer_teeth.obj-825e7b827cb901eb1f8fce9d1acbc56f.mesh", "res://.godot/imported/gnawer_teeth.obj-825e7b827cb901eb1f8fce9d1acbc56f.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

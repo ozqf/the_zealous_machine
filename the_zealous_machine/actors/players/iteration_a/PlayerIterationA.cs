@@ -168,7 +168,7 @@ namespace TheZealousMachine
 		{
 			TargetInfo info = new TargetInfo();
 			info.valid = true;
-			info.position = this.GlobalTransform.origin;
+			info.t = GlobalTransform;
 			return info;
 		}
 	}

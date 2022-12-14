@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://p2j7lqgs6eeq"]
+
+[ext_resource type="ArrayMesh" uid="uid://ctc4470swd1ox" path="res://actors/mobs/assault_bot/assault_bot_body.obj" id="1_pveuj"]
+[ext_resource type="ArrayMesh" uid="uid://go0sy7n7nmlc" path="res://actors/mobs/assault_bot/assault_bot_cannon.obj" id="2_ifgty"]
+[ext_resource type="ArrayMesh" uid="uid://pmgqqcljl3jb" path="res://actors/mobs/assault_bot/assault_bot_rocket.obj" id="3_0gw4d"]
+
+[node name="assault_bot" type="MeshInstance3D"]
+mesh = ExtResource("1_pveuj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, -1.6, -1)
+mesh = ExtResource("2_ifgty")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7, -0.599998, -0.6)
+mesh = ExtResource("3_0gw4d")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, -0.6, -0.6)
+mesh = ExtResource("3_0gw4d")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, -1.6, -1)
+mesh = ExtResource("2_ifgty")
