@@ -56,6 +56,7 @@ namespace TheZealousMachine
 
 		// items
 		private PackedScene _quickDrop = GD.Load<PackedScene>("res://actors/items/quick_drop.tscn");
+		private PackedScene _quickDropHealth = GD.Load<PackedScene>("res://actors/items/quick_drop_health.tscn");
 
 		// info
 		private PackedScene _spawnVolume = GD.Load<PackedScene>("res://actors/volumes/spawn_volume.tscn");
@@ -78,10 +79,12 @@ namespace TheZealousMachine
 		private List<RoomSequence> _roomSequence = new List<RoomSequence>
 		{
 			new RoomSequence { roomIndex = 0, arenaIndex = - 1 },
-			new RoomSequence { roomIndex = 1, arenaIndex = - 1 },
 			new RoomSequence { roomIndex = 0, arenaIndex = - 1 },
-			new RoomSequence { roomIndex = 1, arenaIndex = - 1 },
-			new RoomSequence { roomIndex = 0, arenaIndex = - 1 },
+			new RoomSequence { roomIndex = 0, arenaIndex = - 1 }
+			//new RoomSequence { roomIndex = 1, arenaIndex = - 1 },
+			//new RoomSequence { roomIndex = 0, arenaIndex = - 1 },
+			//new RoomSequence { roomIndex = 1, arenaIndex = - 1 },
+			//new RoomSequence { roomIndex = 0, arenaIndex = - 1 },
 		};
 		private int _roomSequenceIndex = 0;
 
@@ -119,6 +122,7 @@ namespace TheZealousMachine
 		private void _RestartGame()
 		{
 			_state = AppState.Pregame;
+			_roomSequenceIndex = 0;
 			LoadEmbeddedMap(_mapEndless);
 		}
 
@@ -238,11 +242,20 @@ namespace TheZealousMachine
 			//return gfx;
 		}
 
-		public void SpawnQuickPickups(Vector3 p, int count = 1)
+		public void SpawnQuickPickups(Vector3 p, int count = 1, string dropType = "energy")
 		{
+			PackedScene prefab;
+			if (dropType == "health")
+			{
+				prefab = _quickDropHealth;
+			}
+			else
+			{
+				prefab = _quickDrop;
+			}
 			for (int i = 0; i < count; ++i)
 			{
-				QuickDrop drop = _quickDrop.Instantiate<QuickDrop>();
+				QuickDrop drop = prefab.Instantiate<QuickDrop>();
 				GetActorRoot().AddChild(drop);
 				drop.Launch(p);
 			}

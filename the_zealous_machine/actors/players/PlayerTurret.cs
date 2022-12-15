@@ -183,6 +183,7 @@ namespace TheZealousMachine.actors.players
 					info.speed = 200f;
 					info.damage = 10;
 					info.teamId = Interactions.TEAM_ID_PLAYER;
+					info.hyper = 1;
 					prj.Launch(info);
 				}
 			}

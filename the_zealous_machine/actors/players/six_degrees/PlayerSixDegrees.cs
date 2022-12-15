@@ -194,6 +194,35 @@ namespace TheZealousMachine
 			return false;
 		}
 
+		public int GiveItem(string type, int count)
+		{
+			if (count <= 0) { return 0; }
+			if (type == "energy")
+			{
+				_energy += count;
+				if (_energy > 100) { _energy = 100; }
+				return count;
+			}
+			else if (type == "health")
+			{
+				_health += count;
+				if (_health > 100) { _health = 100; }
+				return count;
+			}
+			return 0;
+		}
+
+		public int CanTake(string type, int count)
+		{
+			switch (type)
+			{
+				case "health":
+					return _health < 100 ? count : 0;
+				default:
+					return _energy < 100 ? count : 0;
+			}
+		}
+
 		public override void _ExitTree()
 		{
 			GlobalEvents.Unregister(_OnGlobalEvent);
@@ -244,24 +273,6 @@ namespace TheZealousMachine
 
 			//if (_targetLocked)
 			//return _aimPosition;
-		}
-
-
-		public int GiveItem(string type, int count)
-		{
-			if (count <= 0) { return 0; }
-			if (type == "energy")
-			{
-				_energy += count;
-				return count;
-			}
-			return 0;
-		}
-
-		public int CanTake(string type, int count)
-		{
-			if (_energy < 100) { return count; }
-			return 0;
 		}
 
 		private void _Die()

@@ -4,6 +4,7 @@ namespace TheZealousMachine.actors.mobs.shark
 {
 	public partial class MobShark : AMob
 	{
+		private const float _maxSpeed = 18f;
 		private Vector3 _strafeDir = Vector3.Forward;
 
 		public override void _Ready()
@@ -19,7 +20,7 @@ namespace TheZealousMachine.actors.mobs.shark
 		protected override void _HuntingTick(float delta)
 		{
 			Vector3 movePoint = _think.targetInfo.t.origin + (_strafeDir * 15f);
-			_PushMoveTowardPoint(movePoint, 50f, 20f, delta);
+			_PushMoveTowardPoint(movePoint, 50f, _maxSpeed, delta);
 			_LookInDirectionOfMovement();
 
 			_shootTick -= (float)delta;

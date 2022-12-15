@@ -84,6 +84,7 @@ namespace TheZealousMachine.actors.projectiles
 				hit.position = GlobalTransform.origin;
 				hit.direction = -GlobalTransform.basis.z;
 				hit.damage = _launchInfo.damage;
+				hit.hyper = _launchInfo.hyper;
 				HitResponse res = victim.Hit(hit);
 				_game.CreateBulletImpact(_ray.GetCollisionPoint(), _ray.GetCollisionNormal(), _damagingImpactType);
 				Remove();

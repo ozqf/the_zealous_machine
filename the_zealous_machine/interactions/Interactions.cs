@@ -62,7 +62,7 @@ namespace TheZealousMachine
         IItemCollector GetPlayerCollector();
 
         void SpawnNextRoom(Transform3D t, int roomIndex = -1, int arenaIndex = -1);
-        void SpawnQuickPickups(Vector3 p, int count = 1);
+        void SpawnQuickPickups(Vector3 p, int count = 1, string dropType = "energy");
         void CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
         IProjectile CreateProjectile(ProjectileType type);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
@@ -85,6 +85,7 @@ namespace TheZealousMachine
         public int damage;
         public Vector3 position;
         public Vector3 direction;
+        public int hyper;
     }
 
     public enum HitResponseType
@@ -202,6 +203,7 @@ namespace TheZealousMachine
         public float speed;
         public int teamId;
         public int damage;
+        public int hyper;
     }
 
     public interface IProjectile

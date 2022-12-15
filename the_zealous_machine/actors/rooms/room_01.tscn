@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dn7ku8xuieqcc"]
+[gd_scene load_steps=10 format=3 uid="uid://dn7ku8xuieqcc"]
 
 [ext_resource type="Script" path="res://actors/info/Arena.cs" id="1_8bi83"]
 [ext_resource type="PackedScene" uid="uid://4q20t2h4r31a" path="res://actors/rooms/doors/door_size_8x8_.tscn" id="1_wvw1v"]
-[ext_resource type="Script" path="res://actors/info/MapEventSequence.cs" id="2_bicr6"]
+[ext_resource type="Script" path="res://actors/info/MapEventRandom.cs" id="2_hlwm0"]
 [ext_resource type="PackedScene" uid="uid://d3yp5aln8avq" path="res://actors/info/spawner.tscn" id="2_o3ktp"]
 [ext_resource type="PackedScene" uid="uid://cll3tpaytrgu7" path="res://actors/volumes/trigger_touch.tscn" id="3_deqgq"]
+[ext_resource type="Script" path="res://actors/info/MapEventParallel.cs" id="3_g3f8w"]
 [ext_resource type="PackedScene" uid="uid://mmu2g0vqllyp" path="res://actors/rooms/square_shaft_geometry.tscn" id="4_7n4yq"]
 [ext_resource type="PackedScene" uid="uid://fdxqbqxti61n" path="res://actors/rooms/doors/seal_8x8.tscn" id="7_eksjy"]
 
@@ -15,22 +16,43 @@ size = Vector3(56, 82, 56)
 script = ExtResource("1_8bi83")
 
 [node name="events" type="Node3D" parent="."]
-script = ExtResource("2_bicr6")
+script = ExtResource("2_hlwm0")
 
-[node name="spawner2" parent="events" instance=ExtResource("2_o3ktp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21, 0)
+[node name="wave1" type="Node3D" parent="events"]
+script = ExtResource("3_g3f8w")
 
-[node name="spawner" parent="events" instance=ExtResource("2_o3ktp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -26, 12)
-
-[node name="spawner3" parent="events" instance=ExtResource("2_o3ktp")]
+[node name="spawner3" parent="events/wave1" instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -26, 12)
+perIterationCount = 3
+iterations = 4
+mobType = 0
 
-[node name="spawner4" parent="events" instance=ExtResource("2_o3ktp")]
+[node name="spawner4" parent="events/wave1" instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -26, -13)
+perIterationCount = 3
+iterations = 4
+mobType = 0
 
-[node name="spawner5" parent="events" instance=ExtResource("2_o3ktp")]
+[node name="wave2" type="Node3D" parent="events"]
+script = ExtResource("3_g3f8w")
+
+[node name="spawner" parent="events/wave2" instance=ExtResource("2_o3ktp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -26, 12)
+perIterationCount = 3
+mobType = 1
+
+[node name="spawner5" parent="events/wave2" instance=ExtResource("2_o3ktp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -26, -13)
+perIterationCount = 3
+mobType = 1
+
+[node name="wave3" type="Node3D" parent="events"]
+script = ExtResource("3_g3f8w")
+
+[node name="spawner2" parent="events/wave3" instance=ExtResource("2_o3ktp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21, 0)
+perIterationCount = 15
+mobType = 2
 
 [node name="trigger_touch" parent="." instance=ExtResource("3_deqgq")]
 transform = Transform3D(24, 0, 0, 0, 54, 0, 0, 0, 24, -12, -28, -12)

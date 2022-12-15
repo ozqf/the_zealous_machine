@@ -5,6 +5,11 @@ namespace TheZealousMachine.actors.items
 {
 	public partial class QuickDrop : RigidBody3D
 	{
+		[Export]
+		public string itemType = "energy";
+		[Export]
+		public int amountToGive = 1;
+
 		public float _tick = 30f;
 		private Area3D _area;
 		private IGame _game;
@@ -73,7 +78,7 @@ namespace TheZealousMachine.actors.items
 			}
 			else if (dist > 1f)
 			{
-				if (collector.CanTake("energy", 1) > 0)
+				if (collector.CanTake(itemType, amountToGive) > 0)
 				{
 					_grabbed = true;
 					_PushToPoint(collector.GlobalPosition, (float)delta, 120f, 0.8f);
@@ -85,7 +90,7 @@ namespace TheZealousMachine.actors.items
 			}
 			else
 			{
-				if (collector.GiveItem("energy", 1) > 0)
+				if (collector.GiveItem(itemType, amountToGive) > 0)
 				{
 					_Remove();
 				}

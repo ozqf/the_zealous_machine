@@ -58,7 +58,6 @@ namespace TheZealousMachine.actors.mobs
 		{
 			if (_dead) { return; }
 			_dead = true;
-			_game.SpawnQuickPickups(GlobalPosition, 3);
 			_game.CreateMobDebris(GlobalPosition, Velocity.Normalized());
 			//GD.Print($"{Name} - killed");
 			GlobalEvents.Send(GameEvents.MOB_DIED, this);
@@ -87,7 +86,9 @@ namespace TheZealousMachine.actors.mobs
 			response.damage = hit.damage;
 			if (_health < 0)
 			{
-				_RemoveFromGame();
+				string dropType = hit.hyper > 0 ? "health" : "energy";
+                _game.SpawnQuickPickups(GlobalPosition, 3, dropType);
+                _RemoveFromGame();
 			}
 			else
 			{
