@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://pt2fgtxcv5ch"]
+
+[ext_resource type="Script" path="res://actors/players/UIBar3D.cs" id="1_6ekys"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6p06f"]
+size = Vector3(0.1, 0.5, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vrcy2"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tr4kx"]
+size = Vector3(0.05, 0.4, 0.05)
+
+[node name="player_ammo_bar" type="Node3D"]
+script = ExtResource("1_6ekys")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_6p06f")
+surface_material_override/0 = SubResource("StandardMaterial3D_vrcy2")
+
+[node name="bar_mesh" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0.05)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="bar_mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_tr4kx")
+skeleton = NodePath("../..")
