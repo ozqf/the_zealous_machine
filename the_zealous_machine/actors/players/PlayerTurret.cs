@@ -1,4 +1,5 @@
 using Godot;
+using TheZealousMachine.shared.scripts;
 using ZealousGodotUtils;
 
 namespace TheZealousMachine.actors.players
@@ -15,9 +16,9 @@ namespace TheZealousMachine.actors.players
 	{
 		private PackedScene _bulletCasing = GD.Load<PackedScene>("res://gfx/bullet_casing.tscn");
 
-		public enum TurretState { InFormation, Recoiling, Reloading, Launched, Returning }
+		public enum TurretState { Idle, Recoiling, Reloading, Launched, Returning }
 
-		private TurretState _state = TurretState.InFormation;
+		private TurretState _state = TurretState.Idle;
 		// current position tracking target
 		private Node3D _subject;
 		private TurretFormation _formation;
@@ -30,22 +31,46 @@ namespace TheZealousMachine.actors.players
 		private Vector3 _jerkOrigin = new Vector3(0, 0, 0.5f);
 		private TimedVisible _light;
 		private TimedVisible _flash;
+		private TimedVisible _flash2;
 		private GPUParticles3D _boostParticles;
 		private MeshInstance3D _mesh;
+		private Node3D _shockCone;
+		private HurtArea _hurtArea;
 		private IGame _game;
+
+		private float _flightTime = 0.25f;
+		private float _flightSpeed = 100f;
+		private Vector3 _returnOrigin = new Vector3();
 
 		private Node3D _spreadTarget = null;
 		private Node3D _narrowTarget = null;
 		private Node3D _boostTarget = null;
 		private Node3D _lockOnTarget = null;
 
+		public TurretState turretStatue { get { return _state; } }
+
+		public bool inFormation
+		{
+			get
+			{
+				return _state == TurretState.Idle
+					|| _state == TurretState.Recoiling
+					|| _state == TurretState.Reloading;
+			}
+		}
+
 		public override void _Ready()
 		{
 			_game = Servicelocator.Locate<IGame>();
 			_light = GetNode<TimedVisible>("light");
 			_flash = GetNode<TimedVisible>("muzzle_spikes");
+			_flash2 = GetNode<TimedVisible>("muzzle_spikes2");
 			_boostParticles = GetNode<GPUParticles3D>("booster_particles");
 			_mesh = GetNode<MeshInstance3D>("mesh");
+			_shockCone = GetNode<Node3D>("shock_cone");
+			_hurtArea = GetNode<HurtArea>("hurt_area");
+			_hurtArea.SetOn(false);
+			_shockCone.Visible = false;
 
 			Node player = this.FindParentOfTypeRecursive<IPlayer>();
 			if (player != null)
@@ -61,9 +86,9 @@ namespace TheZealousMachine.actors.players
 		public void SetUser(ITurretUser user, int aimPointIndex)
 		{
 			_user = user;
-            _aimPointIndex = aimPointIndex;
+			_aimPointIndex = aimPointIndex;
 
-        }
+		}
 
 		public void SetFormation(TurretFormation formation)
 		{
@@ -78,18 +103,18 @@ namespace TheZealousMachine.actors.players
 				case TurretFormation.Narrow:
 					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = false;
-                    Scale = new Vector3(0.5f, 0.5f, 0.5f);
-                    SetTrackTarget(_narrowTarget); break;
+					Scale = new Vector3(0.5f, 0.5f, 0.5f);
+					SetTrackTarget(_narrowTarget); break;
 				case TurretFormation.Boost:
 					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = true;
-                    Scale = new Vector3(1, 1, 1);
-                    SetTrackTarget(_boostTarget); break;
+					Scale = new Vector3(1, 1, 1);
+					SetTrackTarget(_boostTarget); break;
 				case TurretFormation.LockOn:
 					Rotation = Vector3.Zero;
 					_boostParticles.Emitting = false;
-                    Scale = new Vector3(1, 1, 1);
-                    SetTrackTarget(_lockOnTarget); break;
+					Scale = new Vector3(1, 1, 1);
+					SetTrackTarget(_lockOnTarget); break;
 
 			}
 		}
@@ -114,6 +139,12 @@ namespace TheZealousMachine.actors.players
 			_flash.RotateZ(GD.RandRange(0, 360) * ZGU.DEG2RAD);
 		}
 
+		private void _RunReverseMuzzleGFX()
+		{
+			_flash2.Run(0.05f);
+			_flash2.RotateZ(GD.RandRange(0, 360) * ZGU.DEG2RAD);
+		}
+
 		private void _SpawnBulletCasing()
 		{
 			var casing = _bulletCasing.Instantiate<RigidBody3D>();
@@ -132,8 +163,18 @@ namespace TheZealousMachine.actors.players
 				);
 		}
 
+		private void _RunReload()
+		{
+
+		}
+
 		public override void _PhysicsProcess(double delta)
 		{
+			if (!inFormation)
+			{
+				return;
+
+			}
 			if (_tick > 0f)
 			{ 
 				_tick -= (float)delta;
@@ -160,7 +201,7 @@ namespace TheZealousMachine.actors.players
 				info.teamId = Interactions.TEAM_ID_PLAYER;
 				prj.Launch(info);
 			}
-			else if (Input.IsActionPressed("attack_2") && _user.CheckAndTakeItem("energy", 2))
+			/*else if (Input.IsActionPressed("attack_2") && _user.CheckAndTakeItem("energy", 2))
 			{
 				_jerkTime = 0.3f;
 				_jerkTick = 0;
@@ -186,19 +227,80 @@ namespace TheZealousMachine.actors.players
 					info.hyper = 1;
 					prj.Launch(info);
 				}
+			}*/
+		}
+
+		public void Launch()
+		{
+			GD.Print($"Turret {Name} launch");
+			_state = TurretState.Launched;
+			_boostParticles.Emitting = true;
+			_shockCone.Visible = true;
+			_SpawnBulletCasing();
+			_tick = 0;
+			_flightSpeed = 200f;
+			_flightTime = 0.1f;
+			_hurtArea.SetOn(true);
+			_RunReverseMuzzleGFX();
+
+		}
+
+		private void _MoveLaunched(float delta)
+		{
+			_tick += delta;
+			Vector3 step = this.GlobalTransform.Forward() * _flightSpeed * delta;
+			GlobalPosition += step;
+			if (_tick >= _flightTime)
+			{
+				_boostParticles.Emitting = false;
+				_tick = 0f;
+				_flightTime = 1f;
+				_state = TurretState.Returning;
+				_shockCone.Visible = false;
+				_returnOrigin = GlobalPosition;
+				_hurtArea.SetOn(false);
 			}
 		}
 
-		public override void _Process(double delta)
+		private void _MoveReturning(float delta)
+		{
+			_tick += delta;
+			if (_tick >= _flightTime)
+			{
+				_state = TurretState.Idle;
+			}
+			GlobalPosition = _returnOrigin.Lerp(_subject.GlobalPosition, _tick / _flightTime);
+		}
+
+		private void _MoveInFormation(float delta)
 		{
 			// TODO: This movement is framerate dependent!
 			// perhaps only mesh should move like this?
 			if (_subject != null)
 			{
 				Vector3 tPos = _subject.GlobalPosition;
-				Vector3 p = GlobalPosition.Lerp(tPos, 0.25f);
+				Vector3 p = tPos;
+				//Vector3 p = GlobalPosition.Lerp(tPos, 0.25f);
 				GlobalPosition = p;
 			}
+		}
+
+		public override void _Process(double delta)
+		{
+			// handle positioning
+			switch (_state)
+			{
+				case TurretState.Launched:
+					_MoveLaunched((float)delta);
+					return;
+				case TurretState.Returning:
+					_MoveReturning((float)delta);
+					return;
+				default:
+					_MoveInFormation((float)delta);
+					break;
+			}
+
 
 			if (_jerkTime > 0)
 			{
@@ -220,7 +322,7 @@ namespace TheZealousMachine.actors.players
 					this.Rotation = new Vector3(90f * ZGU.DEG2RAD, 0, 0);
 					if (_tick <= 0)
 					{
-						_state = TurretState.InFormation;
+						_state = TurretState.Idle;
 					}
 					break;
 				default:

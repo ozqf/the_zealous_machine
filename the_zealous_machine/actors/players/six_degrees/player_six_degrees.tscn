@@ -91,15 +91,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -0.5)
 
 [node name="player_turret" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1, 2)
+top_level = true
 
 [node name="player_turret2" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 1, 2)
+top_level = true
 
 [node name="player_turret3" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, -1, 2)
+top_level = true
 
 [node name="player_turret4" parent="head/options" instance=ExtResource("4_2b0gq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, -1, 2)
+top_level = true
 
 [node name="raycast_pylon" parent="head/options" instance=ExtResource("3_n3yfh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0.4)

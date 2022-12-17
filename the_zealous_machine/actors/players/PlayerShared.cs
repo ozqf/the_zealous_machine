@@ -12,6 +12,8 @@ namespace TheZealousMachine
         public bool gliding;
         public bool attack1;
         public bool attack2;
+        public bool attack3;
+        public bool attack4;
 
         public bool slot1;
         public bool slot2;
@@ -95,6 +97,8 @@ namespace TheZealousMachine
             input.gliding = Input.IsActionPressed("glide");
             input.attack1 = Input.IsActionPressed("attack_1");
             input.attack2 = Input.IsActionPressed("attack_2");
+            input.attack3 = Input.IsActionPressed("attack_3");
+            input.attack4 = Input.IsActionPressed("attack_4");
             input.slot1 = Input.IsActionPressed("slot_1");
             input.slot2 = Input.IsActionPressed("slot_2");
             input.slot3 = Input.IsActionPressed("slot_3");

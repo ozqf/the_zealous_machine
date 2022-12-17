@@ -71,6 +71,7 @@ namespace TheZealousMachine
 		private TimedVisible _shieldMesh;
 		private LockOnTarget _lockOnTarget;
 		private Vector3 _aimPosition = new Vector3();
+		private PlayerInput _lastInput = new PlayerInput();
 
 		private bool _targetLocked = false;
 
@@ -428,20 +429,33 @@ namespace TheZealousMachine
 			GlobalEvents.Send(GameEvents.HUD_STATUS, _hudStatus);
 		}
 
-		public override void _PhysicsProcess(double delta)
+		private PlayerTurret? _FindFreeTurret()
 		{
-			BroadcastHudStatus();
-
-			if (_game.IsMouseLocked())
+			int len = _remoteTurrets.Count;
+			for (int i = 0; i < len; ++i)
 			{
-				return;
+				PlayerTurret turret = _remoteTurrets[i];
+				if (turret.turretStatue != PlayerTurret.TurretState.Idle) { continue; }
+				//turret.Launch();
+				return turret;
 			}
-			if (Input.IsActionJustPressed("reset"))
+			return null;
+		}
+
+		private void _TickAttackInputs(PlayerInput input, PlayerInput last)
+		{
+
+			// attack_3
+			if (input.attack2 && !last.attack2)
 			{
-				Reset();
+				PlayerTurret turret = _FindFreeTurret();
+				if (turret != null)
+				{
+					turret.Launch();
+				}
 			}
 
-			if (Input.IsActionJustPressed("attack_4"))
+			if (input.attack4 && !last.attack4)
 			{
 				_targetLocked = !_targetLocked;
 				if (_targetLocked)
@@ -467,14 +481,6 @@ namespace TheZealousMachine
 				_aimPosition = _aimLaser.GetAimPosition();
 			}
 
-			_CheckDebugSpawns();
-
-			PlayerInput input = _game.IsMouseLocked()
-				? PlayerInput.Empty
-				: PlayerUtils.GetInput();
-
-			_TickDebugInputs(input, (float)delta);
-
 			// attack
 			if (input.slot1)
 			{
@@ -492,6 +498,30 @@ namespace TheZealousMachine
 			{
 				SetFormation(TurretFormation.Boost);
 			}
+
+		}
+
+		public override void _PhysicsProcess(double delta)
+		{
+			BroadcastHudStatus();
+
+			if (_game.IsMouseLocked())
+			{
+				return;
+			}
+			if (Input.IsActionJustPressed("reset"))
+			{
+				Reset();
+			}
+
+			_CheckDebugSpawns();
+
+			PlayerInput input = _game.IsMouseLocked()
+				? PlayerInput.Empty
+				: PlayerUtils.GetInput();
+
+			_TickDebugInputs(input, (float)delta);
+			_TickAttackInputs(input, _lastInput);
 
 			// movement
 			if (input.boosting)
@@ -577,6 +607,7 @@ namespace TheZealousMachine
 			}
 
 			MoveAndSlide();
+			_lastInput = input;
 			_RefreshDebugText();
 
 		}

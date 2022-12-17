@@ -1,12 +1,28 @@
-[gd_scene load_steps=6 format=3 uid="uid://db4p6st64pmax"]
+[gd_scene load_steps=10 format=3 uid="uid://db4p6st64pmax"]
 
 [ext_resource type="PackedScene" uid="uid://cewx4urhl08eg" path="res://gfx/muzzle_flash/muzzle_spikes.tscn" id="1_0ujaf"]
 [ext_resource type="Script" path="res://actors/players/PlayerTurret.cs" id="1_7n2nj"]
 [ext_resource type="Script" path="res://gfx/TimedVisible.cs" id="1_gnp26"]
-[ext_resource type="PackedScene" uid="uid://8dtigvuktre7" path="res://gfx/booster_particles.tscn" id="2_7yn1t"]
+[ext_resource type="PackedScene" path="res://gfx/booster_particles.tscn" id="2_7yn1t"]
+[ext_resource type="Script" path="res://shared/scripts/HurtArea.cs" id="5_emskk"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_0ypl3"]
 size = Vector3(0.25, 0.25, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_l5ouq"]
+top_radius = 1.0
+bottom_radius = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ijkiu"]
+transparency = 1
+albedo_color = Color(0, 1, 1, 0.333333)
+emission_enabled = true
+emission = Color(0, 1, 1, 1)
+emission_energy_multiplier = 0.5
+emission_operator = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0yygs"]
+radius = 1.0
 
 [node name="player_turret" type="Node3D"]
 script = ExtResource("1_7n2nj")
@@ -22,6 +38,10 @@ emitting = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7)
 visible = false
 
+[node name="muzzle_spikes2" parent="." instance=ExtResource("1_0ujaf")]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0.7)
+visible = false
+
 [node name="light" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_gnp26")
@@ -31,3 +51,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -1.1)
 light_color = Color(1, 1, 0.721569, 1)
 light_energy = 0.8
 omni_range = 8.0
+
+[node name="shock_cone" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_l5ouq")
+surface_material_override/0 = SubResource("StandardMaterial3D_ijkiu")
+
+[node name="hurt_area" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("5_emskk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="hurt_area"]
+shape = SubResource("SphereShape3D_0yygs")
