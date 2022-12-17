@@ -39,8 +39,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7)
 visible = false
 
 [node name="muzzle_spikes2" parent="." instance=ExtResource("1_0ujaf")]
-transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0.7)
-visible = false
+transform = Transform3D(3, 0, 0, 0, -3, 4.52987e-07, 0, -4.52987e-07, -3, 0, 0, 0.7)
 
 [node name="light" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -53,7 +52,7 @@ light_energy = 0.8
 omni_range = 8.0
 
 [node name="shock_cone" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -1)
 mesh = SubResource("CylinderMesh_l5ouq")
 surface_material_override/0 = SubResource("StandardMaterial3D_ijkiu")
 

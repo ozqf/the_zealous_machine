@@ -64,6 +64,8 @@ namespace TheZealousMachine
         void SpawnNextRoom(Transform3D t, int roomIndex = -1, int arenaIndex = -1);
         void SpawnQuickPickups(Vector3 p, int count = 1, string dropType = "energy");
         void CreateBulletImpact(Vector3 pos, Vector3 directon, ImpactType type = 0);
+        void CreateImpactExplosion(Vector3 pos);
+        void CreateMuzzleFlash(Vector3 pos, Vector3 direction);
         IProjectile CreateProjectile(ProjectileType type);
         SpawnVolume CreateSpawnVolume(Vector3 pos);
         IMob CreateMob(Vector3 pos, MobType type = MobType.Drone);
@@ -80,12 +82,15 @@ namespace TheZealousMachine
         public Node3D GetBaseNode();
     }
 
+    public enum HitType { None, Plasma, StunImpact }
+
     public struct HitInfo
     {
         public int damage;
         public Vector3 position;
         public Vector3 direction;
         public int hyper;
+        public HitType hitType;
     }
 
     public enum HitResponseType

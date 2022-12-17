@@ -16,7 +16,7 @@ namespace TheZealousMachine.actors.players
 	{
 		private PackedScene _bulletCasing = GD.Load<PackedScene>("res://gfx/bullet_casing.tscn");
 
-		public enum TurretState { Idle, Recoiling, Reloading, Launched, Returning }
+		public enum TurretState { Idle, Recoiling, Reloading, Launched, Stuck, Returning }
 
 		private TurretState _state = TurretState.Idle;
 		// current position tracking target
@@ -170,6 +170,15 @@ namespace TheZealousMachine.actors.players
 
 		public override void _PhysicsProcess(double delta)
 		{
+			switch (_state)
+			{
+				case TurretState.Launched:
+					if (GetTree().GetFrame() % 2 == 0)
+					{
+						_flash2.RotateZ(GD.RandRange(0, 360) * ZGU.DEG2RAD);
+					}
+					break;
+			}
 			if (!inFormation)
 			{
 				return;
@@ -241,22 +250,65 @@ namespace TheZealousMachine.actors.players
 			_flightSpeed = 200f;
 			_flightTime = 0.1f;
 			_hurtArea.SetOn(true);
-			_RunReverseMuzzleGFX();
-
+			//_RunReverseMuzzleGFX();
+			_flash2.Visible = true;
+			_flash2.RotateZ(GD.RandRange(0, 360) * ZGU.DEG2RAD);
+			//Transform3D t = GlobalTransform;
+			//Vector3 fxPos = t.origin - (t.Forward());
+			//_game.CreateMuzzleFlash(fxPos, t.basis.z);
 		}
 
 		private void _MoveLaunched(float delta)
 		{
 			_tick += delta;
 			Vector3 step = this.GlobalTransform.Forward() * _flightSpeed * delta;
-			GlobalPosition += step;
+			Vector3 from = GlobalPosition;
+			Vector3 to = from + step;
+			
+			PhysicsRayQueryParameters3D ray = new PhysicsRayQueryParameters3D();
+			ray.CollideWithAreas = false;
+			ray.CollideWithBodies = true;
+			ray.From = from;
+			ray.To = to;
+			ray.CollisionMask = 1;
+			PhysicsDirectSpaceState3D space = GetWorld3d().DirectSpaceState;
+			Godot.Collections.Dictionary result = space.IntersectRay(ray);
+			
+			if (result.Count > 0)
+			{
+				_state = TurretState.Stuck;
+				_flightTime = 1f;
+				GlobalPosition = (Vector3)result["position"];
+				_shockCone.Visible = false;
+				_returnOrigin = GlobalPosition;
+				_boostParticles.Emitting = false;
+				_flash2.Visible = false;
+				GD.Print("Hid flash 2");
+				return;
+			}
+			GlobalPosition = to;
+
 			if (_tick >= _flightTime)
 			{
 				_boostParticles.Emitting = false;
 				_tick = 0f;
-				_flightTime = 1f;
+				_flightTime = 4f;
 				_state = TurretState.Returning;
 				_shockCone.Visible = false;
+				_returnOrigin = GlobalPosition;
+				_flash2.Visible = false;
+				_hurtArea.SetOn(false);
+			}
+		}
+
+		private void _MoveStuck(float delta)
+		{
+			_tick += delta;
+			if (_tick >= _flightTime)
+			{
+				_tick = 0f;
+				_flightTime = 3f;
+				_state = TurretState.Returning;
 				_returnOrigin = GlobalPosition;
 				_hurtArea.SetOn(false);
 			}
@@ -265,11 +317,12 @@ namespace TheZealousMachine.actors.players
 		private void _MoveReturning(float delta)
 		{
 			_tick += delta;
+			GlobalPosition = _returnOrigin.Lerp(_subject.GlobalPosition, _tick / _flightTime);
 			if (_tick >= _flightTime)
 			{
+				_tick = 0;
 				_state = TurretState.Idle;
 			}
-			GlobalPosition = _returnOrigin.Lerp(_subject.GlobalPosition, _tick / _flightTime);
 		}
 
 		private void _MoveInFormation(float delta)
@@ -292,6 +345,9 @@ namespace TheZealousMachine.actors.players
 			{
 				case TurretState.Launched:
 					_MoveLaunched((float)delta);
+					return;
+				case TurretState.Stuck:
+					_MoveStuck((float)delta);
 					return;
 				case TurretState.Returning:
 					_MoveReturning((float)delta);

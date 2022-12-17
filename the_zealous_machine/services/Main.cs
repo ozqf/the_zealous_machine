@@ -44,6 +44,8 @@ namespace TheZealousMachine
 		private PackedScene _bulletImpactPurple = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact_purple.tscn");
 		private PackedScene _bulletImpactGrey = GD.Load<PackedScene>("res://gfx/bullet_impact/bullet_impact_grey.tscn");
 		private PackedScene _mobDebrisType = GD.Load<PackedScene>("res://gfx/mob_debris/mob_debris.tscn");
+		private PackedScene _muzzleFlash = GD.Load<PackedScene>("res://gfx/muzzle_flash/muzzle_flash_independent.tscn");
+		private PackedScene _impactExplosion = GD.Load<PackedScene>("res://gfx/impact_explosion.tscn");
 
 		// rooms
 		private PackedScene _room01 = GD.Load<PackedScene>("res://actors/rooms/room_01.tscn");
@@ -240,6 +242,21 @@ namespace TheZealousMachine
 			gfx.LookAtSafe(pos + directon, Vector3.Up, Vector3.Left);
 			*/
 			//return gfx;
+		}
+
+		public void CreateMuzzleFlash(Vector3 pos, Vector3 direction)
+		{
+			Node3D flash = _muzzleFlash.Instantiate<Node3D>();
+			GetActorRoot().AddChild(flash);
+			flash.GlobalPosition = pos;
+			flash.LookAtSafe(pos + direction, Vector3.Up, Vector3.Left);
+		}
+
+		public void CreateImpactExplosion(Vector3 pos)
+		{
+			Node3D gfx = _impactExplosion.Instantiate<Node3D>();
+			GetActorRoot().AddChild(gfx);
+			gfx.GlobalPosition = pos;
 		}
 
 		public void SpawnQuickPickups(Vector3 p, int count = 1, string dropType = "energy")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://5l3ofdci1rjm"]
+
+[ext_resource type="Script" path="res://shared/scripts/TimedCull.cs" id="1_58ahp"]
+[ext_resource type="ArrayMesh" uid="uid://b2e4766nxtfmu" path="res://gfx/muzzle_flash/muzzle_spikes.obj" id="1_okw06"]
+[ext_resource type="Material" uid="uid://bovrd742nil6y" path="res://shared/dev_materials/unshaded_white.tres" id="2_g3wcs"]
+
+[node name="muzzle_flash_independent" type="Node3D"]
+script = ExtResource("1_58ahp")
+timeToLive = 0.25
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, 0.3, 0, -0.3, -1.31134e-08, 0, 0, 0)
+mesh = ExtResource("1_okw06")
+surface_material_override/0 = ExtResource("2_g3wcs")

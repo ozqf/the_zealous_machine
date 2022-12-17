@@ -81,6 +81,7 @@ namespace TheZealousMachine
 		private TurretFormation _formation = TurretFormation.Boost;
 		private PlayerTurret _centreTurret;
 		private List<PlayerTurret> _remoteTurrets = new List<PlayerTurret>();
+		private int _lastRemoteTurretIndex = 0;
 		private List<Node3D> _spreadTurretPositions = new List<Node3D>();
 		private List<Node3D> _narrowTurretPositions = new List<Node3D>();
 		private List<Node3D> _boostTurretPositions = new List<Node3D>();
@@ -142,6 +143,15 @@ namespace TheZealousMachine
 					lockOnNodes[i]);
 				_remoteTurrets[i].SetUser(this, 0);
 			}
+
+			// Hack to rearrange the turrets to a nice order when they are
+			// individually deployed in sequence
+			PlayerTurret t2 = _remoteTurrets[1];
+			PlayerTurret t3 = _remoteTurrets[2];
+			PlayerTurret t4 = _remoteTurrets[3];
+			_remoteTurrets[1] = t4;
+			_remoteTurrets[2] = t2;
+			_remoteTurrets[3] = t3;
 
 			_centreTurret.SetUser(this, 1);
 
@@ -360,17 +370,23 @@ namespace TheZealousMachine
 			{
 				_game.SpawnQuickPickups(_aimLaser.GetSpawnPosition(), 1);
 			}
+			if (Input.IsActionJustPressed("slot_7"))
+			{
+				Vector3 pos = _aimLaser.GetSpawnPosition();
+				SpawnVolume vol = _game.CreateSpawnVolume(pos);
+				vol.mobType = MobType.Shark;
+			}
 			if (Input.IsActionJustPressed("slot_8"))
 			{
 				Vector3 pos = _aimLaser.GetSpawnPosition();
 				SpawnVolume vol = _game.CreateSpawnVolume(pos);
-				vol.mobType = MobType.AssaultBot;
+				vol.mobType = MobType.Gnawbot;
 			}
 			if (Input.IsActionJustPressed("slot_9"))
 			{
 				Vector3 pos = _aimLaser.GetSpawnPosition();
 				SpawnVolume vol = _game.CreateSpawnVolume(pos);
-				vol.mobType = MobType.Gnawbot;
+				vol.mobType = MobType.AssaultBot;
 			}
 			if (Input.IsActionJustPressed("slot_0"))
 			{
@@ -446,7 +462,7 @@ namespace TheZealousMachine
 		{
 
 			// attack_3
-			if (input.attack2 && !last.attack2)
+			if (input.attack2 && !last.attack2 && CheckAndTakeItem("energy", 5))
 			{
 				PlayerTurret turret = _FindFreeTurret();
 				if (turret != null)

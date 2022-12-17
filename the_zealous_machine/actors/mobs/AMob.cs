@@ -7,12 +7,18 @@ namespace TheZealousMachine.actors.mobs
 {
 	public partial class AMob : CharacterBody3D, IHittable, IMob
 	{
+		protected enum MobState { Hunting, Stunned }
+
+        [Export]
+        public int stunThreshold = 50;
+        
 		protected Guid _id = Guid.Empty;
 		protected IGame _game;
 		protected MobThinkInfo _think = new MobThinkInfo();
 		protected Node3D _head;
 		protected MobSensors _sensors;
 		protected Vector3 _spawnOrigin;
+		protected MobState _state = MobState.Hunting;
 
 		private bool _dead = false;
 		protected int _health = 80;
@@ -20,10 +26,10 @@ namespace TheZealousMachine.actors.mobs
 		protected float _shootTime = 0.5f;
 		protected ProjectileType _nextProjectileType = ProjectileType.MobBasic;
 		protected bool _onlyMoveIfOutOfLoS = false;
-		protected int _stunThreshold = 20;
 		protected int _stunAccumulator = 0;
+        protected float _stunTime = 0;
 
-		public override void _Ready()
+        public override void _Ready()
 		{
 			_game = Servicelocator.Locate<IGame>();
 			_head = GetNode<Node3D>("head");
@@ -67,11 +73,22 @@ namespace TheZealousMachine.actors.mobs
 		virtual protected void _ReactToHit(HitInfo hit)
 		{
 			_stunAccumulator += hit.damage;
-			if (_stunAccumulator >= _stunThreshold)
+			if (hit.hitType == HitType.StunImpact)
+			{
+				_stunAccumulator = stunThreshold;
+			}
+			if (_stunAccumulator >= stunThreshold)
 			{
 				_stunAccumulator = 0;
-                Velocity += (hit.direction * 5f);
+				_Stun(hit);
             }
+        }
+
+		virtual protected void _Stun(HitInfo hit)
+		{
+			_state = MobState.Stunned;
+			_stunTime = 1.5f;
+            Velocity += (hit.direction * 5f);
         }
 
 		virtual public HitResponse Hit(HitInfo hit)
@@ -212,6 +229,22 @@ namespace TheZealousMachine.actors.mobs
 
 		public override void _PhysicsProcess(double delta)
 		{
+			_stunAccumulator = 0;
+
+            if (_state == MobState.Stunned)
+			{
+				_stunTime -= (float)delta;
+				if ( _stunTime <= 0 )
+				{
+					_state = MobState.Hunting;
+				}
+				else
+				{
+                    MoveAndSlide();
+                    return;
+                }
+			}
+
 			_think.Refresh(this, _game);
 			if (!_think.HasTarget())
 			{

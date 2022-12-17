@@ -1,5 +1,6 @@
 
 using Godot;
+using ZealousGodotUtils;
 
 namespace TheZealousMachine.actors.mobs.assault_bot
 {
@@ -15,12 +16,13 @@ namespace TheZealousMachine.actors.mobs.assault_bot
 		private Vector3 _evadeDir = new Vector3();
 
 
+
 		public override void _Ready()
 		{
 			base._Ready();
 			_health = 1500;
-			_shootTime = 0.2f;
-			_stunThreshold = 1000;
+			_shootTime = 0.5f;
+			stunThreshold = 1000;
 			//_onlyMoveIfOutOfLoS = true;
 			_launchLeft = GetNode<Node3D>("gun_left");
 			_launchRight = GetNode<Node3D>("gun_right");
@@ -30,6 +32,37 @@ namespace TheZealousMachine.actors.mobs.assault_bot
 		{
 			_moveThinkTick = moveThinkTick;
 			_lastMoveThinkTick = _moveThinkTick;
+		}
+
+		protected override void _Stun(HitInfo hit)
+		{
+			base._Stun(hit);
+			_moveThinkTick = 1.5f;
+		}
+
+		private void _ShootCross(Node3D launchNode)
+		{
+			if (launchNode == null) { return; }
+
+			GD.Print($"Shoot cross");
+			Transform3D baseTransform = launchNode.GlobalTransform;
+			Transform3D launch = baseTransform;
+			_Shoot(launch, ProjectileType.MobBasic);
+			launch.origin = baseTransform.origin + launch.basis.y * 2;
+			_Shoot(launch, ProjectileType.MobBasic);
+			launch.origin = baseTransform.origin - launch.basis.y * 2;
+			_Shoot(launch, ProjectileType.MobBasic);
+
+			launch.origin = baseTransform.origin + (launch.basis.y * 4);
+			_Shoot(launch, ProjectileType.MobBasic);
+			launch.origin = baseTransform.origin - (launch.basis.y * 4);
+			_Shoot(launch, ProjectileType.MobBasic);
+		}
+
+		private void _AimNode(Node3D launchNode, Vector3 target)
+		{
+			Transform3D t = launchNode.GlobalTransform;
+			launchNode.LookAtSafe(target, t.basis.y, t.basis.x);
 		}
 
 		protected void _SwoopMove(float delta)
@@ -54,7 +87,7 @@ namespace TheZealousMachine.actors.mobs.assault_bot
 					left *= (float)GD.RandRange(-1f, 1f);
 					up *= (float)GD.RandRange(-1f, 1f);
 					Vector3 dir = (left + up).Normalized();
-					GD.Print($"dir {dir}");
+					//GD.Print($"dir {dir}");
 					//_think.targetInfo.
 					_movePoint = _think.targetInfo.position + (dir * 100f);
 				}
@@ -79,6 +112,7 @@ namespace TheZealousMachine.actors.mobs.assault_bot
 				_evadeDir = (left + up).Normalized();
 
 				Velocity = _evadeDir * 30f;
+				
 			}
 			else
 			{
@@ -95,7 +129,15 @@ namespace TheZealousMachine.actors.mobs.assault_bot
 		protected override void _HuntingTick(float delta)
 		{
 			_EvadeMove(delta);
-
+			_shootTick -= delta;
+			if (_shootTick <= 0)
+			{
+				_shootTick = _shootTime;
+				_AimNode(_launchLeft, _think.targetInfo.position);
+				_AimNode(_launchRight, _think.targetInfo.position);
+				_ShootCross(_launchLeft);
+				_ShootCross(_launchRight);
+			}
 		}
 
 	}
